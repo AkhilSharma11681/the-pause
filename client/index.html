@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>Miloo — Safer Real Conversations</title>
+
+    <meta
+      name="description"
+      content="Miloo is a mood-based voice and video chat experience designed for safer, more meaningful conversations."
+    />
+    <meta
+      name="keywords"
+      content="miloo, random video chat, stranger chat, safer chat, voice first chat, anonymous chat, omegle alternative"
+    />
+    <meta name="theme-color" content="#0d0b14" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Miloo" />
+
+    <meta property="og:title" content="Miloo — Safer Real Conversations" />
+    <meta
+      property="og:description"
+      content="Match by mood, start safer, and let the conversation earn the reveal."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://miloo.chat/" />
+    <meta property="og:image" content="https://miloo.chat/icon-512.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Miloo — Safer Real Conversations" />
+    <meta
+      name="twitter:description"
+      content="Mood-based chat with voice-first intros, optional safe mode, and better conversations."
+    />
+    <meta name="twitter:image" content="https://miloo.chat/icon-512.png" />
+
+    <link rel="canonical" href="https://miloo.chat/" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <style>
+      html, body { margin: 0; min-height: 100%; background: #0c0c0e; }
+      #root { min-height: 100vh; }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {})
+        })
+      }
+    </script>
+  </body>
+</html>

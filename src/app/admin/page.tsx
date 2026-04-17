@@ -1,0 +1,154 @@
+'use client'
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+import { motion } from 'framer-motion'
+import { Users, Calendar, FileText, LogOut, Search, ChevronRight, Loader2 } from 'lucide-react'
+import AdminPatientDetail from '@/components/admin/AdminPatientDetail'
+
+interface Patient {
+  id: string
+  name: string
+  email: string
+  phone: string
+  created_at: string
+  bookings?: { count: number }[]
+}
+
+export default function AdminDashboard() {
+  const [patients, setPatients] = useState<Patient[]>([])
+  const [todayBookings, setTodayBookings] = useState<unknown[]>([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
+  const [selected, setSelected] = useState<string | null>(null)
+  const [tab, setTab] = useState<'patients' | 'today'>('today')
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) { window.location.href = '/admin/login'; return }
+    })
+
+    const today = new Date().toISOString().split('T')[0]
+
+    Promise.all([
+      supabase.from('patients').select('*, bookings(count)').order('created_at', { ascending: false }),
+      supabase.from('bookings').select('*, patients(name, phone)').eq('date', today).order('time'),
+    ]).then(([pRes, bRes]) => {
+      setPatients(pRes.data || [])
+      setTodayBookings(bRes.data || [])
+      setLoading(false)
+    })
+  }, [])
+
+  async function signOut() {
+    await supabase.auth.signOut()
+    window.location.href = '/admin/login'
+  }
+
+  const filtered = patients.filter(p =>
+    p.name?.toLowerCase().includes(search.toLowerCase()) ||
+    p.email?.toLowerCase().includes(search.toLowerCase()) ||
+    p.phone?.includes(search)
+  )
+
+  if (selected) return <AdminPatientDetail patientId={selected} onBack={() => setSelected(null)} />
+
+  return (
+    <div className="min-h-screen bg-[#1a1a1a] text-white">
+      {/* Header */}
+      <div className="bg-[#242424] border-b border-white/5 px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex gap-1">
+            <div className="w-1.5 h-6 bg-[#4a7c59] rounded-full" />
+            <div className="w-1.5 h-6 bg-[#4a7c59] rounded-full" />
+          </div>
+          <span className="font-display text-lg">The Pause — Admin</span>
+        </div>
+        <button onClick={signOut} className="flex items-center gap-1.5 text-sm text-white/40 hover:text-white transition-colors">
+          <LogOut size={16} /> Sign out
+        </button>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          {[
+            { label: 'Total Patients', value: patients.length, icon: Users },
+            { label: "Today's Sessions", value: todayBookings.length, icon: Calendar },
+            { label: 'Total Bookings', value: patients.reduce((a, p) => a + (p.bookings?.[0]?.count || 0), 0), icon: FileText },
+          ].map((s, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
+              className="bg-[#242424] rounded-[1.5rem] p-6 border border-white/5">
+              <s.icon size={20} className="text-[#4a7c59] mb-3" />
+              <p className="text-3xl font-display font-bold text-white">{s.value}</p>
+              <p className="text-white/40 text-xs uppercase tracking-widest mt-1">{s.label}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Tabs */}
+        <div className="flex gap-2 mb-6">
+          {(['today', 'patients'] as const).map((t) => (
+            <button key={t} onClick={() => setTab(t)}
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${tab === t ? 'bg-[#4a7c59] text-white' : 'bg-[#242424] border border-white/10 text-white/50 hover:text-white'}`}>
+              {t === 'today' ? "Today's Appointments" : 'All Patients'}
+            </button>
+          ))}
+        </div>
+
+        {loading ? (
+          <div className="flex justify-center py-20"><Loader2 size={24} className="animate-spin text-[#4a7c59]" /></div>
+        ) : tab === 'today' ? (
+          <div className="space-y-3">
+            {todayBookings.length === 0 ? (
+              <div className="text-center py-16 text-white/30">No appointments today.</div>
+            ) : (
+              (todayBookings as Array<{ id: string; time: string; session_type: string; concern: string; status: string; patients?: { name: string; phone: string } }>).map((b) => (
+                <div key={b.id} className="bg-[#242424] rounded-[1.5rem] p-5 border border-white/5 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-[#4a7c59]/20 flex items-center justify-center font-display text-[#4a7c59] text-lg">
+                      {b.patients?.name?.[0] || '?'}
+                    </div>
+                    <div>
+                      <p className="font-medium text-white">{b.patients?.name}</p>
+                      <p className="text-white/40 text-xs">{b.patients?.phone} · {b.concern}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[#4a7c59] font-bold">{b.time}</p>
+                    <p className="text-white/30 text-xs capitalize">{b.session_type}</p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <div className="relative mb-4">
+              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name, email or phone..."
+                className="w-full bg-[#242424] border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-white outline-none focus:border-[#4a7c59] transition-colors placeholder:text-white/20" />
+            </div>
+            {filtered.map((p) => (
+              <button key={p.id} onClick={() => setSelected(p.id)}
+                className="w-full bg-[#242424] rounded-[1.5rem] p-5 border border-white/5 flex items-center justify-between hover:border-[#4a7c59]/50 transition-all group">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-[#4a7c59]/20 flex items-center justify-center font-display text-[#4a7c59]">
+                    {p.name?.[0] || '?'}
+                  </div>
+                  <div className="text-left">
+                    <p className="font-medium text-white">{p.name}</p>
+                    <p className="text-white/40 text-xs">{p.email || p.phone}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-white/30 text-xs">{p.bookings?.[0]?.count || 0} sessions</span>
+                  <ChevronRight size={16} className="text-white/20 group-hover:text-[#4a7c59] transition-colors" />
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}

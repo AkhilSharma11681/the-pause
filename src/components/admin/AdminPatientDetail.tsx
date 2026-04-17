@@ -1,8 +1,8 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import { ArrowLeft, Calendar, FileText, Upload, Loader2, Image, Plus } from 'lucide-react'
-import { useRef } from 'react'
+import DoctorAI from '@/components/admin/DoctorAI'
 
 interface Patient {
   id: string
@@ -42,7 +42,7 @@ export default function AdminPatientDetail({ patientId, onBack }: { patientId: s
   const [notes, setNotes] = useState<Note[]>([])
   const [reports, setReports] = useState<Report[]>([])
   const [loading, setLoading] = useState(true)
-  const [tab, setTab] = useState<'bookings' | 'notes' | 'reports'>('bookings')
+  const [tab, setTab] = useState<'bookings' | 'notes' | 'reports' | 'ai'>('bookings')
   const [newNote, setNewNote] = useState('')
   const [addingNote, setAddingNote] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -121,10 +121,10 @@ export default function AdminPatientDetail({ patientId, onBack }: { patientId: s
 
         {/* Tabs */}
         <div className="flex gap-2 mb-6">
-          {(['bookings', 'notes', 'reports'] as const).map((t) => (
+          {(['bookings', 'notes', 'reports', 'ai'] as const).map((t) => (
             <button key={t} onClick={() => setTab(t)}
               className={`px-5 py-2.5 rounded-full text-sm font-medium capitalize transition-all ${tab === t ? 'bg-[#4a7c59] text-white' : 'bg-[#242424] border border-white/10 text-white/50 hover:text-white'}`}>
-              {t}
+              {t === 'ai' ? '✨ AI Assistant' : t}
             </button>
           ))}
         </div>
@@ -197,6 +197,10 @@ export default function AdminPatientDetail({ patientId, onBack }: { patientId: s
             ))}
             {reports.length === 0 && <div className="text-center py-12 text-white/20">No AI reports yet for this patient.</div>}
           </div>
+        )}
+
+        {tab === 'ai' && patient && (
+          <DoctorAI patientId={patientId} patientName={patient.name} />
         )}
       </div>
     </div>

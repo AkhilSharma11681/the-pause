@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { GoogleGenerativeAI } from '@google/generative-ai'
 import { getAdminClient } from '@/lib/supabase'
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
 const SYSTEM_PROMPT = `You are a compassionate AI wellness assistant for The Pause, a psychological care clinic in India. 
 Your role is to:
@@ -22,11 +19,17 @@ When you generate a report, start your response with [REPORT_GENERATED] followed
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages, patientId } = await req.json()
+    const apiKey = process.env.GEMINI_API_KEY
+    if (!apiKey) {
+      return NextResponse.json({ reply: 'AI assistant is not configured yet. Please contact the clinic.', reportGenerated: false })
+    }
 
+    const { GoogleGenerativeAI } = await import('@google/generative-ai')
+    const genAI = new GoogleGenerativeAI(apiKey)
+
+    const { messages, patientId } = await req.json()
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
-    // Build conversation history for Gemini
     const history = messages.slice(0, -1).map((m: { role: string; content: string }) => ({
       role: m.role === 'user' ? 'user' : 'model',
       parts: [{ text: m.content }],
@@ -46,7 +49,6 @@ export async function POST(req: NextRequest) {
 
     let reportGenerated = false
 
-    // If Gemini generated a report, save it to database
     if (reply.includes('[REPORT_GENERATED]') && patientId) {
       const reportHtml = reply.replace('[REPORT_GENERATED]', '').trim()
       const concerns = messages
@@ -55,15 +57,11 @@ export async function POST(req: NextRequest) {
         .join(' | ')
 
       const admin = getAdminClient()
-      await admin.from('ai_reports').insert({
-        patient_id: patientId,
-        concerns,
-        report_html: reportHtml,
-      })
-
+      await admin.from('ai_reports').insert({ patient_id: patientId, concerns, report_html: reportHtml })
       reportGenerated = true
+
       return NextResponse.json({
-        reply: "I've generated your wellness report based on our conversation. You can view it in the 'My Reports' tab. Please share this with your therapist at your next session.",
+        reply: "I've generated your wellness report. You can view it in the 'My Reports' tab.",
         reportGenerated,
       })
     }

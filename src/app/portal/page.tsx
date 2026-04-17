@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { motion } from 'framer-motion'
-import { Calendar, Clock, MessageSquare, Upload, FileText, LogOut, User } from 'lucide-react'
+import { Calendar, MessageSquare, Upload, FileText, LogOut, User } from 'lucide-react'
 import PatientChat from '@/components/portal/PatientChat'
 import PatientBookings from '@/components/portal/PatientBookings'
 import PatientUpload from '@/components/portal/PatientUpload'
@@ -16,29 +16,52 @@ export default function PortalPage() {
   const [patientId, setPatientId] = useState<string | null>(null)
 
   useEffect(() => {
-    supabase.auth.getUser().then(async ({ data }) => {
-      if (!data.user) { window.location.href = '/auth'; return }
-      setUser({ email: data.user.email, phone: data.user.phone })
-
-      // Get or create patient record
-      const { data: existing } = await supabase
-        .from('patients')
-        .select('id')
-        .eq('user_id', data.user.id)
-        .single()
-
-      if (existing) {
-        setPatientId(existing.id)
-      } else {
-        const { data: created } = await supabase
-          .from('patients')
-          .insert({ user_id: data.user.id, name: data.user.email || data.user.phone || 'Patient', email: data.user.email || '', phone: data.user.phone || '' })
-          .select('id')
-          .single()
-        if (created) setPatientId(created.id)
+    // Listen for auth state — handles magic link redirect
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        setUser({ email: session.user.email, phone: session.user.phone })
+        await initPatient(session.user.id, session.user.email, session.user.phone)
+      } else if (event === 'SIGNED_OUT') {
+        window.location.href = '/auth'
       }
     })
+
+    // Also check on mount
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) {
+        window.location.href = '/auth'
+        return
+      }
+      setUser({ email: session.user.email, phone: session.user.phone })
+      await initPatient(session.user.id, session.user.email, session.user.phone)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
+
+  async function initPatient(userId: string, email?: string, phone?: string) {
+    const { data: existing } = await supabase
+      .from('patients')
+      .select('id')
+      .eq('user_id', userId)
+      .single()
+
+    if (existing) {
+      setPatientId(existing.id)
+    } else {
+      const { data: created } = await supabase
+        .from('patients')
+        .insert({
+          user_id: userId,
+          name: email || phone || 'Patient',
+          email: email || '',
+          phone: phone || ''
+        })
+        .select('id')
+        .single()
+      if (created) setPatientId(created.id)
+    }
+  }
 
   async function signOut() {
     await supabase.auth.signOut()
@@ -54,7 +77,6 @@ export default function PortalPage() {
 
   return (
     <div className="min-h-screen bg-[#faf7f2]">
-      {/* Header */}
       <div className="bg-white border-b border-[#f0ebe3] px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex gap-1">
@@ -66,7 +88,7 @@ export default function PortalPage() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 text-sm text-[#6b7280]">
             <User size={16} />
-            <span>{user?.email || user?.phone}</span>
+            <span className="hidden md:block">{user?.email || user?.phone}</span>
           </div>
           <button onClick={signOut} className="flex items-center gap-1.5 text-sm text-[#6b7280] hover:text-[#4a7c59] transition-colors">
             <LogOut size={16} /> Sign out
@@ -80,7 +102,6 @@ export default function PortalPage() {
           <p className="text-[#6b7280] font-light text-sm">Everything about your care, in one place.</p>
         </motion.div>
 
-        {/* Tabs */}
         <div className="flex gap-2 mb-8 overflow-x-auto pb-1">
           {tabs.map((t) => {
             const Icon = t.icon
@@ -94,14 +115,17 @@ export default function PortalPage() {
           })}
         </div>
 
-        {/* Tab Content */}
-        {patientId && (
+        {patientId ? (
           <motion.div key={tab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
             {tab === 'bookings' && <PatientBookings patientId={patientId} />}
             {tab === 'chat' && <PatientChat patientId={patientId} />}
             {tab === 'upload' && <PatientUpload patientId={patientId} />}
             {tab === 'reports' && <PatientReports patientId={patientId} />}
           </motion.div>
+        ) : (
+          <div className="flex justify-center py-20">
+            <div className="w-8 h-8 border-2 border-[#4a7c59] border-t-transparent rounded-full animate-spin" />
+          </div>
         )}
       </div>
     </div>

@@ -83,9 +83,9 @@ export default function Navbar() {
             borderWidth: '1px',
             borderStyle: 'solid',
             borderColor: navBorder,
+            gridTemplateColumns: '1fr auto 1fr',
           }}
           className="w-full grid items-center"
-          style={{ gridTemplateColumns: '1fr auto 1fr' }}
         >
           {/* Left — Logo */}
           <motion.a

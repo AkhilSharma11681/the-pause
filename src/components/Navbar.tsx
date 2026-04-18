@@ -1,7 +1,13 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion'
 import { useRouter } from 'next/navigation'
+
+const SCROLL_THRESHOLD = 40
+
+export function getScrollProgress(scrollY: number, threshold: number): number {
+  return Math.min(1, Math.max(0, scrollY / threshold))
+}
 
 const links = [
   { href: '#how-it-works', label: 'How it works', tag: 'Process', color: '#e8f4ec', textColor: '#4a7c59' },
@@ -12,16 +18,25 @@ const links = [
 ]
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [hovered, setHovered] = useState<number | null>(null)
   const router = useRouter()
 
+  const scrollProgress = useMotionValue(0)
+  const animatedMaxWidth = useTransform(scrollProgress, [0, 1], ['calc(100vw - 32px)', '672px'])
+  const animatedBorderRadius = useTransform(scrollProgress, [0, 1], ['16px', '9999px'])
+  const animatedBackground = useTransform(scrollProgress, [0, 1], ['rgba(255,255,255,0.0)', 'rgba(255,255,255,0.82)'])
+  const animatedBorder = useTransform(scrollProgress, [0, 1], ['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.6)'])
+  const animatedShadow = useTransform(scrollProgress, [0, 1], ['0 2px 8px rgba(0,0,0,0.0)', '0 8px 32px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.8)'])
+  const animatedBackdrop = useTransform(scrollProgress, [0, 1], ['blur(8px)', 'blur(24px)'])
+
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', fn)
+    if (typeof window === 'undefined') return
+    const fn = () => scrollProgress.set(getScrollProgress(window.scrollY, SCROLL_THRESHOLD))
+    fn()
+    window.addEventListener('scroll', fn, { passive: true })
     return () => window.removeEventListener('scroll', fn)
-  }, [])
+  }, [scrollProgress])
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
@@ -47,11 +62,18 @@ export default function Navbar() {
           initial={{ y: -80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className={`w-full max-w-2xl flex items-center justify-between px-6 py-3.5 rounded-full transition-all duration-500 ${
-            scrolled
-              ? 'bg-white/80 backdrop-blur-3xl border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.8)]'
-              : 'bg-white/40 backdrop-blur-2xl border border-white/50 shadow-[0_4px_24px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.6)]'
-          }`}
+          style={{
+            maxWidth: animatedMaxWidth,
+            borderRadius: animatedBorderRadius,
+            background: animatedBackground,
+            boxShadow: animatedShadow,
+            backdropFilter: animatedBackdrop,
+            WebkitBackdropFilter: animatedBackdrop,
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: animatedBorder,
+          }}
+          className="w-full flex items-center justify-between px-6 py-3.5"
         >
           <a href="/" className="flex items-center gap-2 group">
             <div className="flex gap-[3px]">

@@ -1,106 +1,161 @@
 'use client'
 import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
 
 export default function Hero() {
   return (
-    <section className="min-h-screen bg-[#faf7f2] flex flex-col items-center justify-center relative overflow-hidden pt-32 pb-32">
-      {/* Soft Ambient Background Glows */}
-      <motion.div 
-        animate={{ 
-          scale: [1, 1.1, 1],
-          opacity: [0.3, 0.5, 0.3]
-        }}
-        transition={{ duration: 10, repeat: Infinity }}
-        className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#4a7c59]/5 blur-[120px] rounded-full pointer-events-none"
-      />
-      <motion.div 
-        animate={{ 
-          scale: [1, 1.2, 1],
-          opacity: [0.2, 0.4, 0.2]
-        }}
-        transition={{ duration: 15, repeat: Infinity, delay: 2 }}
-        className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#d4843a]/5 blur-[100px] rounded-full pointer-events-none"
-      />
+    <section className="relative min-h-screen bg-[#faf7f2] flex flex-col items-center justify-center overflow-hidden">
 
-      <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-        
-        {/* Iconic Pause Symbol - From Image */}
-        <motion.div 
+      {/* Rich layered background */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Large green glow top-right */}
+        <motion.div
+          animate={{ scale: [1, 1.15, 1], opacity: [0.6, 0.9, 0.6] }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(74,124,89,0.18) 0%, transparent 70%)' }}
+        />
+        {/* Warm amber glow bottom-left */}
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
+          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+          className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(212,132,58,0.12) 0%, transparent 70%)' }}
+        />
+        {/* Center soft glow */}
+        <motion.div
+          animate={{ opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full"
+          style={{ background: 'radial-gradient(ellipse, rgba(74,124,89,0.07) 0%, transparent 70%)' }}
+        />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-6 pt-28 pb-20 flex flex-col items-center text-center">
+
+        {/* Glassmorphism badge */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex justify-center gap-3 mb-12"
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-10"
         >
-          <motion.div 
-            animate={{ height: [60, 72, 60] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            className="w-4 h-16 bg-[#4a7c59] rounded-full shadow-[0_4px_20px_rgba(74,124,89,0.2)]"
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/60 bg-white/40 backdrop-blur-xl shadow-[0_4px_24px_rgba(74,124,89,0.1),inset_0_1px_0_rgba(255,255,255,0.8)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#4a7c59] animate-pulse" />
+            <span className="text-[11px] font-bold tracking-[0.3em] uppercase text-[#4a7c59]">
+              Psychological Care · Online & In-Person
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Pause symbol */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          className="flex justify-center gap-3 mb-10"
+        >
+          <motion.div
+            animate={{ height: [48, 60, 48] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            className="w-3.5 rounded-full shadow-[0_4px_20px_rgba(74,124,89,0.3)]"
+            style={{ background: 'linear-gradient(180deg, #4a7c59 0%, #2d5a3d 100%)' }}
           />
-          <motion.div 
-            animate={{ height: [72, 60, 72] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-            className="w-4 h-16 bg-[#4a7c59] rounded-full shadow-[0_4px_20px_rgba(74,124,89,0.2)]"
+          <motion.div
+            animate={{ height: [60, 48, 60] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+            className="w-3.5 rounded-full shadow-[0_4px_20px_rgba(74,124,89,0.3)]"
+            style={{ background: 'linear-gradient(180deg, #4a7c59 0%, #2d5a3d 100%)' }}
           />
         </motion.div>
 
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="text-[#4a7c59] text-[11px] tracking-[0.4em] uppercase font-bold mb-8 font-sans"
-        >
-          Psychological Care &nbsp;·&nbsp; Online & In-Person
-        </motion.p>
-
-        <motion.h1 
-          initial={{ opacity: 0, y: 30 }}
+        {/* Headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display text-5xl md:text-8xl text-[#1a1a1a] leading-[1.1] mb-10 tracking-tight"
+          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="font-display text-5xl md:text-7xl lg:text-8xl text-[#1a1a1a] leading-[1.05] mb-8 tracking-tight"
         >
-          You don&apos;t need <br />
-          to <span className="italic text-[#4a7c59] serif font-medium italic">be fixed.</span> <br />
-          You need to <br />
+          You don&apos;t need<br />
+          to <span className="italic text-[#4a7c59]">be fixed.</span><br />
+          You need to<br />
           be heard.
         </motion.h1>
 
-        <motion.p 
+        {/* Subtext */}
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-[#6b7280] text-lg md:text-xl font-light max-w-2xl mx-auto mb-16 leading-relaxed"
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-[#6b7280] text-lg md:text-xl font-light max-w-xl mx-auto mb-12 leading-relaxed"
         >
           A calm, private space to work through anxiety, burnout, relationships and more — with certified psychologists.
         </motion.p>
 
-        <motion.div 
+        {/* CTA buttons — glassmorphism style */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex flex-wrap gap-4 justify-center items-center mb-10"
+          transition={{ duration: 0.8, delay: 0.55 }}
+          className="flex flex-wrap gap-3 justify-center mb-10"
         >
-          <a href="#book" className="bg-[#4a7c59] text-white px-10 py-5 rounded-full text-base font-bold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            Book Your First Session
+          <a href="#book"
+            className="relative group inline-flex items-center gap-2 bg-[#4a7c59] text-white px-8 py-4 rounded-full text-[15px] font-bold shadow-[0_8px_32px_rgba(74,124,89,0.35)] hover:shadow-[0_12px_40px_rgba(74,124,89,0.5)] hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+          >
+            <span className="relative z-10">Book Your First Session</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
           </a>
-          <a href="#how" className="bg-transparent text-[#4a7c59] px-10 py-5 rounded-full text-base font-bold border-2 border-[#4a7c59]/20 hover:border-[#4a7c59] transition-all duration-300">
+          <a href="#how-it-works"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-[15px] font-semibold text-[#4a7c59] border border-white/60 bg-white/40 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8)] hover:bg-white/60 hover:-translate-y-1 transition-all duration-300"
+          >
             See How It Works
           </a>
         </motion.div>
 
-        <motion.p 
+        {/* Trust line */}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="text-[#9ca3af] text-[11px] uppercase tracking-widest font-medium"
+          transition={{ delay: 0.8 }}
+          className="flex items-center gap-3 text-[#9ca3af] text-[11px] uppercase tracking-widest font-medium"
         >
-          First session from ₹499 &nbsp;·&nbsp; No waitlists &nbsp;·&nbsp; 100% confidential
-        </motion.p>
+          <span>First session from ₹499</span>
+          <span className="w-1 h-1 rounded-full bg-[#9ca3af]" />
+          <span>No waitlists</span>
+          <span className="w-1 h-1 rounded-full bg-[#9ca3af]" />
+          <span>100% confidential</span>
+        </motion.div>
+
+        {/* Floating glass card — social proof */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-16 inline-flex items-center gap-4 px-6 py-4 rounded-2xl border border-white/60 bg-white/50 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]"
+        >
+          <div className="flex -space-x-2">
+            {['#4a7c59', '#2d5a3d', '#6a9e78', '#4a7c59'].map((c, i) => (
+              <div key={i} className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: c }}>
+                {['P', 'A', 'S', 'R'][i]}
+              </div>
+            ))}
+          </div>
+          <div className="text-left">
+            <p className="text-[13px] font-semibold text-[#1a1a1a] leading-none mb-0.5">2,400+ sessions completed</p>
+            <p className="text-[11px] text-[#6b7280] leading-none">Trusted by patients across India</p>
+          </div>
+          <div className="flex items-center gap-1 ml-2">
+            {[1,2,3,4,5].map(s => (
+              <svg key={s} width="12" height="12" viewBox="0 0 24 24" fill="#d4843a"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            ))}
+          </div>
+        </motion.div>
       </div>
 
-      {/* Decorative Floating particles */}
-      <div className="absolute top-[20%] right-[15%] w-2 h-2 rounded-full bg-[#4a7c59]/20 animate-pulse" />
-      <div className="absolute bottom-[30%] left-[10%] w-3 h-3 rounded-full bg-[#d4843a]/10 animate-bounce" style={{ animationDuration: '4s' }} />
+      {/* Floating particles */}
+      <div className="absolute top-[25%] right-[12%] w-2 h-2 rounded-full bg-[#4a7c59]/20 animate-pulse" />
+      <div className="absolute bottom-[25%] left-[8%] w-3 h-3 rounded-full bg-[#d4843a]/15 animate-bounce" style={{ animationDuration: '4s' }} />
+      <div className="absolute top-[60%] right-[8%] w-1.5 h-1.5 rounded-full bg-[#4a7c59]/15 animate-pulse" style={{ animationDelay: '1s' }} />
     </section>
   )
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { validateEmail, validatePhone, generateReferenceId, BookingPayload } from '@/lib/booking'
+import { getAdminClient } from '@/lib/supabase'
 
 const REQUIRED_FIELDS: (keyof BookingPayload)[] = [
   'name', 'email', 'phone', 'sessionType', 'date', 'time', 'concern'
@@ -113,11 +114,106 @@ export async function POST(req: NextRequest) {
       time: booking.time,
     })
 
+    // === SAVE TO SUPABASE DATABASE ===
+    const admin = getAdminClient()
+
+    // 1. Check if patient exists, if not create one
+    let patientId: string
+    const { data: existingPatient } = await admin
+      .from('patients')
+      .select('id')
+      .eq('email', booking.email)
+      .single()
+
+    if (existingPatient) {
+      patientId = existingPatient.id
+    } else {
+      // Create new patient
+      const { data: newPatient, error: patientError } = await admin
+        .from('patients')
+        .insert({
+          name: booking.name,
+          email: booking.email,
+          phone: booking.phone,
+        })
+        .select('id')
+        .single()
+
+      if (patientError || !newPatient) {
+        console.error('Failed to create patient:', patientError)
+        return NextResponse.json(
+          { success: false, error: 'Failed to create patient record' },
+          { status: 500 }
+        )
+      }
+      patientId = newPatient.id
+    }
+
+    // 2. Get doctor ID (if "auto", pick first available doctor)
+    let doctorId: string | null = null
+    if (booking.therapistId && booking.therapistId !== 'auto') {
+      // Try to find doctor by the therapist ID from the form
+      const { data: doctor } = await admin
+        .from('doctors')
+        .select('id')
+        .eq('id', booking.therapistId)
+        .single()
+      
+      if (doctor) {
+        doctorId = doctor.id
+      }
+    }
+
+    // If still no doctor (auto or not found), pick first available
+    if (!doctorId) {
+      const { data: firstDoctor } = await admin
+        .from('doctors')
+        .select('id')
+        .limit(1)
+        .single()
+      
+      if (firstDoctor) {
+        doctorId = firstDoctor.id
+      }
+      // If no doctors exist, leave as null (will be assigned later)
+    }
+
+    // 3. Insert booking into database
+    const { data: savedBooking, error: bookingError } = await admin
+      .from('bookings')
+      .insert({
+        patient_id: patientId,
+        doctor_id: doctorId,
+        session_type: booking.sessionType,
+        date: booking.date,
+        time: booking.time,
+        concern: booking.concern,
+        message: booking.message || null,
+        status: 'pending',
+        reference_id: referenceId,
+      })
+      .select('id')
+      .single()
+
+    if (bookingError || !savedBooking) {
+      console.error('Failed to save booking:', bookingError)
+      return NextResponse.json(
+        { success: false, error: 'Failed to save booking' },
+        { status: 500 }
+      )
+    }
+
+    console.log(`✅ Booking saved to database — ID: ${savedBooking.id}, Patient: ${patientId}`)
+
     // Fire and forget — don't block the response
     sendConfirmationEmail(booking, referenceId).catch(console.error)
     saveToSheets(booking, referenceId).catch(console.error)
 
-    return NextResponse.json({ success: true, referenceId }, { status: 200 })
+    return NextResponse.json({ 
+      success: true, 
+      referenceId,
+      bookingId: savedBooking.id 
+    }, { status: 200 })
   } catch {
     return NextResponse.json({ success: false, error: 'Invalid request body' }, { status: 400 })
   }

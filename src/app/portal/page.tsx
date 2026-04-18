@@ -2,11 +2,13 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { motion } from 'framer-motion'
-import { Calendar, PlusCircle, FileText, LogOut, User } from 'lucide-react'
+import { Calendar, PlusCircle, FileText, LogOut, User, MessageSquare, Sparkles } from 'lucide-react'
 import PatientBookings from '@/components/portal/PatientBookings'
 import SessionSummaries from '@/components/portal/SessionSummaries'
+import PatientChat from '@/components/portal/PatientChat'
+import PatientReports from '@/components/portal/PatientReports'
 
-type Tab = 'sessions' | 'book' | 'summaries'
+type Tab = 'sessions' | 'book' | 'summaries' | 'chat' | 'reports'
 
 export default function PortalPage() {
   const [tab, setTab] = useState<Tab>('sessions')
@@ -54,8 +56,10 @@ export default function PortalPage() {
 
   const tabs = [
     { id: 'sessions' as Tab, label: 'My Sessions', icon: Calendar },
-    { id: 'book' as Tab, label: 'Book New Session', icon: PlusCircle },
+    { id: 'chat' as Tab, label: 'AI Chat', icon: MessageSquare },
+    { id: 'reports' as Tab, label: 'My Reports', icon: Sparkles },
     { id: 'summaries' as Tab, label: 'Session Summaries', icon: FileText },
+    { id: 'book' as Tab, label: 'Book New Session', icon: PlusCircle },
   ]
 
   return (
@@ -106,6 +110,9 @@ export default function PortalPage() {
         {patientId ? (
           <motion.div key={tab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
             {tab === 'sessions' && <PatientBookings patientId={patientId} />}
+            {tab === 'chat' && <PatientChat patientId={patientId} />}
+            {tab === 'reports' && <PatientReports patientId={patientId} />}
+            {tab === 'summaries' && <SessionSummaries patientId={patientId} />}
             {tab === 'book' && (
               <div className="bg-white rounded-[2rem] border border-[#f0ebe3] p-10 text-center">
                 <div className="w-16 h-16 rounded-full bg-[#e8f4ec] flex items-center justify-center mx-auto mb-6">
@@ -122,7 +129,6 @@ export default function PortalPage() {
                 </a>
               </div>
             )}
-            {tab === 'summaries' && <SessionSummaries patientId={patientId} />}
           </motion.div>
         ) : (
           <div className="flex justify-center py-20">

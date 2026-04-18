@@ -11,11 +11,20 @@ export default function AdminLogin() {
   const [error, setError] = useState('')
 
   async function login() {
+    if (!email.trim() || !password.trim()) {
+      setError('Please enter your email and password.')
+      return
+    }
     setLoading(true)
     setError('')
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password })
     if (error) {
       setError(error.message)
+      setLoading(false)
+      return
+    }
+    if (!data.user) {
+      setError('Login failed. Please try again.')
       setLoading(false)
       return
     }
@@ -45,7 +54,11 @@ export default function AdminLogin() {
               onKeyDown={e => e.key === 'Enter' && login()}
               className="w-full bg-[#1a1a1a] border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white outline-none focus:border-[#4a7c59] transition-colors placeholder:text-white/20" />
           </div>
-          {error && <p className="text-red-400 text-xs">{error}</p>}
+          {error && (
+            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-2xl">
+              <p className="text-red-400 text-sm text-center">{error}</p>
+            </div>
+          )}
           <button onClick={login} disabled={loading}
             className="w-full py-4 rounded-full bg-[#4a7c59] text-white font-medium flex items-center justify-center gap-2 hover:bg-[#3d6649] disabled:opacity-50 transition-all">
             {loading ? <Loader2 size={18} className="animate-spin" /> : <>Sign In <ArrowRight size={18} /></>}

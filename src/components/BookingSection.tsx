@@ -9,13 +9,16 @@ import {
   validateEmail, validatePhone, generateDateRange, generateSlots,
   formatDate, toISODate, BookingPayload, BookingResponse
 } from '@/lib/booking'
+import { supabase } from '@/lib/supabase'
 
-const THERAPISTS = [
-  { id: 'priya', name: 'Dr. Priya Sharma', role: 'Clinical Psychologist', speciality: 'Anxiety · Depression · Burnout', initial: 'P', color: '#4a7c59' },
-  { id: 'arjun', name: 'Arjun Mehta', role: 'Counselling Psychologist', speciality: 'Relationships · Grief · Self-esteem', initial: 'A', color: '#2d5a3d' },
-  { id: 'sneha', name: 'Dr. Sneha Rao', role: 'Psychotherapist', speciality: 'Trauma · PTSD · Identity', initial: 'S', color: '#6a9e78' },
-  { id: 'rahul', name: 'Rahul Bose', role: 'Behavioural Therapist', speciality: 'ADHD · OCD · Stress', initial: 'R', color: '#4a7c59' },
-]
+interface Therapist {
+  id: string
+  name: string
+  role: string
+  speciality: string
+  initial: string
+  color: string
+}
 
 const CONCERNS = ['Anxiety & Panic', 'Depression', 'Burnout & Work Stress', 'Relationships', 'Identity & Trauma', 'Grief & Loss', 'ADHD / OCD', 'Other']
 
@@ -43,9 +46,36 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitting, setSubmitting] = useState(false)
   const [result, setResult] = useState<BookingResponse | null>(null)
+  const [therapists, setTherapists] = useState<Therapist[]>([])
+  const [loadingTherapists, setLoadingTherapists] = useState(true)
 
   const dates = generateDateRange(new Date(), 14)
   const slots = selectedDate && sessionType ? generateSlots(sessionType as 'online' | 'offline', selectedDate) : []
+
+  // Fetch therapists from database
+  useEffect(() => {
+    async function fetchTherapists() {
+      const { data } = await supabase
+        .from('doctors')
+        .select('id, name, role, speciality')
+        .order('name')
+      
+      if (data) {
+        const colors = ['#4a7c59', '#2d5a3d', '#6a9e78', '#4a7c59']
+        const mapped: Therapist[] = data.map((doc, idx) => ({
+          id: doc.id,
+          name: doc.name,
+          role: doc.role || 'Therapist',
+          speciality: doc.speciality || '',
+          initial: doc.name.charAt(0).toUpperCase(),
+          color: colors[idx % colors.length]
+        }))
+        setTherapists(mapped)
+      }
+      setLoadingTherapists(false)
+    }
+    fetchTherapists()
+  }, [])
 
   useEffect(() => {
     if (preSelectedTherapist) setTherapistId(preSelectedTherapist)
@@ -193,25 +223,33 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
                     <h3 className="font-display text-2xl text-[#1a1a1a] mb-1">Choose your therapist</h3>
                     <p className="text-[#6b7280] text-sm font-light">Or let us find the best match for you.</p>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <button onClick={() => setTherapistId('auto')}
-                      className={`p-5 rounded-2xl border-2 text-left transition-all ${therapistId === 'auto' ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
-                      <p className="font-medium text-[#1a1a1a] text-sm">✨ Best match for me</p>
-                      <p className="text-xs text-[#6b7280] font-light mt-1">We&apos;ll pair you based on your concern</p>
-                    </button>
-                    {THERAPISTS.map((t) => (
-                      <button key={t.id} onClick={() => setTherapistId(t.id)}
-                        className={`p-5 rounded-2xl border-2 text-left transition-all flex items-center gap-4 ${therapistId === t.id ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0" style={{ backgroundColor: t.color }}>
-                          {t.initial}
-                        </div>
-                        <div>
-                          <p className="font-medium text-[#1a1a1a] text-sm">{t.name}</p>
-                          <p className="text-[10px] text-[#6b7280] font-light">{t.speciality}</p>
-                        </div>
+                  
+                  {loadingTherapists ? (
+                    <div className="flex justify-center py-8">
+                      <Loader2 size={24} className="animate-spin text-[#4a7c59]" />
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <button onClick={() => setTherapistId('auto')}
+                        className={`p-5 rounded-2xl border-2 text-left transition-all ${therapistId === 'auto' ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
+                        <p className="font-medium text-[#1a1a1a] text-sm">✨ Best match for me</p>
+                        <p className="text-xs text-[#6b7280] font-light mt-1">We&apos;ll pair you based on your concern</p>
                       </button>
-                    ))}
-                  </div>
+                      {therapists.map((t) => (
+                        <button key={t.id} onClick={() => setTherapistId(t.id)}
+                          className={`p-5 rounded-2xl border-2 text-left transition-all flex items-center gap-4 ${therapistId === t.id ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
+                          <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0" style={{ backgroundColor: t.color }}>
+                            {t.initial}
+                          </div>
+                          <div>
+                            <p className="font-medium text-[#1a1a1a] text-sm">{t.name}</p>
+                            <p className="text-[10px] text-[#6b7280] font-light">{t.speciality}</p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  
                   <div className="flex gap-4 pt-2">
                     <button onClick={() => setStep(1)} className="px-8 py-5 rounded-full border border-[#f0ebe3] text-[#6b7280] hover:bg-white transition-colors">Back</button>
                     <button onClick={() => setStep(3)} className="flex-1 py-5 rounded-full bg-[#4a7c59] text-white hover:bg-[#3d6649] transition-colors flex items-center justify-center gap-2 group">

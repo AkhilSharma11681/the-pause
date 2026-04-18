@@ -43,11 +43,14 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
   const [phone, setPhone] = useState('')
   const [concern, setConcern] = useState('')
   const [message, setMessage] = useState('')
+  const [paymentMethod, setPaymentMethod] = useState<'online' | 'cash' | ''>('')
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitting, setSubmitting] = useState(false)
   const [result, setResult] = useState<BookingResponse | null>(null)
   const [therapists, setTherapists] = useState<Therapist[]>([])
   const [loadingTherapists, setLoadingTherapists] = useState(true)
+  
+  const SESSION_PRICE = 1500 // ₹1500 per session
 
   const dates = generateDateRange(new Date(), 14)
   const slots = selectedDate && sessionType ? generateSlots(sessionType as 'online' | 'offline', selectedDate) : []
@@ -93,6 +96,19 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
 
   async function handleSubmit() {
     if (!validateStep4()) return
+    
+    // If cash payment, submit directly
+    if (paymentMethod === 'cash') {
+      await submitBooking('cash_pending')
+      return
+    }
+    
+    // If online payment, proceed with Razorpay (to be implemented)
+    // For now, just submit as pending
+    await submitBooking('pending')
+  }
+  
+  async function submitBooking(paymentStatus: string) {
     setSubmitting(true)
     try {
       const payload: BookingPayload = {
@@ -103,6 +119,7 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
         time: selectedTime,
         concern,
         message,
+        payment_status: paymentStatus,
       }
       const res = await fetch('/api/bookings', {
         method: 'POST',
@@ -176,7 +193,7 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
 
             {/* Progress */}
             <div className="flex justify-center gap-2 mb-12">
-              {[1, 2, 3, 4].map((s) => (
+              {[1, 2, 3, 4, 5].map((s) => (
                 <div key={s} className={`h-1.5 rounded-full transition-all duration-700 ${s <= step ? 'w-12 bg-[#4a7c59]' : 'w-4 bg-[#e5e0d5]'}`} />
               ))}
             </div>
@@ -386,7 +403,65 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
 
                   <div className="flex gap-4 pt-2">
                     <button onClick={() => setStep(3)} className="px-8 py-5 rounded-full border border-[#f0ebe3] text-[#6b7280] hover:bg-white transition-colors">Back</button>
-                    <button onClick={handleSubmit} disabled={submitting}
+                    <button onClick={() => { if (validateStep4()) setStep(5) }} disabled={!name || !email || !phone || !concern}
+                      className="flex-1 py-5 rounded-full bg-[#4a7c59] text-white hover:bg-[#3d6649] disabled:opacity-30 transition-colors flex items-center justify-center gap-2 group">
+                      Choose payment <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
+
+                  <p className="text-center text-[11px] text-[#6b7280] font-light">
+                    Your details are kept 100% confidential.
+                  </p>
+                </motion.div>
+              )}
+
+              {/* STEP 5 — Payment Method */}
+              {step === 5 && (
+                <motion.div key="s5" variants={cv} initial="hidden" animate="visible" exit="exit" className="space-y-8">
+                  <div>
+                    <h3 className="font-display text-2xl text-[#1a1a1a] mb-1">Choose payment method</h3>
+                    <p className="text-[#6b7280] text-sm font-light">Session fee: ₹{SESSION_PRICE}</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Pay Online */}
+                    <button onClick={() => setPaymentMethod('online')}
+                      className={`p-8 rounded-[2rem] border-2 transition-all duration-500 text-left ${paymentMethod === 'online' ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-all ${paymentMethod === 'online' ? 'bg-[#4a7c59] text-white' : 'bg-[#faf7f2] text-[#4a7c59]'}`}>
+                        💳
+                      </div>
+                      <h4 className="font-display text-xl mb-1 text-[#1a1a1a]">Pay Online Now</h4>
+                      <p className="text-sm text-[#6b7280] font-light mb-3">Secure payment via Razorpay</p>
+                      <div className="flex items-center gap-2 text-xs text-[#4a7c59]">
+                        <ShieldCheck size={14} /> Instant confirmation
+                      </div>
+                    </button>
+
+                    {/* Pay at Clinic */}
+                    <button onClick={() => setPaymentMethod('cash')}
+                      className={`p-8 rounded-[2rem] border-2 transition-all duration-500 text-left ${paymentMethod === 'cash' ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-all ${paymentMethod === 'cash' ? 'bg-[#4a7c59] text-white' : 'bg-[#faf7f2] text-[#4a7c59]'}`}>
+                        💵
+                      </div>
+                      <h4 className="font-display text-xl mb-1 text-[#1a1a1a]">Pay at Clinic (Cash)</h4>
+                      <p className="text-sm text-[#6b7280] font-light mb-3">Pay ₹{SESSION_PRICE} cash at the clinic</p>
+                      <div className="flex items-center gap-2 text-xs text-[#4a7c59]">
+                        <MapPin size={14} /> Available for in-person sessions
+                      </div>
+                    </button>
+                  </div>
+
+                  {result?.error && (
+                    <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-2xl">
+                      <RefreshCw size={16} className="text-red-500 shrink-0" />
+                      <p className="text-red-600 text-sm">{result.error}</p>
+                      <button onClick={() => setResult(null)} className="ml-auto text-red-400 hover:text-red-600 text-xs underline">Retry</button>
+                    </div>
+                  )}
+
+                  <div className="flex gap-4 pt-2">
+                    <button onClick={() => setStep(4)} className="px-8 py-5 rounded-full border border-[#f0ebe3] text-[#6b7280] hover:bg-white transition-colors">Back</button>
+                    <button onClick={handleSubmit} disabled={!paymentMethod || submitting}
                       className="flex-1 py-5 rounded-full bg-[#4a7c59] text-white shadow-[0_15px_40px_rgba(74,124,89,0.3)] hover:scale-[1.02] active:scale-95 disabled:opacity-60 transition-all flex items-center justify-center gap-2">
                       {submitting ? <><Loader2 size={18} className="animate-spin" /> Booking...</> : 'Complete Booking'}
                     </button>

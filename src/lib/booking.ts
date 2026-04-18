@@ -10,6 +10,11 @@ export interface BookingPayload {
   time: string        // HH:MM
   concern: string
   message?: string
+  payment_status?: string // 'pending', 'cash_pending', 'paid'
+  // Optional Razorpay payment fields
+  razorpay_order_id?: string
+  razorpay_payment_id?: string
+  razorpay_signature?: string
 }
 
 export interface BookingResponse {

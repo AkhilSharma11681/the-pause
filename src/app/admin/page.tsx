@@ -2,8 +2,9 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { motion } from 'framer-motion'
-import { Users, Calendar, FileText, LogOut, Search, ChevronRight, Loader2 } from 'lucide-react'
+import { Users, Calendar, FileText, LogOut, Search, ChevronRight, Loader2, Sparkles } from 'lucide-react'
 import AdminPatientDetail from '@/components/admin/AdminPatientDetail'
+import DoctorAI from '@/components/admin/DoctorAI'
 
 interface Patient {
   id: string
@@ -20,7 +21,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<string | null>(null)
-  const [tab, setTab] = useState<'patients' | 'today'>('today')
+  const [tab, setTab] = useState<'patients' | 'today' | 'ai'>('today')
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -171,22 +172,25 @@ export default function AdminDashboard() {
 
         {/* Tabs */}
         <div className="flex gap-2 mb-6">
-          {(['today', 'patients'] as const).map((t) => (
+          {(['today', 'patients', 'ai'] as const).map((t) => (
             <button key={t} onClick={() => setTab(t)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${tab === t ? 'bg-[#4a7c59] text-white' : 'bg-[#242424] border border-white/10 text-white/50 hover:text-white'}`}>
-              {t === 'today' ? "Today's Appointments" : 'All Patients'}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all ${tab === t ? 'bg-[#4a7c59] text-white' : 'bg-[#242424] border border-white/10 text-white/50 hover:text-white'}`}>
+              {t === 'ai' && <Sparkles size={14} />}
+              {t === 'today' ? "Today's Appointments" : t === 'patients' ? 'All Patients' : 'AI Assistant'}
             </button>
           ))}
         </div>
 
         {loading ? (
           <div className="flex justify-center py-20"><Loader2 size={24} className="animate-spin text-[#4a7c59]" /></div>
+        ) : tab === 'ai' ? (
+          <DoctorAI />
         ) : tab === 'today' ? (
           <div className="space-y-3">
             {todayBookings.length === 0 ? (
               <div className="text-center py-16 text-white/30">No appointments today.</div>
             ) : (
-              (todayBookings as Array<{ id: string; time: string; session_type: string; concern: string; status: string; meet_link?: string; patients?: { name: string; phone: string } }>).map((b) => (
+              (todayBookings as Array<{ id: string; time: string; session_type: string; concern: string; status: string; payment_status?: string; meet_link?: string; patients?: { name: string; phone: string } }>).map((b) => (
                 <div key={b.id} className="bg-[#242424] rounded-[1.5rem] p-5 border border-white/5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
@@ -196,6 +200,11 @@ export default function AdminDashboard() {
                       <div>
                         <p className="font-medium text-white">{b.patients?.name}</p>
                         <p className="text-white/40 text-xs">{b.patients?.phone} · {b.concern}</p>
+                        {b.payment_status === 'cash_pending' && (
+                          <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-300 border border-orange-500/30 text-[10px] font-medium">
+                            💵 Cash Pending
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="flex items-center gap-3">

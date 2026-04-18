@@ -1,10 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { validateEmail, validatePhone, generateReferenceId, BookingPayload } from '@/lib/booking'
 import { getAdminClient } from '@/lib/supabase'
+import { verifyPaymentSignature } from '@/lib/razorpay'
 
 const REQUIRED_FIELDS: (keyof BookingPayload)[] = [
   'name', 'email', 'phone', 'sessionType', 'date', 'time', 'concern'
 ]
+
+// Rate limiting: in-memory store
+// Structure: { ip: { count: number, resetAt: number } }
+const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
+const RATE_LIMIT_MAX = 3 // max requests per hour
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000 // 1 hour in milliseconds
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now()
+  const record = rateLimitStore.get(ip)
+  
+  if (!record || now > record.resetAt) {
+    // No record or expired - create new
+    rateLimitStore.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW })
+    return true
+  }
+  
+  if (record.count >= RATE_LIMIT_MAX) {
+    return false // Rate limit exceeded
+  }
+  
+  // Increment count
+  record.count++
+  return true
+}
+
+// Clean up expired entries every 10 minutes
+setInterval(() => {
+  const now = Date.now()
+  for (const [ip, record] of rateLimitStore.entries()) {
+    if (now > record.resetAt) {
+      rateLimitStore.delete(ip)
+    }
+  }
+}, 10 * 60 * 1000)
 
 // Send confirmation email via Resend
 // To enable: add RESEND_API_KEY to your .env.local
@@ -13,6 +49,8 @@ async function sendConfirmationEmail(booking: BookingPayload, referenceId: strin
   if (!apiKey) return // silently skip if not configured
 
   const sessionLabel = booking.sessionType === 'online' ? 'Online (Video/Chat)' : 'In-Person (Sonipat Clinic)'
+  const isCashPayment = booking.payment_status === 'cash_pending'
+  const sessionPrice = 1500
 
   await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -43,6 +81,13 @@ async function sendConfirmationEmail(booking: BookingPayload, referenceId: strin
               <tr><td style="padding: 8px 0; color: #6b7280; font-size: 13px;">Concern</td><td style="padding: 8px 0;">${booking.concern}</td></tr>
             </table>
           </div>
+          ${isCashPayment ? `
+          <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 16px; padding: 20px; margin-bottom: 24px; text-align: center;">
+            <p style="font-size: 18px; font-weight: 600; color: #856404; margin-bottom: 8px;">💵 Payment Due at Clinic</p>
+            <p style="font-size: 24px; font-weight: bold; color: #1a1a1a; margin-bottom: 8px;">₹${sessionPrice}</p>
+            <p style="font-size: 14px; color: #856404;">Please bring cash payment to your session</p>
+          </div>
+          ` : ''}
           <p style="color: #6b7280; font-size: 14px; line-height: 1.6;">
             Need to reschedule? WhatsApp us at <a href="https://wa.me/919152987821" style="color: #4a7c59;">+91 9152987821</a> at least 6 hours before your session.
           </p>
@@ -80,6 +125,18 @@ async function saveToSheets(booking: BookingPayload, referenceId: string) {
 
 export async function POST(req: NextRequest) {
   try {
+    // Rate limiting check
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 
+               req.headers.get('x-real-ip') || 
+               'unknown'
+    
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json(
+        { success: false, error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      )
+    }
+
     const body = await req.json() as Partial<BookingPayload>
 
     // Check required fields
@@ -102,6 +159,37 @@ export async function POST(req: NextRequest) {
 
     if (!['online', 'offline'].includes(body.sessionType!)) {
       return NextResponse.json({ success: false, error: 'sessionType must be online or offline' }, { status: 400 })
+    }
+
+    // Payment signature verification (if payment data is provided)
+    // This is optional for now - when Razorpay is integrated, make it required
+    if (body.razorpay_order_id && body.razorpay_payment_id && body.razorpay_signature) {
+      const secret = process.env.RAZORPAY_KEY_SECRET
+      
+      if (!secret) {
+        return NextResponse.json(
+          { success: false, error: 'Payment verification not configured' },
+          { status: 500 }
+        )
+      }
+
+      const isValid = verifyPaymentSignature(
+        body.razorpay_order_id,
+        body.razorpay_payment_id,
+        body.razorpay_signature,
+        secret
+      )
+
+      if (!isValid) {
+        console.error('Invalid payment signature detected', {
+          orderId: body.razorpay_order_id,
+          paymentId: body.razorpay_payment_id,
+        })
+        return NextResponse.json(
+          { success: false, error: 'Payment verification failed. Please contact support.' },
+          { status: 400 }
+        )
+      }
     }
 
     const referenceId = generateReferenceId()
@@ -178,7 +266,26 @@ export async function POST(req: NextRequest) {
       // If no doctors exist, leave as null (will be assigned later)
     }
 
-    // 3. Insert booking into database
+    // 3. Check if slot is already taken (duplicate booking prevention)
+    if (doctorId) {
+      const { data: existingBooking } = await admin
+        .from('bookings')
+        .select('id')
+        .eq('doctor_id', doctorId)
+        .eq('date', booking.date)
+        .eq('time', booking.time)
+        .neq('status', 'cancelled')
+        .single()
+      
+      if (existingBooking) {
+        return NextResponse.json(
+          { success: false, error: 'This slot is already booked. Please choose another time.' },
+          { status: 400 }
+        )
+      }
+    }
+
+    // 4. Insert booking into database
     const { data: savedBooking, error: bookingError } = await admin
       .from('bookings')
       .insert({
@@ -191,6 +298,7 @@ export async function POST(req: NextRequest) {
         message: booking.message || null,
         status: 'pending',
         reference_id: referenceId,
+        payment_status: booking.payment_status || 'pending',
       })
       .select('id')
       .single()

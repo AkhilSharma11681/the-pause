@@ -20,6 +20,7 @@ interface Booking {
   concern: string
   status: string
   reference_id: string
+  payment_status?: string
   meet_link?: string
 }
 
@@ -217,7 +218,14 @@ export default function AdminPatientDetail({ patientId, onBack }: { patientId: s
                     <Calendar size={16} className="text-[#4a7c59]" />
                     <div>
                       <p className="text-white text-sm font-medium">{new Date(b.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })} at {b.time}</p>
-                      <p className="text-white/40 text-xs">{b.concern} · {b.session_type}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-white/40 text-xs">{b.concern} · {b.session_type}</p>
+                        {b.payment_status === 'cash_pending' && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-300 border border-orange-500/30 text-[10px] font-medium">
+                            💵 Cash Pending
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">

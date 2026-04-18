@@ -30,7 +30,7 @@ export default function ClinicMap() {
                 <div>
                   <p className="font-medium text-[#1a1a1a] mb-1">Address</p>
                   <p className="text-[#6b7280] font-light text-sm leading-relaxed">
-                    Sector 15, Sonipat<br />Haryana — 131001
+                    Flat 26, REHAYASHI APARTMENT<br />Pocket 7, Sector 12 Dwarka<br />New Delhi — 110078
                   </p>
                 </div>
               </div>
@@ -74,7 +74,7 @@ export default function ClinicMap() {
           >
             {/* Replace src with your actual Google Maps embed URL from maps.google.com → Share → Embed */}
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3497.123456789!2d77.0123456!3d28.9876543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sSector+15%2C+Sonipat%2C+Haryana!5e0!3m2!1sen!2sin!4v1234567890"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.123456789!2d77.0589!3d28.5921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sRehayashi+Apartment+Sector+12+Dwarka+New+Delhi!5e0!3m2!1sen!2sin!4v1234567890"
               width="100%"
               height="100%"
               style={{ border: 0 }}

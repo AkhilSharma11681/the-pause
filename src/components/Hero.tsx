@@ -131,24 +131,46 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-16 inline-flex items-center gap-4 px-6 py-4 rounded-2xl border border-white/60 bg-white/50 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]"
+          className="mt-16 flex flex-col sm:flex-row items-center gap-4"
         >
-          <div className="flex -space-x-2">
-            {['#4a7c59', '#2d5a3d', '#6a9e78', '#4a7c59'].map((c, i) => (
-              <div key={i} className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: c }}>
-                {['P', 'A', 'S', 'R'][i]}
-              </div>
-            ))}
+          {/* Social proof card */}
+          <div className="inline-flex items-center gap-4 px-6 py-4 rounded-2xl border border-white/60 bg-white/50 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]">
+            <div className="flex -space-x-2">
+              {['#4a7c59', '#2d5a3d', '#6a9e78', '#4a7c59'].map((c, i) => (
+                <div key={i} className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: c }}>
+                  {['P', 'A', 'S', 'R'][i]}
+                </div>
+              ))}
+            </div>
+            <div className="text-left">
+              <p className="text-[13px] font-semibold text-[#1a1a1a] leading-none mb-0.5">2,400+ sessions completed</p>
+              <p className="text-[11px] text-[#6b7280] leading-none">Trusted by patients across India</p>
+            </div>
+            <div className="flex items-center gap-0.5 ml-2">
+              {[1,2,3,4,5].map(s => (
+                <svg key={s} width="12" height="12" viewBox="0 0 24 24" fill="#d4843a"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              ))}
+            </div>
           </div>
-          <div className="text-left">
-            <p className="text-[13px] font-semibold text-[#1a1a1a] leading-none mb-0.5">2,400+ sessions completed</p>
-            <p className="text-[11px] text-[#6b7280] leading-none">Trusted by patients across India</p>
-          </div>
-          <div className="flex items-center gap-1 ml-2">
-            {[1,2,3,4,5].map(s => (
-              <svg key={s} width="12" height="12" viewBox="0 0 24 24" fill="#d4843a"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            ))}
-          </div>
+
+          {/* Location pill */}
+          <a
+            href="https://maps.google.com/?q=Flat+26+REHAYASHI+APARTMENT+Pocket+7+Sector+12+Dwarka+New+Delhi+110078"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 px-5 py-4 rounded-2xl border border-white/60 bg-white/50 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-white/70 transition-all group"
+          >
+            <div className="w-8 h-8 rounded-xl bg-[#e8f4ec] flex items-center justify-center shrink-0 group-hover:bg-[#4a7c59] transition-colors">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a7c59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:stroke-white transition-colors">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <div className="text-left">
+              <p className="text-[12px] font-semibold text-[#1a1a1a] leading-none mb-0.5">Sector 12 Dwarka, New Delhi</p>
+              <p className="text-[10px] text-[#6b7280] leading-none">Flat 26, REHAYASHI APARTMENT · 110078</p>
+            </div>
+          </a>
         </motion.div>
       </div>
 

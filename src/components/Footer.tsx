@@ -77,7 +77,8 @@ export default function Footer() {
             <div>
               <h4 className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-bold mb-8">Connect</h4>
               <p className="text-white/80 font-display text-xl mb-2">Speak to a human</p>
-              <p className="text-white/40 text-sm font-light mb-1">Sector 15, Sonipat, Haryana</p>
+              <p className="text-white/40 text-sm font-light mb-1">Flat 26, REHAYASHI APARTMENT, Pocket 7</p>
+              <p className="text-white/40 text-sm font-light mb-1">Sector 12 Dwarka, New Delhi — 110078</p>
               <p className="text-white/40 text-sm font-light mb-6">Mon–Sat · 09:00–19:00</p>
               <a href="tel:9152987821" className="flex items-center gap-2 text-[#4a7c59] text-sm font-medium mb-6 hover:text-white transition-colors">
                 <Phone size={14} />

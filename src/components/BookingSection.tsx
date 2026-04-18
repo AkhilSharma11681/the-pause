@@ -176,7 +176,7 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                       className="p-4 bg-white/50 rounded-2xl border border-[#f0ebe3] flex items-center gap-4">
                       <MapPin size={18} className="text-[#4a7c59] shrink-0" />
-                      <p className="text-xs text-[#6b7280] font-light">Sector 15, Sonipat · Mon–Sat · 09:00–19:00</p>
+                      <p className="text-xs text-[#6b7280] font-light">Sector 12 Dwarka, New Delhi · Mon–Sat · 09:00–19:00</p>
                     </motion.div>
                   )}
                   <button disabled={!sessionType} onClick={() => setStep(2)}

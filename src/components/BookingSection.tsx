@@ -107,6 +107,17 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
               <span className="text-[#4a7c59] text-xs font-bold uppercase tracking-widest">Ref: {result.referenceId}</span>
             </div>
             <p className="text-[#9ca3af] text-sm">A confirmation will be sent to <strong>{email}</strong>. Check WhatsApp too.</p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+              <a href="/auth"
+                className="inline-flex items-center justify-center gap-2 bg-[#4a7c59] text-white px-8 py-4 rounded-full text-sm font-medium hover:bg-[#3d6649] transition-all hover:-translate-y-0.5 hover:shadow-lg">
+                Access My Portal
+              </a>
+              <a href="/"
+                className="inline-flex items-center justify-center gap-2 bg-white border border-[#f0ebe3] text-[#6b7280] px-8 py-4 rounded-full text-sm font-medium hover:border-[#4a7c59] transition-all">
+                Back to Home
+              </a>
+            </div>
+            <p className="text-[#9ca3af] text-xs mt-4">Save your portal link: <strong>thepause.in/auth</strong></p>
           </motion.div>
         </div>
       </section>

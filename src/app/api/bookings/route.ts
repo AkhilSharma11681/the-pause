@@ -45,6 +45,12 @@ async function sendConfirmationEmail(booking: BookingPayload, referenceId: strin
           <p style="color: #6b7280; font-size: 14px; line-height: 1.6;">
             Need to reschedule? WhatsApp us at <a href="https://wa.me/919152987821" style="color: #4a7c59;">+91 9152987821</a> at least 6 hours before your session.
           </p>
+          <div style="margin-top: 24px; padding: 20px; background: #f5f0e8; border-radius: 16px; text-align: center;">
+            <p style="color: #1a1a1a; font-family: sans-serif; font-size: 14px; margin-bottom: 12px;">View your bookings and session history anytime</p>
+            <a href="https://thepause.in/auth" style="display:inline-block; background:#4a7c59; color:white; padding:10px 24px; border-radius:50px; text-decoration:none; font-family:sans-serif; font-weight:600; font-size:14px;">
+              My Patient Portal →
+            </a>
+          </div>
           <hr style="border: none; border-top: 1px solid #f0ebe3; margin: 32px 0;" />
           <p style="color: #9ca3af; font-size: 12px;">© 2026 The Pause · Sector 15, Sonipat · Care that breathes.</p>
         </div>

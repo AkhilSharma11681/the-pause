@@ -48,7 +48,7 @@ export default function Navbar() {
                 {link.label}
               </a>
             ))}
-            <a href="/auth" className="text-sm font-medium text-[#6b7280] hover:text-[#4a7c59] transition-colors">
+            <a href="/auth" className="text-sm font-medium text-[#6b7280] hover:text-[#4a7c59] transition-colors border border-[#4a7c59]/20 px-4 py-2 rounded-full hover:border-[#4a7c59]">
               My Portal
             </a>
             <a href="#book" className="bg-[#4a7c59] text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-[#3d6649] transition-all hover:shadow-lg hover:-translate-y-0.5">

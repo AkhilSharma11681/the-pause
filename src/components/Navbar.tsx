@@ -83,15 +83,14 @@ export default function Navbar() {
             borderWidth: '1px',
             borderStyle: 'solid',
             borderColor: navBorder,
-            gridTemplateColumns: '1fr auto 1fr',
           }}
-          className="w-full grid items-center"
+          className="w-full flex items-center justify-between"
         >
           {/* Left — Logo */}
           <motion.a
             href="/"
             style={{ scale: logoScale }}
-            className="flex items-center gap-2.5 group origin-left justify-self-start"
+            className="flex items-center gap-2.5 group origin-left"
           >
             <div className="flex gap-[3px] shrink-0">
               <div className="w-[5px] h-[22px] bg-[#4a7c59] rounded-full transition-transform duration-300 group-hover:scale-y-110" />
@@ -102,41 +101,40 @@ export default function Navbar() {
             </span>
           </motion.a>
 
-          {/* Center — CTA perfectly centered */}
-          <motion.a
-            href="#book"
-            style={{ scale: btnScale }}
-            whileHover={{ y: -2, boxShadow: '0 8px 24px rgba(74,124,89,0.35)' }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-            className="justify-self-center bg-[#4a7c59] text-white px-6 py-2.5 rounded-full text-[13px] font-semibold tracking-wide hidden sm:flex items-center gap-1.5 shadow-[0_4px_16px_rgba(74,124,89,0.25)] whitespace-nowrap"
-          >
-            Book Now
-          </motion.a>
+          {/* Right — CTA + Hamburger */}
+          <div className="flex items-center gap-3">
+            <motion.a
+              href="#book"
+              style={{ scale: btnScale }}
+              whileHover={{ y: -2, boxShadow: '0 8px 24px rgba(74,124,89,0.35)' }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              className="bg-[#4a7c59] text-white px-6 py-2.5 rounded-full text-[13px] font-semibold tracking-wide hidden sm:flex items-center gap-1.5 shadow-[0_4px_16px_rgba(74,124,89,0.25)] whitespace-nowrap"
+            >
+              Book Now
+            </motion.a>
 
-          {/* Right — Hamburger */}
-          <div className="justify-self-end">
-          <button
-            onClick={() => setOpen(o => !o)}
-            aria-label="Menu"
-            className="w-10 h-10 rounded-full bg-[#f0ebe3]/80 flex flex-col items-center justify-center gap-[5px] hover:bg-[#4a7c59]/10 transition-colors"
-          >
-            <motion.span
-              animate={open ? { rotate: 45, y: 6.5 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="block w-[15px] h-[1.5px] bg-[#1a1a1a] rounded-full"
-            />
-            <motion.span
-              animate={open ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-              transition={{ duration: 0.2 }}
-              className="block w-[15px] h-[1.5px] bg-[#1a1a1a] rounded-full"
-            />
-            <motion.span
-              animate={open ? { rotate: -45, y: -6.5 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="block w-[15px] h-[1.5px] bg-[#1a1a1a] rounded-full"
-            />
-          </button>
+            <button
+              onClick={() => setOpen(o => !o)}
+              aria-label="Menu"
+              className="w-10 h-10 rounded-full bg-[#f0ebe3]/80 flex flex-col items-center justify-center gap-[5px] hover:bg-[#4a7c59]/10 transition-colors"
+            >
+              <motion.span
+                animate={open ? { rotate: 45, y: 6.5 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="block w-[15px] h-[1.5px] bg-[#1a1a1a] rounded-full"
+              />
+              <motion.span
+                animate={open ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+                transition={{ duration: 0.2 }}
+                className="block w-[15px] h-[1.5px] bg-[#1a1a1a] rounded-full"
+              />
+              <motion.span
+                animate={open ? { rotate: -45, y: -6.5 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="block w-[15px] h-[1.5px] bg-[#1a1a1a] rounded-full"
+              />
+            </button>
           </div>
         </motion.nav>
       </div>

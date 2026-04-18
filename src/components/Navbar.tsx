@@ -17,7 +17,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
+      setScrolled(window.scrollY > 50)
     }
     handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -43,18 +43,21 @@ export default function Navbar() {
   return (
     <>
       {/* Main Navbar */}
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled 
-            ? 'bg-[#faf7f2]/95 backdrop-blur-md shadow-sm border-b border-[#e8e3da]/50' 
-            : 'bg-transparent'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+      <div className={`fixed left-0 right-0 z-50 flex justify-center transition-all duration-[400ms] ease-in-out ${
+        scrolled ? 'top-3' : 'top-0'
+      }`}>
+        <motion.nav
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className={`navbar w-full transition-all duration-[400ms] ease-in-out ${
+            scrolled 
+              ? 'max-w-[85%] rounded-[50px] bg-[rgba(200,230,210,0.2)] backdrop-blur-[14px] border border-[rgba(255,255,255,0.25)] shadow-[0_8px_32px_rgba(0,0,0,0.08)]' 
+              : 'max-w-full rounded-none bg-transparent border-transparent shadow-none'
+          }`}
+        >
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <motion.a
               href="/"
@@ -125,6 +128,7 @@ export default function Navbar() {
           </div>
         </div>
       </motion.nav>
+      </div>
 
       {/* Mobile Menu */}
       <AnimatePresence>

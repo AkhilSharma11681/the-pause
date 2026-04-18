@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 
-const THRESHOLD = 80
+const THRESHOLD = 120
 
 const links = [
   { href: '#how-it-works', label: 'How it works', tag: 'Process', color: '#e8f4ec', textColor: '#4a7c59' },
@@ -39,9 +39,9 @@ export default function Navbar() {
   }, [open])
 
   // Animated style values
-  const navMaxWidth   = useTransform(progress, [0, 1], ['calc(100vw - 48px)', '660px'])
-  const navPaddingY   = useTransform(progress, [0, 1], ['20px', '10px'])
-  const navPaddingX   = useTransform(progress, [0, 1], ['32px', '20px'])
+  const navMaxWidth   = useTransform(progress, [0, 1], ['calc(100vw - 40px)', '660px'])
+  const navPaddingY   = useTransform(progress, [0, 1], ['18px', '10px'])
+  const navPaddingX   = useTransform(progress, [0, 1], ['40px', '20px'])
   const navRadius     = useTransform(progress, [0, 1], ['20px', '9999px'])
   const navBg         = useTransform(progress, [0, 1], ['rgba(250,247,242,0.0)', 'rgba(250,247,242,0.85)'])
   const navBorder     = useTransform(progress, [0, 1], ['rgba(255,255,255,0.0)', 'rgba(255,255,255,0.5)'])
@@ -101,14 +101,14 @@ export default function Navbar() {
             </span>
           </motion.a>
 
-          {/* Center CTA */}
+          {/* Center CTA — sits in its own flex cell so it doesn't overlap */}
           <motion.a
             href="#book"
             style={{ scale: btnScale }}
             whileHover={{ y: -2, boxShadow: '0 8px 24px rgba(74,124,89,0.35)' }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-            className="absolute left-1/2 -translate-x-1/2 bg-[#4a7c59] text-white px-6 py-2.5 rounded-full text-[13px] font-semibold tracking-wide hidden sm:flex items-center gap-1.5 shadow-[0_4px_16px_rgba(74,124,89,0.25)]"
+            className="bg-[#4a7c59] text-white px-6 py-2.5 rounded-full text-[13px] font-semibold tracking-wide hidden sm:flex items-center gap-1.5 shadow-[0_4px_16px_rgba(74,124,89,0.25)]"
           >
             Book Now
           </motion.a>

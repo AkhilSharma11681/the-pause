@@ -31,24 +31,11 @@ export async function middleware(request: NextRequest) {
       }
     )
 
-    // Check if user is authenticated
+    // Check if user is authenticated — that's enough for middleware
+    // Doctor role check is handled inside the admin page itself
     const { data: { user } } = await supabase.auth.getUser()
     
     if (!user) {
-      // Not authenticated - redirect to login
-      const redirectUrl = new URL('/admin/login', request.url)
-      return NextResponse.redirect(redirectUrl)
-    }
-
-    // Check if user is a doctor
-    const { data: doctor } = await supabase
-      .from('doctors')
-      .select('id')
-      .eq('user_id', user.id)
-      .single()
-    
-    if (!doctor) {
-      // User is authenticated but not a doctor - redirect to login
       const redirectUrl = new URL('/admin/login', request.url)
       return NextResponse.redirect(redirectUrl)
     }
@@ -60,7 +47,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/admin/:path*',
-  ],
+  matcher: ['/admin/:path*'],
 }

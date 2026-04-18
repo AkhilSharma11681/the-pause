@@ -20,6 +20,7 @@ interface Booking {
   concern: string
   status: string
   reference_id: string
+  meet_link?: string
 }
 
 interface Note {
@@ -68,14 +69,77 @@ export default function AdminPatientDetail({ patientId, onBack }: { patientId: s
   }
 
   async function updateBookingStatus(bookingId: string, newStatus: string) {
+    // Get booking details to check if it's online
+    const { data: booking } = await supabase
+      .from('bookings')
+      .select('session_type, meet_link, date, time')
+      .eq('id', bookingId)
+      .single()
+    
+    const updates: { status: string; meet_link?: string } = { status: newStatus }
+    
+    // If confirming an online session without a meet link, generate one
+    if (newStatus === 'confirmed' && booking?.session_type === 'online' && !booking.meet_link) {
+      const { generateMeetLink } = await import('@/lib/meet')
+      updates.meet_link = generateMeetLink()
+      
+      // Send confirmation email with meet link
+      sendConfirmationWithMeetLink(bookingId, updates.meet_link, booking.date, booking.time, patientId).catch(console.error)
+    }
+    
     const { error } = await supabase
       .from('bookings')
-      .update({ status: newStatus })
+      .update(updates)
       .eq('id', bookingId)
     
     if (!error) {
       loadPatientData() // Refresh data
     }
+  }
+
+  async function sendConfirmationWithMeetLink(bookingId: string, meetLink: string, date: string, time: string, patId: string) {
+    const { data: pat } = await supabase
+      .from('patients')
+      .select('email, name')
+      .eq('id', patId)
+      .single()
+    
+    if (!pat?.email) return
+    
+    const apiKey = process.env.NEXT_PUBLIC_RESEND_API_KEY || process.env.RESEND_API_KEY
+    if (!apiKey) return
+    
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'The Pause <noreply@thepause.in>',
+        to: pat.email,
+        subject: `Your session is confirmed — ${date} at ${time}`,
+        html: `
+          <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; padding: 40px 24px; color: #1a1a1a;">
+            <h1 style="font-size: 28px; font-weight: 600; margin-bottom: 8px;">Your session is confirmed, ${pat.name?.split(' ')[0]}!</h1>
+            <p style="color: #6b7280; font-size: 16px; margin-bottom: 32px;">We're looking forward to meeting you.</p>
+            <div style="background: #e8f4ec; border-radius: 16px; padding: 24px; margin-bottom: 24px;">
+              <p style="font-weight: 600; margin-bottom: 12px;">📅 ${new Date(date).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p style="font-weight: 600; margin-bottom: 12px;">🕐 ${time}</p>
+              <p style="font-weight: 600; margin-bottom: 12px;">💻 Online Session</p>
+            </div>
+            <div style="text-align: center; margin: 32px 0;">
+              <a href="${meetLink}" style="display:inline-block; background:#4a7c59; color:white; padding:16px 32px; border-radius:50px; text-decoration:none; font-weight:600; font-size:16px;">
+                Join Video Session →
+              </a>
+            </div>
+            <p style="color: #6b7280; font-size: 14px; text-align: center;">Click the button above 5 minutes before your session time.</p>
+            <hr style="border: none; border-top: 1px solid #f0ebe3; margin: 32px 0;" />
+            <p style="color: #9ca3af; font-size: 12px;">© 2026 The Pause</p>
+          </div>
+        `,
+      }),
+    })
   }
 
   async function addNote() {
@@ -156,21 +220,33 @@ export default function AdminPatientDetail({ patientId, onBack }: { patientId: s
                       <p className="text-white/40 text-xs">{b.concern} · {b.session_type}</p>
                     </div>
                   </div>
-                  <select
-                    value={b.status}
-                    onChange={(e) => updateBookingStatus(b.id, e.target.value)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium border outline-none transition-colors ${
-                      b.status === 'pending' ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' :
-                      b.status === 'confirmed' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
-                      b.status === 'completed' ? 'bg-green-500/20 text-green-300 border-green-500/30' :
-                      'bg-red-500/20 text-red-300 border-red-500/30'
-                    }`}
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="confirmed">Confirmed</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
-                  </select>
+                  <div className="flex items-center gap-3">
+                    {b.session_type === 'online' && b.status === 'confirmed' && b.meet_link && (
+                      <a
+                        href={b.meet_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-medium hover:bg-blue-500/30 transition-colors"
+                      >
+                        Join Meet
+                      </a>
+                    )}
+                    <select
+                      value={b.status}
+                      onChange={(e) => updateBookingStatus(b.id, e.target.value)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium border outline-none transition-colors ${
+                        b.status === 'pending' ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' :
+                        b.status === 'confirmed' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
+                        b.status === 'completed' ? 'bg-green-500/20 text-green-300 border-green-500/30' :
+                        'bg-red-500/20 text-red-300 border-red-500/30'
+                      }`}
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="completed">Completed</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             ))}

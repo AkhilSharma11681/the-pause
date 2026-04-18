@@ -11,6 +11,7 @@ interface Booking {
   concern: string
   status: string
   reference_id: string
+  meet_link?: string
 }
 
 export default function PatientBookings({ patientId }: { patientId: string }) {
@@ -60,7 +61,7 @@ export default function PatientBookings({ patientId }: { patientId: string }) {
             </div>
             <span className="text-[10px] text-[#9ca3af] font-mono">{b.reference_id}</span>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             <div className="flex items-center gap-2 text-sm text-[#6b7280]">
               <Calendar size={14} className="text-[#4a7c59]" />
               {new Date(b.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
@@ -78,6 +79,20 @@ export default function PatientBookings({ patientId }: { patientId: string }) {
               {b.concern}
             </div>
           </div>
+          {b.session_type === 'online' && b.status === 'confirmed' && b.meet_link && (
+            <div className="pt-4 border-t border-[#f0ebe3]">
+              <a
+                href={b.meet_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-[#4a7c59] text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-[#3d6649] transition-all hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <Video size={16} />
+                Join Video Session
+              </a>
+              <p className="text-xs text-[#9ca3af] mt-2">Join 5 minutes before your session time</p>
+            </div>
+          )}
         </div>
       ))}
     </div>

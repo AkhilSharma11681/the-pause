@@ -2,14 +2,14 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { motion } from 'framer-motion'
-import { Calendar, Upload, LogOut, User } from 'lucide-react'
+import { Calendar, PlusCircle, FileText, LogOut, User } from 'lucide-react'
 import PatientBookings from '@/components/portal/PatientBookings'
-import PatientUpload from '@/components/portal/PatientUpload'
+import SessionSummaries from '@/components/portal/SessionSummaries'
 
-type Tab = 'bookings' | 'upload'
+type Tab = 'sessions' | 'book' | 'summaries'
 
 export default function PortalPage() {
-  const [tab, setTab] = useState<Tab>('bookings')
+  const [tab, setTab] = useState<Tab>('sessions')
   const [user, setUser] = useState<{ email?: string; phone?: string } | null>(null)
   const [patientId, setPatientId] = useState<string | null>(null)
 
@@ -53,12 +53,14 @@ export default function PortalPage() {
   }
 
   const tabs = [
-    { id: 'bookings' as Tab, label: 'My Sessions', icon: Calendar },
-    { id: 'upload' as Tab, label: 'Upload Notes', icon: Upload },
+    { id: 'sessions' as Tab, label: 'My Sessions', icon: Calendar },
+    { id: 'book' as Tab, label: 'Book New Session', icon: PlusCircle },
+    { id: 'summaries' as Tab, label: 'Session Summaries', icon: FileText },
   ]
 
   return (
     <div className="min-h-screen bg-[#faf7f2]">
+      {/* Header */}
       <div className="bg-white border-b border-[#f0ebe3] px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex gap-1">
@@ -81,15 +83,18 @@ export default function PortalPage() {
       <div className="max-w-4xl mx-auto px-6 py-10">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="font-display text-3xl text-[#1a1a1a] mb-1">Your wellness space</h1>
-          <p className="text-[#6b7280] font-light text-sm">View your sessions and share notes with your therapist.</p>
+          <p className="text-[#6b7280] font-light text-sm">Manage your sessions and stay connected with your therapist.</p>
         </motion.div>
 
-        <div className="flex gap-2 mb-8">
+        {/* Tabs */}
+        <div className="flex gap-2 mb-8 overflow-x-auto pb-1">
           {tabs.map((t) => {
             const Icon = t.icon
             return (
               <button key={t.id} onClick={() => setTab(t.id)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all ${tab === t.id ? 'bg-[#4a7c59] text-white' : 'bg-white border border-[#f0ebe3] text-[#6b7280] hover:border-[#4a7c59]'}`}>
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                  tab === t.id ? 'bg-[#4a7c59] text-white' : 'bg-white border border-[#f0ebe3] text-[#6b7280] hover:border-[#4a7c59]'
+                }`}>
                 <Icon size={15} />
                 {t.label}
               </button>
@@ -97,10 +102,27 @@ export default function PortalPage() {
           })}
         </div>
 
+        {/* Content */}
         {patientId ? (
           <motion.div key={tab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-            {tab === 'bookings' && <PatientBookings patientId={patientId} />}
-            {tab === 'upload' && <PatientUpload patientId={patientId} />}
+            {tab === 'sessions' && <PatientBookings patientId={patientId} />}
+            {tab === 'book' && (
+              <div className="bg-white rounded-[2rem] border border-[#f0ebe3] p-10 text-center">
+                <div className="w-16 h-16 rounded-full bg-[#e8f4ec] flex items-center justify-center mx-auto mb-6">
+                  <PlusCircle size={28} className="text-[#4a7c59]" />
+                </div>
+                <h2 className="font-display text-2xl text-[#1a1a1a] mb-3">Book a new session</h2>
+                <p className="text-[#6b7280] font-light text-sm mb-8 max-w-sm mx-auto">
+                  Choose your therapist, pick a date and time, and we&apos;ll confirm within 2 hours.
+                </p>
+                <a href="/#book"
+                  className="inline-flex items-center gap-2 bg-[#4a7c59] text-white px-8 py-4 rounded-full text-sm font-medium hover:bg-[#3d6649] transition-all hover:-translate-y-0.5 hover:shadow-lg">
+                  <PlusCircle size={16} />
+                  Book Now
+                </a>
+              </div>
+            )}
+            {tab === 'summaries' && <SessionSummaries patientId={patientId} />}
           </motion.div>
         ) : (
           <div className="flex justify-center py-20">

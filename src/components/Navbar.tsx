@@ -96,73 +96,58 @@ export default function Navbar() {
               </motion.p>
 
               {/* Links */}
-              <nav className="flex-1 flex flex-col justify-center gap-0">
+              <nav className="flex-1 flex flex-col justify-center gap-1">
                 {links.map((link, i) => (
                   <motion.div
                     key={link.href}
-                    initial={{ opacity: 0, x: -30 }}
+                    initial={{ opacity: 0, x: -24 }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
+                    exit={{ opacity: 0, x: -16 }}
                     transition={{ delay: 0.1 + i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                     onMouseEnter={() => setHovered(i)}
                     onMouseLeave={() => setHovered(null)}
-                    className="relative overflow-hidden"
+                    className="relative overflow-hidden rounded-2xl"
                   >
-                    {/* Hover background */}
                     <motion.div
                       animate={{ scaleX: hovered === i ? 1 : 0 }}
                       initial={{ scaleX: 0 }}
-                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                       style={{ backgroundColor: link.color, originX: 0 }}
                       className="absolute inset-0 rounded-2xl"
                     />
-
                     <a
                       href={link.href}
                       onClick={() => setOpen(false)}
-                      className="relative flex items-center gap-5 px-5 py-4 md:py-5 rounded-2xl group"
+                      className="relative flex items-center gap-4 px-5 py-3.5 rounded-2xl"
                     >
-                      {/* Number */}
                       <motion.span
                         animate={{ color: hovered === i ? '#4a7c59' : '#c4bfb8' }}
-                        className="text-[11px] font-mono w-5 shrink-0 tabular-nums"
+                        className="text-[10px] font-mono w-4 shrink-0 tabular-nums"
                       >
                         {String(i + 1).padStart(2, '0')}
                       </motion.span>
-
-                      {/* Label */}
                       <motion.span
-                        animate={{ x: hovered === i ? 6 : 0, color: hovered === i ? '#4a7c59' : '#1a1a1a' }}
+                        animate={{ x: hovered === i ? 4 : 0, color: hovered === i ? '#4a7c59' : '#1a1a1a' }}
                         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                        className="font-display text-3xl md:text-4xl lg:text-5xl leading-none"
+                        className="font-display text-2xl md:text-3xl leading-none"
                       >
                         {link.label}
                       </motion.span>
-
-                      {/* Tag pill */}
                       <motion.span
                         animate={{ opacity: hovered === i ? 1 : 0, x: hovered === i ? 0 : -8 }}
                         transition={{ duration: 0.25 }}
-                        className="ml-2 text-[10px] uppercase tracking-widest font-bold text-[#4a7c59] bg-[#4a7c59]/10 px-3 py-1 rounded-full"
+                        className="text-[10px] uppercase tracking-widest font-bold text-[#4a7c59] bg-[#4a7c59]/10 px-2.5 py-1 rounded-full"
                       >
                         {link.tag}
                       </motion.span>
-
-                      {/* Arrow */}
                       <motion.span
-                        animate={{ opacity: hovered === i ? 1 : 0, x: hovered === i ? 0 : -12 }}
+                        animate={{ opacity: hovered === i ? 1 : 0, x: hovered === i ? 0 : -10 }}
                         transition={{ duration: 0.3 }}
-                        className="ml-auto text-[#4a7c59] text-2xl font-light"
+                        className="ml-auto text-[#4a7c59] text-lg"
                       >
                         →
                       </motion.span>
                     </a>
-
-                    {/* Divider */}
-                    <motion.div
-                      animate={{ scaleX: hovered === i ? 0 : 1, opacity: hovered === i ? 0 : 1 }}
-                      className="h-px bg-[#e8e3da] mx-5"
-                    />
                   </motion.div>
                 ))}
               </nav>

@@ -47,10 +47,10 @@ export default function Navbar() {
           initial={{ y: -80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className={`w-full max-w-2xl flex items-center justify-between px-5 py-3 rounded-full transition-all duration-500 ${
+          className={`w-full max-w-2xl flex items-center justify-between px-6 py-3.5 rounded-full transition-all duration-500 ${
             scrolled
-              ? 'bg-white/90 backdrop-blur-2xl border border-[#e8e3da] shadow-[0_8px_40px_rgba(0,0,0,0.08)]'
-              : 'bg-white/60 backdrop-blur-xl border border-white/40 shadow-[0_4px_20px_rgba(0,0,0,0.04)]'
+              ? 'bg-white/80 backdrop-blur-3xl border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.8)]'
+              : 'bg-white/40 backdrop-blur-2xl border border-white/50 shadow-[0_4px_24px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.6)]'
           }`}
         >
           <a href="/" className="flex items-center gap-2 group">

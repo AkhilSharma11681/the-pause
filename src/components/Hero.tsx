@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react'
 
 export default function Hero() {
   return (
-    <section className="min-h-screen bg-[#faf7f2] flex flex-col items-center justify-center relative overflow-hidden pt-20 pb-32">
+    <section className="min-h-screen bg-[#faf7f2] flex flex-col items-center justify-center relative overflow-hidden pt-32 pb-32">
       {/* Soft Ambient Background Glows */}
       <motion.div 
         animate={{ 

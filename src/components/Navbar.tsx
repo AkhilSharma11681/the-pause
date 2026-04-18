@@ -23,7 +23,7 @@ export default function Navbar() {
   const router = useRouter()
 
   const scrollProgress = useMotionValue(0)
-  const animatedMaxWidth = useTransform(scrollProgress, [0, 1], ['calc(100vw - 32px)', '672px'])
+  const animatedMaxWidth = useTransform(scrollProgress, [0, 1], ['calc(100vw - 48px)', '680px'])
   const animatedBorderRadius = useTransform(scrollProgress, [0, 1], ['16px', '9999px'])
   const animatedBackground = useTransform(scrollProgress, [0, 1], ['rgba(255,255,255,0.0)', 'rgba(255,255,255,0.82)'])
   const animatedBorder = useTransform(scrollProgress, [0, 1], ['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.6)'])
@@ -57,7 +57,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-[100] flex justify-center px-4 pt-4">
+      <div className="fixed top-0 left-0 right-0 z-[100] flex justify-center pt-4">
         <motion.nav
           initial={{ y: -80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -73,7 +73,7 @@ export default function Navbar() {
             borderStyle: 'solid',
             borderColor: animatedBorder,
           }}
-          className="w-full flex items-center justify-between px-6 py-3.5"
+          className="w-full mx-4 flex items-center justify-between px-6 py-3.5"
         >
           <a href="/" className="flex items-center gap-2 group">
             <div className="flex gap-[3px]">

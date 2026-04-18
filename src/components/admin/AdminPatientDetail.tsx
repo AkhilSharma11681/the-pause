@@ -49,6 +49,10 @@ export default function AdminPatientDetail({ patientId, onBack }: { patientId: s
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    loadPatientData()
+  }, [patientId])
+
+  async function loadPatientData() {
     Promise.all([
       supabase.from('patients').select('*').eq('id', patientId).single(),
       supabase.from('bookings').select('*').eq('patient_id', patientId).order('date', { ascending: false }),
@@ -61,7 +65,18 @@ export default function AdminPatientDetail({ patientId, onBack }: { patientId: s
       setReports(r.data || [])
       setLoading(false)
     })
-  }, [patientId])
+  }
+
+  async function updateBookingStatus(bookingId: string, newStatus: string) {
+    const { error } = await supabase
+      .from('bookings')
+      .update({ status: newStatus })
+      .eq('id', bookingId)
+    
+    if (!error) {
+      loadPatientData() // Refresh data
+    }
+  }
 
   async function addNote() {
     if (!newNote.trim()) return
@@ -141,7 +156,21 @@ export default function AdminPatientDetail({ patientId, onBack }: { patientId: s
                       <p className="text-white/40 text-xs">{b.concern} · {b.session_type}</p>
                     </div>
                   </div>
-                  <span className={`text-xs px-3 py-1 rounded-full capitalize ${b.status === 'completed' ? 'bg-[#4a7c59]/20 text-[#4a7c59]' : 'bg-white/5 text-white/40'}`}>{b.status}</span>
+                  <select
+                    value={b.status}
+                    onChange={(e) => updateBookingStatus(b.id, e.target.value)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium border outline-none transition-colors ${
+                      b.status === 'pending' ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' :
+                      b.status === 'confirmed' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
+                      b.status === 'completed' ? 'bg-green-500/20 text-green-300 border-green-500/30' :
+                      'bg-red-500/20 text-red-300 border-red-500/30'
+                    }`}
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
                 </div>
               </div>
             ))}

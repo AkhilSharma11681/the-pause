@@ -27,6 +27,10 @@ export default function AdminDashboard() {
       if (!data.user) { window.location.href = '/admin/login'; return }
     })
 
+    loadData()
+  }, [])
+
+  async function loadData() {
     const today = new Date().toISOString().split('T')[0]
 
     Promise.all([
@@ -37,7 +41,18 @@ export default function AdminDashboard() {
       setTodayBookings(bRes.data || [])
       setLoading(false)
     })
-  }, [])
+  }
+
+  async function updateBookingStatus(bookingId: string, newStatus: string) {
+    const { error } = await supabase
+      .from('bookings')
+      .update({ status: newStatus })
+      .eq('id', bookingId)
+    
+    if (!error) {
+      loadData() // Refresh data
+    }
+  }
 
   async function signOut() {
     await supabase.auth.signOut()
@@ -113,9 +128,26 @@ export default function AdminDashboard() {
                       <p className="text-white/40 text-xs">{b.patients?.phone} · {b.concern}</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-[#4a7c59] font-bold">{b.time}</p>
-                    <p className="text-white/30 text-xs capitalize">{b.session_type}</p>
+                  <div className="flex items-center gap-4">
+                    <div className="text-right">
+                      <p className="text-[#4a7c59] font-bold">{b.time}</p>
+                      <p className="text-white/30 text-xs capitalize">{b.session_type}</p>
+                    </div>
+                    <select
+                      value={b.status}
+                      onChange={(e) => updateBookingStatus(b.id, e.target.value)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium border outline-none transition-colors ${
+                        b.status === 'pending' ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' :
+                        b.status === 'confirmed' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
+                        b.status === 'completed' ? 'bg-green-500/20 text-green-300 border-green-500/30' :
+                        'bg-red-500/20 text-red-300 border-red-500/30'
+                      }`}
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="completed">Completed</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
                   </div>
                 </div>
               ))

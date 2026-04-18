@@ -39,9 +39,9 @@ export default function Navbar() {
   }, [open])
 
   // Animated style values
-  const navMaxWidth   = useTransform(progress, [0, 1], ['calc(100vw - 40px)', '660px'])
+  const navMaxWidth   = useTransform(progress, [0, 1], ['calc(100vw - 40px)', '780px'])
   const navPaddingY   = useTransform(progress, [0, 1], ['18px', '10px'])
-  const navPaddingX   = useTransform(progress, [0, 1], ['40px', '20px'])
+  const navPaddingX   = useTransform(progress, [0, 1], ['40px', '28px'])
   const navRadius     = useTransform(progress, [0, 1], ['20px', '9999px'])
   const navBg         = useTransform(progress, [0, 1], ['rgba(250,247,242,0.0)', 'rgba(250,247,242,0.85)'])
   const navBorder     = useTransform(progress, [0, 1], ['rgba(255,255,255,0.0)', 'rgba(255,255,255,0.5)'])
@@ -90,7 +90,7 @@ export default function Navbar() {
           <motion.a
             href="/"
             style={{ scale: logoScale }}
-            className="flex items-center gap-2.5 group origin-left"
+            className="flex items-center gap-2.5 group origin-left min-w-0 shrink-0"
           >
             <div className="flex gap-[3px] shrink-0">
               <div className="w-[5px] h-[22px] bg-[#4a7c59] rounded-full transition-transform duration-300 group-hover:scale-y-110" />
@@ -109,7 +109,7 @@ export default function Navbar() {
               whileHover={{ y: -2, boxShadow: '0 8px 24px rgba(74,124,89,0.35)' }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-              className="bg-[#4a7c59] text-white px-6 py-2.5 rounded-full text-[13px] font-semibold tracking-wide hidden sm:flex items-center gap-1.5 shadow-[0_4px_16px_rgba(74,124,89,0.25)] whitespace-nowrap"
+              className="bg-[#4a7c59] text-white px-6 py-2.5 rounded-full text-[13px] font-semibold tracking-wide hidden md:flex items-center gap-1.5 shadow-[0_4px_16px_rgba(74,124,89,0.25)] whitespace-nowrap"
             >
               Book Now
             </motion.a>

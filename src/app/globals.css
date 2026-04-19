@@ -14,3 +14,14 @@ body { background: #faf7f2; font-family: var(--font-dm-sans), 'DM Sans', sans-se
 @media (max-width: 768px) {
   section { padding: 64px 20px !important; }
 }
+
+/* Section highlight pulse — triggered after anchor scroll */
+@keyframes sectionPulse {
+  0%   { background-color: transparent; }
+  25%  { background-color: rgba(74, 124, 89, 0.08); }
+  100% { background-color: transparent; }
+}
+.section-highlight {
+  animation: sectionPulse 0.9s ease-out forwards;
+  border-radius: 1.5rem;
+}

@@ -88,15 +88,19 @@ function DropdownPanel({
       {items.map((child) => {
         const isActive = currentPath === getPathPart(child.href)
         return (
-          <button
+          <motion.button
             key={child.href}
             onClick={() => onNavigate(child.href)}
-            className={`w-full text-left px-5 py-2.5 text-[13px] hover:text-[#4a7c59] hover:bg-[#f5f2ed] transition-colors duration-150 font-medium ${
-              isActive ? 'text-[#4a7c59] bg-[#f5f2ed]' : 'text-[#1a1a1a]/80'
+            whileTap={{ scale: 0.97, backgroundColor: '#4a7c59', color: '#ffffff' }}
+            transition={{ duration: 0.15 }}
+            className={`w-full text-left px-5 py-2.5 text-[13px] transition-colors duration-150 font-medium rounded-lg ${
+              isActive
+                ? 'text-[#4a7c59] bg-[#f5f2ed] border-l-[3px] border-[#4a7c59] pl-[17px]'
+                : 'text-[#1a1a1a]/80 hover:text-[#4a7c59] hover:bg-[#f5f2ed]'
             }`}
           >
             {child.label}
-          </button>
+          </motion.button>
         )
       })}
     </motion.div>
@@ -240,11 +244,14 @@ export default function Navbar() {
                       onMouseEnter={() => handleDropdownEnter(item.label)}
                       onMouseLeave={handleDropdownLeave}
                     >
-                      <button className={`flex items-center px-3 py-2 text-[13px] transition-colors duration-200 font-medium rounded-lg hover:bg-[#f5f2ed] ${
+                      <button className={`relative flex items-center px-3 py-2 text-[13px] transition-colors duration-200 font-medium rounded-lg hover:bg-[#f5f2ed] ${
                         active ? 'text-[#4a7c59]' : 'text-[#1a1a1a]/70 hover:text-[#4a7c59]'
                       }`}>
                         {item.label}
                         <Chevron open={activeDropdown === item.label} />
+                        {active && (
+                          <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#4a7c59] rounded-full" />
+                        )}
                       </button>
                       <AnimatePresence>
                         {activeDropdown === item.label && (
@@ -260,11 +267,14 @@ export default function Navbar() {
                     <button
                       key={item.label}
                       onClick={() => handleNav(item.href)}
-                      className={`px-3 py-2 text-[13px] transition-colors duration-200 font-medium rounded-lg hover:bg-[#f5f2ed] ${
+                      className={`relative px-3 py-2 text-[13px] transition-colors duration-200 font-medium rounded-lg hover:bg-[#f5f2ed] ${
                         active ? 'text-[#4a7c59]' : 'text-[#1a1a1a]/70 hover:text-[#4a7c59]'
                       }`}
                     >
                       {item.label}
+                      {active && (
+                        <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#4a7c59] rounded-full" />
+                      )}
                     </button>
                   )
                 })}
@@ -347,17 +357,19 @@ export default function Navbar() {
                             className="overflow-hidden"
                           >
                             {item.children.map((child) => (
-                              <button
+                              <motion.button
                                 key={child.href}
                                 onClick={() => handleNav(child.href)}
+                                whileTap={{ scale: 0.97, backgroundColor: 'rgba(74,124,89,0.08)' }}
+                                transition={{ duration: 0.15 }}
                                 className={`w-full text-left pl-4 py-3 text-lg transition-colors border-b border-[#e8e3da]/50 ${
                                   pathname === getPathPart(child.href)
-                                    ? 'text-[#4a7c59] font-medium'
+                                    ? 'text-[#4a7c59] font-medium border-l-[3px] border-l-[#4a7c59] pl-[13px]'
                                     : 'text-[#1a1a1a]/70 hover:text-[#4a7c59]'
                                 }`}
                               >
                                 {child.label}
-                              </button>
+                              </motion.button>
                             ))}
                           </motion.div>
                         )}

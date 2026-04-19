@@ -8,14 +8,22 @@ import CommunityPath from './CommunityPath'
 const COMMUNITY_IDS = new Set(['workshops', 'communities'])
 const THERAPY_IDS = new Set(['individual', 'couples', 'teen', 'pricing'])
 
+function pulseSection(id: string) {
+  const el = document.getElementById(id)
+  if (!el) return
+  el.classList.remove('section-highlight')
+  // Force reflow so re-adding the class restarts the animation
+  void el.offsetWidth
+  el.classList.add('section-highlight')
+  setTimeout(() => el.classList.remove('section-highlight'), 900)
+}
+
 export default function ServicesPage() {
   const searchParams = useSearchParams()
   const [active, setActive] = useState<'therapy' | 'community'>('therapy')
-  // Track the pending scroll target — set before tab switch, consumed after render
   const pendingScroll = useRef<string | null>(null)
 
   useEffect(() => {
-    // Determine initial tab + pending scroll from URL hash or sessionStorage
     const hash =
       window.location.hash.slice(1) ||
       sessionStorage.getItem('scrollTo') ||
@@ -34,23 +42,31 @@ export default function ServicesPage() {
     }
   }, [searchParams])
 
-  // After active tab changes, scroll to the pending target once the section is in the DOM
+  // After tab switches and DOM re-renders, scroll + pulse the target section
   useEffect(() => {
     const id = pendingScroll.current
     if (!id) return
     pendingScroll.current = null
 
-    // Wait for AnimatePresence + DOM paint
     const timer = setTimeout(() => {
       const el = document.getElementById(id)
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        // Pulse after scroll settles
+        setTimeout(() => pulseSection(id), 500)
+      }
     }, 350)
 
     return () => clearTimeout(timer)
   }, [active])
 
   return (
-    <>
+    // Page fade-in entry animation
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+    >
       {/* ── Hero / Path Selector ── */}
       <section className="relative bg-[#faf7f2] pt-36 pb-0 px-6 overflow-hidden">
 
@@ -107,8 +123,9 @@ export default function ServicesPage() {
             className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-0"
           >
             {/* Path A */}
-            <button
+            <motion.button
               onClick={() => setActive('therapy')}
+              whileTap={{ scale: 0.98 }}
               className={`group relative rounded-[2.5rem] p-8 text-left transition-all duration-500 border-2 overflow-hidden ${
                 active === 'therapy'
                   ? 'border-[#4a7c59] bg-[#4a7c59] text-white shadow-[0_20px_60px_rgba(74,124,89,0.3)]'
@@ -139,11 +156,12 @@ export default function ServicesPage() {
                   className="absolute bottom-4 right-4 w-2 h-2 rounded-full bg-white"
                 />
               )}
-            </button>
+            </motion.button>
 
             {/* Path B */}
-            <button
+            <motion.button
               onClick={() => setActive('community')}
+              whileTap={{ scale: 0.98 }}
               className={`group relative rounded-[2.5rem] p-8 text-left transition-all duration-500 border-2 overflow-hidden ${
                 active === 'community'
                   ? 'border-[#d4843a] bg-[#d4843a] text-white shadow-[0_20px_60px_rgba(212,132,58,0.3)]'
@@ -177,7 +195,7 @@ export default function ServicesPage() {
                   className="absolute bottom-4 right-4 w-2 h-2 rounded-full bg-white"
                 />
               )}
-            </button>
+            </motion.button>
           </motion.div>
         </div>
 
@@ -196,7 +214,7 @@ export default function ServicesPage() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
             <TherapyPath />
           </motion.div>
@@ -206,12 +224,12 @@ export default function ServicesPage() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
             <CommunityPath />
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </motion.div>
   )
 }

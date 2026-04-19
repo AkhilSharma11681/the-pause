@@ -52,7 +52,7 @@ export default function Testimonials() {
   const [hovered, setHovered] = useState<number | null>(null)
 
   return (
-    <section id="testimonials" className="py-32 px-6 bg-[#faf7f2] relative overflow-hidden">
+    <section id="testimonials" className="py-32 px-6 bg-[#faf7f2] relative overflow-hidden" style={{ scrollMarginTop: '80px' }}>
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-24">
           <motion.div

@@ -157,18 +157,18 @@ export default function Navbar() {
     const normalizedTarget = targetPath === '' ? '/' : targetPath
     const normalizedCurrent = pathname === '' ? '/' : pathname
 
-    if (normalizedTarget === normalizedCurrent || normalizedTarget === '') {
-      // Same page — just scroll
+    if (normalizedTarget === normalizedCurrent) {
+      // Same page — scroll directly, no navigation needed
       if (hash) {
         setTimeout(() => scrollToId(hash), 50)
       }
     } else {
-      // Different page — navigate, then scroll after load
+      // Different page — store hash, then navigate
+      // The destination page reads sessionStorage on mount and scrolls
       if (hash) {
-        // Store the pending scroll target so the destination page can pick it up
         sessionStorage.setItem('scrollTo', hash)
       }
-      router.push(href)
+      router.push(normalizedTarget + (hash ? `#${hash}` : ''))
     }
   }
 

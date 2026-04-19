@@ -2,8 +2,10 @@
 import { motion } from 'framer-motion'
 import { Brain, Heart, Baby, Users, ClipboardList, ArrowRight, MessageCircle, ShieldCheck, Zap } from 'lucide-react'
 
+// ── Plan data with explicit section ids ────────────────────────────────────
 const PLANS = [
   {
+    id: 'individual',
     icon: Brain,
     tag: 'Individual Session',
     name: 'Clinical Psychologist',
@@ -15,6 +17,7 @@ const PLANS = [
     popular: false,
   },
   {
+    id: 'counselling',
     icon: Heart,
     tag: 'Individual Session',
     name: 'Counselling Psychologist',
@@ -26,9 +29,10 @@ const PLANS = [
     popular: true,
   },
   {
+    id: 'teen',
     icon: Baby,
-    tag: 'Individual Session',
-    name: 'Child & Adolescent',
+    tag: 'Teen & Child Care',
+    name: 'Child & Adolescent Psychologist',
     price: '₹1,500',
     duration: '50 min',
     desc: 'Specialised care for children and teens navigating school stress, identity, and emotional growth.',
@@ -37,8 +41,9 @@ const PLANS = [
     popular: false,
   },
   {
+    id: 'couples',
     icon: Users,
-    tag: 'Couple & Family',
+    tag: 'Couples & Family',
     name: 'Couples & Family Therapy',
     price: '₹3,500',
     duration: '75 min',
@@ -48,6 +53,7 @@ const PLANS = [
     popular: false,
   },
   {
+    id: 'assessment',
     icon: ClipboardList,
     tag: 'Assessment',
     name: 'Psychological Assessment',
@@ -62,102 +68,108 @@ const PLANS = [
 
 const TRUST = [
   { icon: ShieldCheck, label: '100% confidential' },
-  { icon: Zap, label: 'Matched within 2 hours' },
-  { icon: ArrowRight, label: 'No waitlists' },
+  { icon: Zap, label: 'No waitlists' },
+  { icon: ArrowRight, label: 'Matched at your pace' },
 ]
 
 export default function TherapyPath() {
   return (
-    <section className="relative py-20 px-6 bg-[#faf7f2] overflow-hidden">
-      {/* Named scroll anchors — all therapy service types land here */}
-      <div id="individual" className="absolute top-0" />
-      <div id="couples"    className="absolute top-0" />
-      <div id="teen"       className="absolute top-0" />
-      <div id="pricing"    className="absolute top-0" />
+    <div>
+      {/* ── Book CTA banner ── */}
+      <section
+        id="individual"
+        className="py-20 px-6 bg-[#faf7f2] relative overflow-hidden"
+        style={{ scrollMarginTop: '80px' }}
+      >
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(74,124,89,0.05)_0%,transparent_60%)] pointer-events-none" />
+        <div className="max-w-6xl mx-auto relative z-10">
 
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(74,124,89,0.05)_0%,transparent_60%)] pointer-events-none" />
-
-      <div className="max-w-6xl mx-auto relative z-10">
-
-        {/* Book CTA — top */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col sm:flex-row items-center justify-between gap-6 bg-[#4a7c59] rounded-[2.5rem] px-10 py-8 mb-16 shadow-[0_20px_60px_rgba(74,124,89,0.25)]"
-        >
-          <div>
-            <p className="text-white/70 text-[11px] uppercase tracking-[0.25em] font-bold mb-1">Ready to start?</p>
-            <h3 className="font-display text-2xl md:text-3xl text-white leading-tight">
-              Book your first session today.
-            </h3>
-            <p className="text-white/70 text-sm font-light mt-1">First session from ₹1,500 · No commitment required</p>
-          </div>
-          <a
-            href="/#book"
-            className="shrink-0 inline-flex items-center gap-2 bg-white text-[#4a7c59] px-8 py-4 rounded-full text-[15px] font-bold hover:bg-[#f0ebe3] transition-colors shadow-lg group"
-          >
-            Book a Session
-            <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
-          </a>
-        </motion.div>
-
-        {/* Trust bar */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-6 mb-16"
-        >
-          {TRUST.map((t, i) => (
-            <div key={i} className="flex items-center gap-2 text-[#6b7280] text-sm">
-              <t.icon size={15} className="text-[#4a7c59]" />
-              <span>{t.label}</span>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Section label */}
-        <div className="text-center mb-12">
+          {/* Book CTA */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#4a7c59]/5 border border-[#4a7c59]/10 mb-4"
-          >
-            <div className="w-1.5 h-1.5 rounded-full bg-[#4a7c59]" />
-            <span className="text-[#4a7c59] text-[10px] tracking-[0.2em] uppercase font-medium">Session Types & Pricing</span>
-          </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            className="font-display text-4xl md:text-5xl text-[#1a1a1a] tracking-tight"
+            transition={{ duration: 0.6 }}
+            className="flex flex-col sm:flex-row items-center justify-between gap-6 bg-[#4a7c59] rounded-[2.5rem] px-10 py-8 mb-16 shadow-[0_20px_60px_rgba(74,124,89,0.25)]"
           >
-            Transparent, <span className="italic text-[#4a7c59]">honest</span> pricing
-          </motion.h2>
-          <p className="text-[#6b7280] font-light mt-3 text-lg">Pay per session. No subscriptions, no hidden fees.</p>
-        </div>
+            <div>
+              <p className="text-white/70 text-[11px] uppercase tracking-[0.25em] font-bold mb-1">Ready to start?</p>
+              <h3 className="font-display text-2xl md:text-3xl text-white leading-tight">
+                Book your first session today.
+              </h3>
+              <p className="text-white/70 text-sm font-light mt-1">Sessions from ₹1,500 · No commitment required</p>
+            </div>
+            <a
+              href="/#book"
+              className="shrink-0 inline-flex items-center gap-2 bg-white text-[#4a7c59] px-8 py-4 rounded-full text-[15px] font-bold hover:bg-[#f0ebe3] transition-colors shadow-lg group"
+            >
+              Book a Session
+              <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+            </a>
+          </motion.div>
 
-        {/* Top 3 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          {PLANS.slice(0, 3).map((plan, i) => (
-            <PlanCard key={i} plan={plan} index={i} />
-          ))}
-        </div>
+          {/* Trust bar */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="flex flex-wrap justify-center gap-6 mb-16"
+          >
+            {TRUST.map((t, i) => (
+              <div key={i} className="flex items-center gap-2 text-[#6b7280] text-sm">
+                <t.icon size={15} className="text-[#4a7c59]" />
+                <span>{t.label}</span>
+              </div>
+            ))}
+          </motion.div>
 
-        {/* Bottom 2 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:max-w-[66%] mx-auto">
-          {PLANS.slice(3).map((plan, i) => (
-            <PlanCard key={i + 3} plan={plan} index={i + 3} />
-          ))}
-        </div>
+          {/* Section heading */}
+          <div className="text-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#4a7c59]/5 border border-[#4a7c59]/10 mb-4"
+            >
+              <div className="w-1.5 h-1.5 rounded-full bg-[#4a7c59]" />
+              <span className="text-[#4a7c59] text-[10px] tracking-[0.2em] uppercase font-medium">Session Types & Pricing</span>
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="font-display text-4xl md:text-5xl text-[#1a1a1a] tracking-tight"
+            >
+              Transparent, <span className="italic text-[#4a7c59]">honest</span> pricing
+            </motion.h2>
+            <p className="text-[#6b7280] font-light mt-3 text-lg">Pay per session. No subscriptions, no hidden fees.</p>
+          </div>
 
-        <p className="text-center text-sm text-[#9ca3af] font-light mt-12">
-          All sessions are conducted by verified, licensed professionals · 100% confidential
-        </p>
-      </div>
-    </section>
+          {/* Cards — each wrapped in its own id'd anchor */}
+          <div className="space-y-6">
+            {/* Row 1 — first 3 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {PLANS.slice(0, 3).map((plan, i) => (
+                <div key={plan.id} id={plan.id} style={{ scrollMarginTop: '80px' }}>
+                  <PlanCard plan={plan} index={i} />
+                </div>
+              ))}
+            </div>
+            {/* Row 2 — last 2 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:max-w-[66%] mx-auto">
+              {PLANS.slice(3).map((plan, i) => (
+                <div key={plan.id} id={plan.id} style={{ scrollMarginTop: '80px' }}>
+                  <PlanCard plan={plan} index={i + 3} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <p className="text-center text-sm text-[#9ca3af] font-light mt-12">
+            All sessions are conducted by verified, licensed professionals · 100% confidential
+          </p>
+        </div>
+      </section>
+    </div>
   )
 }
 
@@ -168,7 +180,7 @@ function PlanCard({ plan, index }: { plan: typeof PLANS[0]; index: number }) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.07 }}
-      className={`group relative bg-white rounded-[2.5rem] p-8 flex flex-col gap-5 border transition-all duration-500 hover:shadow-[0_20px_50px_rgba(74,124,89,0.08)] ${
+      className={`group relative bg-white rounded-[2.5rem] p-8 flex flex-col gap-5 border transition-all duration-500 hover:shadow-[0_20px_50px_rgba(74,124,89,0.08)] h-full ${
         plan.popular
           ? 'border-[#4a7c59]/40 shadow-[0_8px_30px_rgba(74,124,89,0.1)]'
           : 'border-[#f0ebe3] hover:border-[#4a7c59]/30'
@@ -179,7 +191,6 @@ function PlanCard({ plan, index }: { plan: typeof PLANS[0]; index: number }) {
           Most Popular
         </div>
       )}
-
       <div className="flex items-start justify-between">
         <div className="w-12 h-12 rounded-2xl bg-[#e8f4ec] flex items-center justify-center shrink-0">
           <Icon size={22} className="text-[#4a7c59]" />
@@ -188,7 +199,6 @@ function PlanCard({ plan, index }: { plan: typeof PLANS[0]; index: number }) {
           {plan.duration}
         </span>
       </div>
-
       <div className="flex-1">
         <p className="text-[10px] uppercase tracking-[0.18em] font-medium text-[#4a7c59]/70 mb-1">{plan.tag}</p>
         <h3 className="font-display text-xl text-[#1a1a1a] leading-snug mb-2">{plan.name}</h3>
@@ -202,7 +212,6 @@ function PlanCard({ plan, index }: { plan: typeof PLANS[0]; index: number }) {
           ))}
         </ul>
       </div>
-
       <div>
         {plan.price ? (
           <div className="flex items-baseline gap-1 mb-4">
@@ -212,7 +221,6 @@ function PlanCard({ plan, index }: { plan: typeof PLANS[0]; index: number }) {
         ) : (
           <p className="text-lg font-semibold text-[#4a7c59] mb-4">Custom Pricing</p>
         )}
-
         {plan.whatsapp ? (
           <a
             href="https://wa.me/919560333537"

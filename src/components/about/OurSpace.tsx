@@ -30,7 +30,7 @@ const photos = [
 
 export default function OurSpace() {
   return (
-    <section id="our-space" className="py-32 px-6 bg-white relative overflow-hidden">
+    <section id="our-space" className="py-32 px-6 bg-white relative overflow-hidden" style={{ scrollMarginTop: '80px' }}>
 
       {/* Subtle dot pattern */}
       <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{

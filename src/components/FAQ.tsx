@@ -33,7 +33,7 @@ export default function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-24 px-6 bg-[#f5f2ec]">
+    <section id="faq" className="py-24 px-6 bg-[#f5f2ec]" style={{ scrollMarginTop: '80px' }}>
       <div className="max-w-2xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

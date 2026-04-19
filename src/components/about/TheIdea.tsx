@@ -26,7 +26,7 @@ const pillars = [
 
 export default function TheIdea() {
   return (
-    <section id="about" className="py-32 px-6 bg-[#f5f0e8] relative overflow-hidden">
+    <section id="idea" className="py-32 px-6 bg-[#f5f0e8] relative overflow-hidden">
 
       {/* Decorative orbs */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#4a7c59]/5 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/3 pointer-events-none" />

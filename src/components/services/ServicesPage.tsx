@@ -4,13 +4,28 @@ import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import TherapyPath from './TherapyPath'
 import CommunityPath from './CommunityPath'
+import { useScrollOnMount } from '@/lib/useScrollOnMount'
+
+const COMMUNITY_IDS = ['workshops', 'communities']
 
 export default function ServicesPage() {
   const searchParams = useSearchParams()
   const [active, setActive] = useState<'therapy' | 'community'>('therapy')
 
+  // Run the cross-page scroll hook
+  useScrollOnMount()
+
   useEffect(() => {
-    if (searchParams.get('path') === 'community') setActive('community')
+    // Check query param
+    if (searchParams.get('path') === 'community') {
+      setActive('community')
+      return
+    }
+    // Check hash in URL (e.g. /services#workshops)
+    const hash = window.location.hash.slice(1)
+    if (hash && COMMUNITY_IDS.includes(hash)) {
+      setActive('community')
+    }
   }, [searchParams])
 
   return (

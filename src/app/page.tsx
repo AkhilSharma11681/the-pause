@@ -17,10 +17,12 @@ import CTA from '@/components/CTA'
 import Footer from '@/components/Footer'
 import WhatsApp from '@/components/WhatsApp'
 import CrisisBanner from '@/components/CrisisBanner'
+import ScrollOnMount from '@/components/ScrollOnMount'
 
 export default function Home() {
   return (
     <main className="pb-14 md:pb-0">
+      <ScrollOnMount />
       <Navbar />
       <Hero />
       <TrustBar />

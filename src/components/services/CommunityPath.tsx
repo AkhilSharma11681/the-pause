@@ -123,7 +123,7 @@ export default function CommunityPath() {
       <div className="max-w-6xl mx-auto relative z-10 space-y-24">
 
         {/* ── Upcoming Workshops ── */}
-        <div>
+        <div id="workshops">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
             <div>
               <motion.div
@@ -248,7 +248,7 @@ export default function CommunityPath() {
         </div>
 
         {/* ── Community / Group Programs ── */}
-        <div>
+        <div id="communities">
           <div className="mb-12">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}

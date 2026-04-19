@@ -7,6 +7,7 @@ import AboutTeam from '@/components/about/AboutTeam'
 import AboutHowItWorks from '@/components/about/AboutHowItWorks'
 import WhatsApp from '@/components/WhatsApp'
 import CrisisBanner from '@/components/CrisisBanner'
+import ScrollOnMount from '@/components/ScrollOnMount'
 
 export const metadata = {
   title: 'About Us — The Pause',
@@ -16,6 +17,7 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main className="pb-14 md:pb-0">
+      <ScrollOnMount />
       <Navbar />
       <AboutHero />
       <TheIdea />

@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+import Link from 'next/link'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type NavChild = { label: string; href: string }
@@ -9,15 +10,15 @@ type NavItem =
   | { kind: 'link';     label: string; href: string }
   | { kind: 'dropdown'; label: string; children: NavChild[] }
 
-// ── Nav config ─────────────────────────────────────────────────────────────
+// ── Nav config — all hrefs are absolute paths ──────────────────────────────
 const NAV_ITEMS: NavItem[] = [
   {
     kind: 'dropdown',
     label: 'About Us',
     children: [
-      { label: 'Idea Behind The Pause', href: '/about#about' },
+      { label: 'Idea Behind The Pause', href: '/about#idea' },
       { label: 'Our Space',             href: '/about#our-space' },
-      { label: 'Meet the Team',         href: '/about#therapists' },
+      { label: 'Meet the Team',         href: '/about#team' },
       { label: 'How It Works',          href: '/about#how-it-works' },
     ],
   },
@@ -25,20 +26,34 @@ const NAV_ITEMS: NavItem[] = [
     kind: 'dropdown',
     label: 'Services',
     children: [
-      { label: 'Individual Therapy', href: '/services' },
-      { label: 'Couples & Family',   href: '/services' },
-      { label: 'Teen & Child Care',  href: '/services' },
-      { label: 'Workshops',          href: '/services?path=community' },
-      { label: 'Communities',        href: '/services?path=community' },
+      { label: 'Individual Therapy', href: '/services#individual' },
+      { label: 'Couples & Family',   href: '/services#couples' },
+      { label: 'Teen & Child Care',  href: '/services#teen' },
+      { label: 'Workshops',          href: '/services#workshops' },
+      { label: 'Communities',        href: '/services#communities' },
     ],
   },
-  { kind: 'link', label: 'Pricing',         href: '#pricing' },
-  { kind: 'link', label: 'Upcoming Events', href: '#events' },
-  { kind: 'link', label: 'FAQ',             href: '#faq' },
-  { kind: 'link', label: 'Client Stories',  href: '#testimonials' },
+  { kind: 'link', label: 'Pricing',         href: '/#pricing' },
+  { kind: 'link', label: 'Upcoming Events', href: '/#events' },
+  { kind: 'link', label: 'FAQ',             href: '/#faq' },
+  { kind: 'link', label: 'Client Stories',  href: '/#testimonials' },
 ]
 
-// ── Chevron icon ───────────────────────────────────────────────────────────
+// ── Helpers ────────────────────────────────────────────────────────────────
+function getPathPart(href: string) {
+  // '/about#idea' → '/about'   |  '/#pricing' → '/'  |  '/services' → '/services'
+  return href.split('#')[0] || '/'
+}
+function getHashPart(href: string) {
+  const idx = href.indexOf('#')
+  return idx !== -1 ? href.slice(idx + 1) : ''
+}
+function scrollToId(id: string) {
+  const el = document.getElementById(id)
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+// ── Chevron ────────────────────────────────────────────────────────────────
 function Chevron({ open }: { open: boolean }) {
   return (
     <motion.svg
@@ -53,7 +68,15 @@ function Chevron({ open }: { open: boolean }) {
 }
 
 // ── Desktop dropdown panel ─────────────────────────────────────────────────
-function DropdownPanel({ children, onNavigate }: { children: NavChild[]; onNavigate: (href: string) => void }) {
+function DropdownPanel({
+  items,
+  onNavigate,
+  currentPath,
+}: {
+  items: NavChild[]
+  onNavigate: (href: string) => void
+  currentPath: string
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: -8 }}
@@ -62,15 +85,20 @@ function DropdownPanel({ children, onNavigate }: { children: NavChild[]; onNavig
       transition={{ duration: 0.18, ease: 'easeOut' }}
       className="absolute top-full left-1/2 -translate-x-1/2 mt-2 min-w-[220px] bg-white rounded-2xl shadow-xl border border-[#e8e3da] py-2 z-50"
     >
-      {children.map((child) => (
-        <button
-          key={child.href}
-          onClick={() => onNavigate(child.href)}
-          className="w-full text-left px-5 py-2.5 text-[13px] text-[#1a1a1a]/80 hover:text-[#4a7c59] hover:bg-[#f5f2ed] transition-colors duration-150 font-medium"
-        >
-          {child.label}
-        </button>
-      ))}
+      {items.map((child) => {
+        const isActive = currentPath === getPathPart(child.href)
+        return (
+          <button
+            key={child.href}
+            onClick={() => onNavigate(child.href)}
+            className={`w-full text-left px-5 py-2.5 text-[13px] hover:text-[#4a7c59] hover:bg-[#f5f2ed] transition-colors duration-150 font-medium ${
+              isActive ? 'text-[#4a7c59] bg-[#f5f2ed]' : 'text-[#1a1a1a]/80'
+            }`}
+          >
+            {child.label}
+          </button>
+        )
+      })}
     </motion.div>
   )
 }
@@ -84,6 +112,7 @@ export default function Navbar() {
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const navRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
+  const pathname = usePathname()
 
   // Scroll detection
   useEffect(() => {
@@ -113,19 +142,29 @@ export default function Navbar() {
   // Cleanup timer on unmount
   useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current) }, [])
 
+  // Core navigation handler — works from any page
   function handleNav(href: string) {
     setOpen(false)
     setActiveDropdown(null)
     setMobileOpenSection(null)
-    if (href.startsWith('#')) {
-      setTimeout(() => {
-        document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
-      }, 300)
-    } else if (href.includes('#')) {
-      // e.g. /about#our-space — navigate to page then let browser handle anchor
-      setTimeout(() => router.push(href), 300)
+
+    const targetPath = getPathPart(href)
+    const hash = getHashPart(href)
+    const normalizedTarget = targetPath === '' ? '/' : targetPath
+    const normalizedCurrent = pathname === '' ? '/' : pathname
+
+    if (normalizedTarget === normalizedCurrent || normalizedTarget === '') {
+      // Same page — just scroll
+      if (hash) {
+        setTimeout(() => scrollToId(hash), 50)
+      }
     } else {
-      setTimeout(() => router.push(href), 300)
+      // Different page — navigate, then scroll after load
+      if (hash) {
+        // Store the pending scroll target so the destination page can pick it up
+        sessionStorage.setItem('scrollTo', hash)
+      }
+      router.push(href)
     }
   }
 
@@ -140,6 +179,14 @@ export default function Navbar() {
 
   function toggleMobileSection(label: string) {
     setMobileOpenSection((prev) => (prev === label ? null : label))
+  }
+
+  // Active state helpers
+  function isTopLevelActive(item: NavItem) {
+    if (item.kind === 'dropdown') {
+      return item.children.some((c) => getPathPart(c.href) === pathname)
+    }
+    return getPathPart(item.href) === pathname
   }
 
   return (
@@ -163,72 +210,83 @@ export default function Navbar() {
             <div className="flex items-center justify-between h-20">
 
               {/* Logo */}
-              <motion.a
+              <Link
                 href="/"
                 className="flex items-center gap-2.5 group z-50 shrink-0"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
-                <div className="flex gap-[3px]">
-                  <div className="w-[5px] h-[24px] bg-[#4a7c59] rounded-full transition-all duration-300 group-hover:h-[28px]" />
-                  <div className="w-[5px] h-[24px] bg-[#4a7c59] rounded-full transition-all duration-300 group-hover:h-[28px] delay-75" />
-                </div>
-                <span className="font-display text-[18px] text-[#1a1a1a] font-semibold tracking-tight">
-                  The Pause
-                </span>
-              </motion.a>
+                <motion.div
+                  className="flex items-center gap-2.5"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex gap-[3px]">
+                    <div className="w-[5px] h-[24px] bg-[#4a7c59] rounded-full transition-all duration-300 group-hover:h-[28px]" />
+                    <div className="w-[5px] h-[24px] bg-[#4a7c59] rounded-full transition-all duration-300 group-hover:h-[28px] delay-75" />
+                  </div>
+                  <span className="font-display text-[18px] text-[#1a1a1a] font-semibold tracking-tight">
+                    The Pause
+                  </span>
+                </motion.div>
+              </Link>
 
               {/* Desktop Links */}
               <div className="hidden lg:flex items-center gap-1">
-                {NAV_ITEMS.map((item) =>
-                  item.kind === 'dropdown' ? (
+                {NAV_ITEMS.map((item) => {
+                  const active = isTopLevelActive(item)
+                  return item.kind === 'dropdown' ? (
                     <div
                       key={item.label}
                       className="relative"
                       onMouseEnter={() => handleDropdownEnter(item.label)}
                       onMouseLeave={handleDropdownLeave}
                     >
-                      <button className="flex items-center px-3 py-2 text-[13px] text-[#1a1a1a]/70 hover:text-[#4a7c59] transition-colors duration-200 font-medium rounded-lg hover:bg-[#f5f2ed]">
+                      <button className={`flex items-center px-3 py-2 text-[13px] transition-colors duration-200 font-medium rounded-lg hover:bg-[#f5f2ed] ${
+                        active ? 'text-[#4a7c59]' : 'text-[#1a1a1a]/70 hover:text-[#4a7c59]'
+                      }`}>
                         {item.label}
                         <Chevron open={activeDropdown === item.label} />
                       </button>
                       <AnimatePresence>
                         {activeDropdown === item.label && (
-                          <DropdownPanel children={item.children} onNavigate={handleNav} />
+                          <DropdownPanel
+                            items={item.children}
+                            onNavigate={handleNav}
+                            currentPath={pathname}
+                          />
                         )}
                       </AnimatePresence>
                     </div>
                   ) : (
-                    <a
-                      key={item.href}
-                      href={item.href}
-                      onClick={(e) => { e.preventDefault(); handleNav(item.href) }}
-                      className="px-3 py-2 text-[13px] text-[#1a1a1a]/70 hover:text-[#4a7c59] transition-colors duration-200 font-medium rounded-lg hover:bg-[#f5f2ed]"
+                    <button
+                      key={item.label}
+                      onClick={() => handleNav(item.href)}
+                      className={`px-3 py-2 text-[13px] transition-colors duration-200 font-medium rounded-lg hover:bg-[#f5f2ed] ${
+                        active ? 'text-[#4a7c59]' : 'text-[#1a1a1a]/70 hover:text-[#4a7c59]'
+                      }`}
                     >
                       {item.label}
-                    </a>
+                    </button>
                   )
-                )}
+                })}
               </div>
 
               {/* Right side */}
               <div className="flex items-center gap-3 shrink-0">
-                <a
+                <Link
                   href="/auth"
                   className="hidden sm:block text-[13px] text-[#1a1a1a]/70 hover:text-[#4a7c59] transition-colors duration-200 font-medium"
                 >
                   My Portal
-                </a>
+                </Link>
 
-                <motion.a
-                  href="#book"
-                  onClick={(e) => { e.preventDefault(); handleNav('#book') }}
+                <motion.button
+                  onClick={() => handleNav('/#book')}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   className="bg-[#4a7c59] text-white px-5 py-2.5 rounded-full text-[13px] font-semibold shadow-lg shadow-[#4a7c59]/25 hover:shadow-xl hover:shadow-[#4a7c59]/35 transition-all duration-200"
                 >
                   Book Now
-                </motion.a>
+                </motion.button>
 
                 {/* Hamburger */}
                 <button
@@ -270,15 +328,15 @@ export default function Navbar() {
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ delay: i * 0.04 }}
                     >
-                      {/* Accordion header */}
                       <button
                         onClick={() => toggleMobileSection(item.label)}
-                        className="w-full flex items-center justify-between text-3xl font-display text-[#1a1a1a] py-4 border-b border-[#e8e3da] hover:text-[#4a7c59] transition-colors"
+                        className={`w-full flex items-center justify-between text-3xl font-display py-4 border-b border-[#e8e3da] transition-colors ${
+                          isTopLevelActive(item) ? 'text-[#4a7c59]' : 'text-[#1a1a1a] hover:text-[#4a7c59]'
+                        }`}
                       >
                         {item.label}
                         <Chevron open={mobileOpenSection === item.label} />
                       </button>
-                      {/* Accordion children */}
                       <AnimatePresence>
                         {mobileOpenSection === item.label && (
                           <motion.div
@@ -292,7 +350,11 @@ export default function Navbar() {
                               <button
                                 key={child.href}
                                 onClick={() => handleNav(child.href)}
-                                className="w-full text-left pl-4 py-3 text-lg text-[#1a1a1a]/70 hover:text-[#4a7c59] transition-colors border-b border-[#e8e3da]/50"
+                                className={`w-full text-left pl-4 py-3 text-lg transition-colors border-b border-[#e8e3da]/50 ${
+                                  pathname === getPathPart(child.href)
+                                    ? 'text-[#4a7c59] font-medium'
+                                    : 'text-[#1a1a1a]/70 hover:text-[#4a7c59]'
+                                }`}
                               >
                                 {child.label}
                               </button>
@@ -302,33 +364,37 @@ export default function Navbar() {
                       </AnimatePresence>
                     </motion.div>
                   ) : (
-                    <motion.a
-                      key={item.href}
-                      href={item.href}
+                    <motion.button
+                      key={item.label}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ delay: i * 0.04 }}
-                      onClick={(e) => { e.preventDefault(); handleNav(item.href) }}
-                      className="text-3xl font-display text-[#1a1a1a] py-4 border-b border-[#e8e3da] hover:text-[#4a7c59] transition-colors"
+                      onClick={() => handleNav(item.href)}
+                      className={`text-left text-3xl font-display py-4 border-b border-[#e8e3da] transition-colors ${
+                        isTopLevelActive(item) ? 'text-[#4a7c59]' : 'text-[#1a1a1a] hover:text-[#4a7c59]'
+                      }`}
                     >
                       {item.label}
-                    </motion.a>
+                    </motion.button>
                   )
                 )}
 
                 {/* My Portal */}
-                <motion.a
-                  href="/auth"
+                <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ delay: NAV_ITEMS.length * 0.04 }}
-                  onClick={(e) => { e.preventDefault(); handleNav('/auth') }}
-                  className="text-3xl font-display text-[#1a1a1a] py-4 border-b border-[#e8e3da] hover:text-[#4a7c59] transition-colors"
                 >
-                  My Portal
-                </motion.a>
+                  <Link
+                    href="/auth"
+                    onClick={() => setOpen(false)}
+                    className="block text-3xl font-display text-[#1a1a1a] py-4 border-b border-[#e8e3da] hover:text-[#4a7c59] transition-colors"
+                  >
+                    My Portal
+                  </Link>
+                </motion.div>
               </nav>
 
               {/* Book Now — bottom of mobile menu */}
@@ -340,7 +406,7 @@ export default function Navbar() {
                 className="pt-6 border-t border-[#e8e3da]"
               >
                 <button
-                  onClick={() => handleNav('#book')}
+                  onClick={() => handleNav('/#book')}
                   className="w-full bg-[#4a7c59] text-white py-4 rounded-full text-lg font-semibold shadow-lg"
                 >
                   Book Now

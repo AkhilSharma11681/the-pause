@@ -68,11 +68,16 @@ const TRUST = [
 
 export default function TherapyPath() {
   return (
-    <section className="py-20 px-6 bg-[#faf7f2] relative overflow-hidden">
+    <section id="pricing" className="py-20 px-6 bg-[#faf7f2] relative overflow-hidden">
 
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(74,124,89,0.05)_0%,transparent_60%)] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
+
+        {/* Invisible anchor targets for individual service types */}
+        <div id="individual" className="absolute -top-24" aria-hidden="true" />
+        <div id="couples"    className="absolute -top-24" aria-hidden="true" />
+        <div id="teen"       className="absolute -top-24" aria-hidden="true" />
 
         {/* Book CTA — top */}
         <motion.div

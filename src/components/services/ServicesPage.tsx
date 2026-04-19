@@ -1,32 +1,53 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import TherapyPath from './TherapyPath'
 import CommunityPath from './CommunityPath'
-import { useScrollOnMount } from '@/lib/useScrollOnMount'
 
-const COMMUNITY_IDS = ['workshops', 'communities']
+const COMMUNITY_IDS = new Set(['workshops', 'communities'])
+const THERAPY_IDS = new Set(['individual', 'couples', 'teen', 'pricing'])
 
 export default function ServicesPage() {
   const searchParams = useSearchParams()
   const [active, setActive] = useState<'therapy' | 'community'>('therapy')
-
-  // Run the cross-page scroll hook
-  useScrollOnMount()
+  // Track the pending scroll target — set before tab switch, consumed after render
+  const pendingScroll = useRef<string | null>(null)
 
   useEffect(() => {
-    // Check query param
-    if (searchParams.get('path') === 'community') {
+    // Determine initial tab + pending scroll from URL hash or sessionStorage
+    const hash =
+      window.location.hash.slice(1) ||
+      sessionStorage.getItem('scrollTo') ||
+      ''
+
+    if (hash) sessionStorage.removeItem('scrollTo')
+
+    if (COMMUNITY_IDS.has(hash)) {
+      pendingScroll.current = hash
       setActive('community')
-      return
-    }
-    // Check hash in URL (e.g. /services#workshops)
-    const hash = window.location.hash.slice(1)
-    if (hash && COMMUNITY_IDS.includes(hash)) {
+    } else if (THERAPY_IDS.has(hash)) {
+      pendingScroll.current = hash
+      setActive('therapy')
+    } else if (searchParams.get('path') === 'community') {
       setActive('community')
     }
   }, [searchParams])
+
+  // After active tab changes, scroll to the pending target once the section is in the DOM
+  useEffect(() => {
+    const id = pendingScroll.current
+    if (!id) return
+    pendingScroll.current = null
+
+    // Wait for AnimatePresence + DOM paint
+    const timer = setTimeout(() => {
+      const el = document.getElementById(id)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 350)
+
+    return () => clearTimeout(timer)
+  }, [active])
 
   return (
     <>

@@ -119,7 +119,7 @@ export default function Hero() {
           transition={{ delay: 0.8 }}
           className="flex items-center gap-3 text-[#9ca3af] text-[11px] uppercase tracking-widest font-medium"
         >
-          <span>First session from ₹499</span>
+          <span>Sessions from ₹1,500</span>
           <span className="w-1 h-1 rounded-full bg-[#9ca3af]" />
           <span>No waitlists</span>
           <span className="w-1 h-1 rounded-full bg-[#9ca3af]" />

@@ -52,7 +52,7 @@ export default function Testimonials() {
   const [hovered, setHovered] = useState<number | null>(null)
 
   return (
-    <section className="py-32 px-6 bg-[#faf7f2] relative overflow-hidden">
+    <section id="testimonials" className="py-32 px-6 bg-[#faf7f2] relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-24">
           <motion.div
@@ -62,10 +62,10 @@ export default function Testimonials() {
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#4a7c59]/5 border border-[#4a7c59]/10 mb-6"
           >
             <div className="w-1.5 h-1.5 rounded-full bg-[#4a7c59]" />
-            <span className="text-[#4a7c59] text-[10px] tracking-[0.2em] uppercase font-medium">Testimonials</span>
+            <span className="text-[#4a7c59] text-[10px] tracking-[0.2em] uppercase font-medium">Client Stories</span>
           </motion.div>
-          
-          <motion.h2 
+
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -73,15 +73,39 @@ export default function Testimonials() {
           >
             Voices of the <span className="italic text-[#4a7c59]">healed</span>
           </motion.h2>
-          <motion.p 
+
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-[#6b7280] font-light max-w-xl mx-auto leading-relaxed text-lg"
+            className="text-[#6b7280] font-light max-w-xl mx-auto leading-relaxed text-lg mb-10"
           >
             Our community is built on trust and radical honesty. Read how The Pause has touched lives.
           </motion.p>
+
+          {/* Intro block */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="max-w-2xl mx-auto bg-white rounded-[2rem] px-8 py-7 border border-[#f0ebe3] shadow-[0_8px_32px_rgba(0,0,0,0.03)] text-left"
+          >
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-2xl bg-[#e8f4ec] flex items-center justify-center shrink-0 mt-0.5">
+                <Quote size={18} className="text-[#4a7c59]" />
+              </div>
+              <div>
+                <p className="text-[#1a1a1a] font-display text-lg leading-relaxed mb-2">
+                  Real stories from real people.
+                </p>
+                <p className="text-[#6b7280] text-sm font-light leading-relaxed">
+                  Therapy is deeply personal — and so is the decision to start. These are unscripted words from people who took that first step. Names are shared with permission; details are kept private. We share them not as proof, but as a reminder that you are not alone in what you&apos;re carrying.
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
         {/* Masonry-style Bento Grid */}

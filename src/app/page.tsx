@@ -7,6 +7,7 @@ import Therapists from '@/components/Therapists'
 import Conditions from '@/components/Conditions'
 import MythBusters from '@/components/MythBusters'
 import Pricing from '@/components/Pricing'
+import UpcomingEvents from '@/components/UpcomingEvents'
 import Testimonials from '@/components/Testimonials'
 import Blog from '@/components/Blog'
 import FAQ from '@/components/FAQ'
@@ -29,6 +30,7 @@ export default function Home() {
       <Conditions />
       <MythBusters />
       <Pricing />
+      <UpcomingEvents />
       <Testimonials />
       <Blog />
       <ClinicMap />

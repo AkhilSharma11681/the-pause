@@ -13,7 +13,7 @@ export default function TrustBadges() {
     { 
       icon: UserCheck, 
       title: 'Certified Therapists', 
-      desc: 'Every therapist is RCI licensed, verified, and manually vetted for empathy.',
+      desc: 'Every therapist at The Pause is trained, supervised, and carefully selected for their clinical expertise and genuine empathy.',
       color: '#f5f0e8'
     },
     { 
@@ -25,7 +25,7 @@ export default function TrustBadges() {
     { 
       icon: Zap, 
       title: 'Quick Matching', 
-      desc: 'Find the right specialist and book your first session in under 2 hours.',
+      desc: 'Tell us what you need. We\'ll match you with the right specialist at your pace.',
       color: '#fef3e8'
     },
   ]

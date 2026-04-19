@@ -1,11 +1,11 @@
 'use client'
-import { useScrollOnMount } from '@/lib/useScrollOnMount'
+import { useHashScroll } from '@/lib/useHashScroll'
 
 /**
- * Drop this into any server-rendered page that needs cross-page anchor scrolling.
- * It renders nothing — just runs the scroll hook on mount.
+ * Drop into any server-rendered page that needs hash-based scroll-on-load.
+ * Waits 200ms so user sees the top of the page first, then scrolls to the anchor.
  */
 export default function ScrollOnMount() {
-  useScrollOnMount()
+  useHashScroll(200)
   return null
 }

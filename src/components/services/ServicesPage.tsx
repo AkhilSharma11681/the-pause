@@ -1,62 +1,54 @@
 'use client'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import TherapyPath from './TherapyPath'
 import CommunityPath from './CommunityPath'
 
-// Which hash belongs to which tab
 const COMMUNITY_IDS = new Set(['workshops', 'communities'])
 const THERAPY_IDS   = new Set(['individual', 'counselling', 'teen', 'couples', 'assessment', 'pricing'])
-
-function scrollToHash(hash: string) {
-  if (!hash) return
-  // Try immediately, then retry after a short delay for late-rendering elements
-  const attempt = () => {
-    const el = document.getElementById(hash)
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      // Brief green pulse so user sees where they landed
-      el.classList.remove('section-highlight')
-      void el.offsetWidth
-      el.classList.add('section-highlight')
-      setTimeout(() => el.classList.remove('section-highlight'), 900)
-      return true
-    }
-    return false
-  }
-  if (!attempt()) setTimeout(attempt, 400)
-}
 
 export default function ServicesPage() {
   const searchParams = useSearchParams()
   const [active, setActive] = useState<'therapy' | 'community'>('therapy')
+  const [pendingHash, setPendingHash] = useState<string>('')
 
-  // Determine tab + scroll target from URL hash or sessionStorage on mount
-  const resolveHash = useCallback(() => {
-    const raw =
-      window.location.hash.slice(1) ||
-      sessionStorage.getItem('scrollTo') ||
-      ''
-    if (raw) sessionStorage.removeItem('scrollTo')
-    return raw
-  }, [])
-
+  // Step 1 — on mount, determine which tab to show and which hash to scroll to
   useEffect(() => {
-    const hash = resolveHash()
+    const stored = sessionStorage.getItem('scrollTo') || ''
+    const hash = window.location.hash.slice(1) || stored
+    if (stored) sessionStorage.removeItem('scrollTo')
 
     if (COMMUNITY_IDS.has(hash)) {
       setActive('community')
-      // Wait for AnimatePresence to render CommunityPath
-      setTimeout(() => scrollToHash(hash), 450)
+      setPendingHash(hash)
     } else if (THERAPY_IDS.has(hash)) {
       setActive('therapy')
-      setTimeout(() => scrollToHash(hash), 450)
+      setPendingHash(hash)
     } else if (searchParams.get('path') === 'community') {
       setActive('community')
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Step 2 — after tab renders, scroll to the pending hash
+  // 200ms delay so user sees page top first, then smooth scroll
+  useEffect(() => {
+    if (!pendingHash) return
+    const timer = setTimeout(() => {
+      const el = document.getElementById(pendingHash)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      } else {
+        // Retry for late-rendered elements
+        setTimeout(() => {
+          document.getElementById(pendingHash)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 300)
+      }
+      setPendingHash('')
+    }, 200)
+    return () => clearTimeout(timer)
+  }, [active, pendingHash])
 
   return (
     <motion.div

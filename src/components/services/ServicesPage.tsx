@@ -31,6 +31,26 @@ export default function ServicesPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // Listen for same-page nav events dispatched by Navbar when already on /services
+  useEffect(() => {
+    function onNavScrollTo(e: Event) {
+      const hash = (e as CustomEvent<{ hash: string }>).detail.hash
+      if (!hash) return
+      if (COMMUNITY_IDS.has(hash)) {
+        setActive('community')
+        setPendingHash(hash)
+      } else if (THERAPY_IDS.has(hash)) {
+        setActive('therapy')
+        setPendingHash(hash)
+      } else {
+        // Not a tab-specific hash — just scroll directly
+        setTimeout(() => document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
+      }
+    }
+    window.addEventListener('nav:scrollto', onNavScrollTo)
+    return () => window.removeEventListener('nav:scrollto', onNavScrollTo)
+  }, [])
+
   // Step 2 — after tab renders, scroll to the pending hash
   // 200ms delay so user sees page top first, then smooth scroll
   useEffect(() => {

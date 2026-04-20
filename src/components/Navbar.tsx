@@ -158,9 +158,12 @@ export default function Navbar() {
     const normalizedCurrent = pathname === '' ? '/' : pathname
 
     if (normalizedTarget === normalizedCurrent) {
-      // Same page — scroll directly, no navigation needed
+      // Same page — if there's a hash, dispatch a custom event so the page
+      // component can handle tab-switching before scrolling (e.g. /services)
       if (hash) {
-        setTimeout(() => scrollToId(hash), 50)
+        window.dispatchEvent(new CustomEvent('nav:scrollto', { detail: { hash } }))
+        // Fallback: also try direct scroll for pages that don't need tab switching
+        setTimeout(() => scrollToId(hash), 300)
       }
     } else {
       // Different page — store hash, then navigate

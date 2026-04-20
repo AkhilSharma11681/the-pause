@@ -75,12 +75,7 @@ const TRUST = [
 export default function TherapyPath() {
   return (
     <div>
-      {/* ── Book CTA banner ── */}
-      <section
-        id="individual"
-        className="py-20 px-6 bg-[#faf7f2] relative overflow-hidden"
-        style={{ scrollMarginTop: '80px' }}
-      >
+      <section className="py-20 px-6 bg-[#faf7f2] relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(74,124,89,0.05)_0%,transparent_60%)] pointer-events-none" />
         <div className="max-w-6xl mx-auto relative z-10">
 
@@ -122,8 +117,12 @@ export default function TherapyPath() {
             ))}
           </motion.div>
 
-          {/* Section heading */}
-          <div className="text-center mb-12">
+          {/* Section heading — anchor ids sit here so scroll lands at the cards */}
+          <div
+            id="individual"
+            style={{ scrollMarginTop: '80px' }}
+            className="text-center mb-12"
+          >
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -144,9 +143,8 @@ export default function TherapyPath() {
             <p className="text-[#6b7280] font-light mt-3 text-lg">Pay per session. No subscriptions, no hidden fees.</p>
           </div>
 
-          {/* Cards — each wrapped in its own id'd anchor */}
+          {/* Cards — each with its own id for direct anchor targeting */}
           <div className="space-y-6">
-            {/* Row 1 — first 3 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {PLANS.slice(0, 3).map((plan, i) => (
                 <div key={plan.id} id={plan.id} style={{ scrollMarginTop: '80px' }}>
@@ -154,7 +152,6 @@ export default function TherapyPath() {
                 </div>
               ))}
             </div>
-            {/* Row 2 — last 2 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:max-w-[66%] mx-auto">
               {PLANS.slice(3).map((plan, i) => (
                 <div key={plan.id} id={plan.id} style={{ scrollMarginTop: '80px' }}>

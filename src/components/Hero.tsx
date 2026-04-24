@@ -10,21 +10,21 @@ export default function Hero() {
         {/* Large green glow top-right */}
         <motion.div
           animate={{ scale: [1, 1.15, 1], opacity: [0.6, 0.9, 0.6] }}
-          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 6, repeat: Infinity, repeatType: "mirror", ease: 'easeInOut' }}
           className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full"
           style={{ background: 'radial-gradient(circle, rgba(74,124,89,0.18) 0%, transparent 70%)' }}
         />
         {/* Warm amber glow bottom-left */}
         <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
-          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+          transition={{ duration: 6, repeat: Infinity, repeatType: "mirror", ease: 'easeInOut'}}
           className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full"
           style={{ background: 'radial-gradient(circle, rgba(212,132,58,0.12) 0%, transparent 70%)' }}
         />
         {/* Center soft glow */}
         <motion.div
           animate={{ opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity }}
+          transition={{ duration: $1, repeat: Infinity, repeatType: "mirror", ease: "linear" }}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full"
           style={{ background: 'radial-gradient(ellipse, rgba(74,124,89,0.07) 0%, transparent 70%)' }}
         />
@@ -52,18 +52,18 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1]}}
           className="flex justify-center gap-3 mb-10"
         >
           <motion.div
             animate={{ height: [48, 60, 48] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 6, repeat: Infinity, repeatType: "mirror", ease: 'easeInOut' }}
             className="w-3.5 rounded-full shadow-[0_4px_20px_rgba(74,124,89,0.3)]"
             style={{ background: 'linear-gradient(180deg, #4a7c59 0%, #2d5a3d 100%)' }}
           />
           <motion.div
             animate={{ height: [60, 48, 60] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+            transition={{ duration: 6, repeat: Infinity, repeatType: "mirror", ease: 'easeInOut'}}
             className="w-3.5 rounded-full shadow-[0_4px_20px_rgba(74,124,89,0.3)]"
             style={{ background: 'linear-gradient(180deg, #4a7c59 0%, #2d5a3d 100%)' }}
           />
@@ -73,7 +73,7 @@ export default function Hero() {
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="font-display text-5xl md:text-7xl lg:text-8xl text-[#1a1a1a] leading-[1.05] mb-8 tracking-tight"
         >
           You don&apos;t need<br />
@@ -86,7 +86,7 @@ export default function Hero() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.8}}
           className="text-[#6b7280] text-lg md:text-xl font-light max-w-xl mx-auto mb-12 leading-relaxed"
         >
           A calm, private space to work through anxiety, burnout, relationships and more — with certified psychologists.
@@ -96,7 +96,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.55 }}
+          transition={{ duration: 0.8}}
           className="flex flex-wrap gap-3 justify-center mb-10"
         >
           <a href="#book"

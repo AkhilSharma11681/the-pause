@@ -62,12 +62,24 @@ export default function PortalPage() {
     <div className="min-h-screen bg-[#faf7f2]">
       {/* Header */}
       <div className="bg-white border-b border-[#f0ebe3] px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex gap-1">
-            <div className="w-1.5 h-6 bg-[#4a7c59] rounded-full" />
-            <div className="w-1.5 h-6 bg-[#4a7c59] rounded-full" />
+        <div className="flex items-center gap-4">
+          {/* Back to home */}
+          <a
+            href="/"
+            className="flex items-center gap-1.5 text-sm text-[#6b7280] hover:text-[#4a7c59] transition-colors mr-2"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 5l-7 7 7 7" />
+            </svg>
+            <span className="hidden sm:inline">Back</span>
+          </a>
+          <div className="flex items-center gap-3">
+            <div className="flex gap-1">
+              <div className="w-1.5 h-6 bg-[#4a7c59] rounded-full" />
+              <div className="w-1.5 h-6 bg-[#4a7c59] rounded-full" />
+            </div>
+            <span className="font-display text-lg text-[#1a1a1a]">The Pause</span>
           </div>
-          <span className="font-display text-lg text-[#1a1a1a]">The Pause</span>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 text-sm text-[#6b7280]">

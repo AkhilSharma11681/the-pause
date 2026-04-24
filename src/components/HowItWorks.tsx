@@ -122,7 +122,7 @@ export default function HowItWorks() {
   ]
 
   return (
-    <section id="how-it-works" ref={containerRef} className="py-32 px-6 bg-[#faf7f2] relative overflow-hidden">
+    <section id="how-it-works" ref={containerRef} className="py-32 px-6 bg-[#faf7f2] relative overflow-hidden" style={{ scrollMarginTop: '96px' }}>
       {/* Background blobs */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
         <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 bg-gradient-to-br from-[#4a7c59]/5 to-transparent rounded-full blur-3xl" />

@@ -52,7 +52,7 @@ function scrollToBook(e: React.MouseEvent) {
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="py-32 px-6 bg-[#faf7f2] relative overflow-hidden" style={{ scrollMarginTop: '80px' }}>
+    <section id="pricing" className="py-32 px-6 bg-[#faf7f2] relative overflow-hidden" style={{ scrollMarginTop: '96px' }}>
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(74,124,89,0.05)_0%,transparent_60%)]" />
 
       <div className="max-w-6xl mx-auto relative z-10">

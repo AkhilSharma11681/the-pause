@@ -138,7 +138,7 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
   // Confirmation state
   if (result?.success) {
     return (
-      <section id="book" className="py-32 px-6 bg-[#faf7f2]">
+      <section id="book" className="py-32 px-6 bg-[#faf7f2]" style={{ scrollMarginTop: '96px' }}>
         <div className="max-w-xl mx-auto text-center">
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', bounce: 0.5 }}>
             <div className="w-24 h-24 rounded-full bg-[#e8f4ec] flex items-center justify-center mx-auto mb-8">
@@ -172,7 +172,7 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
   }
 
   return (
-    <section id="book" className="py-32 px-6 bg-[#faf7f2] relative overflow-hidden">
+    <section id="book" className="py-32 px-6 bg-[#faf7f2] relative overflow-hidden" style={{ scrollMarginTop: '96px' }}>
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-16">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}

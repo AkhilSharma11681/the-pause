@@ -63,7 +63,7 @@ export default function AboutTeam() {
   const [expanded, setExpanded] = useState<number | null>(null)
 
   return (
-    <section id="team" className="py-32 px-6 bg-[#f5f0e8] relative overflow-hidden" style={{ scrollMarginTop: '80px' }}>
+    <section id="team" className="py-32 px-6 bg-[#f5f0e8] relative overflow-hidden" style={{ scrollMarginTop: '96px' }}>
 
       {/* Decorative orbs */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#4a7c59]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />

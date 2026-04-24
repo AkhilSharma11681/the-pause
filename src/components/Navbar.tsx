@@ -50,7 +50,10 @@ function getHashPart(href: string) {
 }
 function scrollToId(id: string) {
   const el = document.getElementById(id)
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  if (!el) return
+  const navHeight = 96
+  const top = el.getBoundingClientRect().top + window.scrollY - navHeight
+  window.scrollTo({ top, behavior: 'smooth' })
 }
 
 // ── Chevron ────────────────────────────────────────────────────────────────

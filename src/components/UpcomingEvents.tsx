@@ -97,7 +97,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 export default function UpcomingEvents() {
   return (
-    <section id="events" className="py-32 px-6 bg-[#f5f0e8] relative overflow-hidden" style={{ scrollMarginTop: '80px' }}>
+    <section id="events" className="py-32 px-6 bg-[#f5f0e8] relative overflow-hidden" style={{ scrollMarginTop: '96px' }}>
 
       {/* Decorative blobs */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#4a7c59]/5 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/3 pointer-events-none" />

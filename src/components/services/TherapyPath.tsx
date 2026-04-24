@@ -120,7 +120,7 @@ export default function TherapyPath() {
           {/* Section heading — anchor ids sit here so scroll lands at the cards */}
           <div
             id="individual"
-            style={{ scrollMarginTop: '80px' }}
+            style={{ scrollMarginTop: '96px' }}
             className="text-center mb-12"
           >
             <motion.div
@@ -147,14 +147,14 @@ export default function TherapyPath() {
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {PLANS.slice(0, 3).map((plan, i) => (
-                <div key={plan.id} id={plan.id} style={{ scrollMarginTop: '80px' }}>
+                <div key={plan.id} id={plan.id} style={{ scrollMarginTop: '96px' }}>
                   <PlanCard plan={plan} index={i} />
                 </div>
               ))}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:max-w-[66%] mx-auto">
               {PLANS.slice(3).map((plan, i) => (
-                <div key={plan.id} id={plan.id} style={{ scrollMarginTop: '80px' }}>
+                <div key={plan.id} id={plan.id} style={{ scrollMarginTop: '96px' }}>
                   <PlanCard plan={plan} index={i + 3} />
                 </div>
               ))}

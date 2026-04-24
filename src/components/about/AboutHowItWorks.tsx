@@ -36,7 +36,7 @@ export default function AboutHowItWorks() {
   const pathLength = useTransform(scrollYProgress, [0.3, 0.6], [0, 1])
 
   return (
-    <section id="how-it-works" ref={containerRef} className="py-32 px-6 bg-[#faf7f2] relative overflow-hidden" style={{ scrollMarginTop: '80px' }}>
+    <section id="how-it-works" ref={containerRef} className="py-32 px-6 bg-[#faf7f2] relative overflow-hidden" style={{ scrollMarginTop: '96px' }}>
 
       {/* Background blobs */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">

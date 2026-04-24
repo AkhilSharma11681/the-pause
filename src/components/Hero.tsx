@@ -31,7 +31,7 @@ export default function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-6 pt-28 pb-20 flex flex-col items-center text-center">
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-6 pt-36 pb-20 flex flex-col items-center text-center">
 
         {/* Glassmorphism badge */}
         <motion.div

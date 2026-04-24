@@ -100,13 +100,13 @@ export default function Hero() {
           className="flex flex-wrap gap-3 justify-center mb-10"
         >
           <a href="#book"
-            className="relative group inline-flex items-center gap-2 bg-[#4a7c59] text-white px-8 py-4 rounded-full text-[15px] font-bold shadow-[0_8px_32px_rgba(74,124,89,0.35)] hover:shadow-[0_12px_40px_rgba(74,124,89,0.5)] hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+            className="relative group inline-flex items-center gap-2 bg-[#4a7c59] text-white px-8 py-4 rounded-full text-[15px] font-bold shadow-[0_8px_32px_rgba(74,124,89,0.35)] hover:shadow-[0_12px_40px_rgba(74,124,89,0.5)] hover:-translate-y-1 transition-transform duration-300 overflow-hidden"
           >
             <span className="relative z-10">Book Your First Session</span>
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
           </a>
           <a href="#how-it-works"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-[15px] font-semibold text-[#4a7c59] border border-white/60 bg-white/40 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8)] hover:bg-white/60 hover:-translate-y-1 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-[15px] font-semibold text-[#4a7c59] border border-white/60 bg-white/40 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8)] hover:bg-white/60 hover:-translate-y-1 transition-transform duration-300"
           >
             See How It Works
           </a>
@@ -158,7 +158,7 @@ export default function Hero() {
             href="https://maps.google.com/?q=Flat+26+REHAYASHI+APARTMENT+Pocket+7+Sector+12+Dwarka+New+Delhi+110078"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 px-5 py-4 rounded-2xl border border-white/60 bg-white/50 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-white/70 transition-all group"
+            className="inline-flex items-center gap-2.5 px-5 py-4 rounded-2xl border border-white/60 bg-white/50 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-white/70 transition-transform group"
           >
             <div className="w-8 h-8 rounded-xl bg-[#e8f4ec] flex items-center justify-center shrink-0 group-hover:bg-[#4a7c59] transition-colors">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a7c59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:stroke-white transition-colors">

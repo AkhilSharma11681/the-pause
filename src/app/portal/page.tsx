@@ -1,14 +1,16 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { motion } from 'framer-motion'
-import { Calendar, PlusCircle, FileText, LogOut, User } from 'lucide-react'
+import { Calendar, PlusCircle, FileText, LogOut, User, ArrowLeft } from 'lucide-react'
 import PatientBookings from '@/components/portal/PatientBookings'
 import SessionSummaries from '@/components/portal/SessionSummaries'
 
 type Tab = 'sessions' | 'book' | 'summaries'
 
 export default function PortalPage() {
+  const router = useRouter()
   const [tab, setTab] = useState<Tab>('sessions')
   const [user, setUser] = useState<{ email?: string; phone?: string } | null>(null)
   const [patientId, setPatientId] = useState<string | null>(null)
@@ -63,16 +65,14 @@ export default function PortalPage() {
       {/* Header */}
       <div className="bg-white border-b border-[#f0ebe3] px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          {/* Back to home */}
-          <a
-            href="/"
+          {/* Back button */}
+          <button
+            onClick={() => router.back()}
             className="flex items-center gap-1.5 text-sm text-[#6b7280] hover:text-[#4a7c59] transition-colors mr-2"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 12H5M12 5l-7 7 7 7" />
-            </svg>
+            <ArrowLeft size={16} />
             <span className="hidden sm:inline">Back</span>
-          </a>
+          </button>
           <div className="flex items-center gap-3">
             <div className="flex gap-1">
               <div className="w-1.5 h-6 bg-[#4a7c59] rounded-full" />

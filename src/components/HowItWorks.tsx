@@ -62,7 +62,7 @@ function StepCard({ number, title, desc, icon: Icon, color, index, isLast }: Ste
         {/* Icon */}
         <motion.div
           whileHover={{ scale: 1.05, rotate: index % 2 === 0 ? 2 : -2 }}
-          className="w-28 h-28 rounded-[2.5rem] bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#f0ebe3] flex items-center justify-center mb-10 relative z-10 transition-all duration-500 group-hover:shadow-[0_20px_50px_rgba(74,124,89,0.1)]"
+          className="w-28 h-28 rounded-[2.5rem] bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#f0ebe3] flex items-center justify-center mb-10 relative z-10 transition-[box-shadow] duration-500 group-hover:shadow-[0_20px_50px_rgba(74,124,89,0.1)]"
         >
           <div className="absolute inset-2 rounded-[2rem] opacity-20" style={{ backgroundColor: color }} />
           <Icon size={36} strokeWidth={1.2} className="text-[#4a7c59] relative z-20 group-hover:scale-110 transition-transform duration-500" />

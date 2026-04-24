@@ -123,7 +123,7 @@ function Card({ plan, index }: { plan: typeof PLANS[0]; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.07 }}
-      className="group bg-white rounded-[2.5rem] p-8 flex flex-col gap-5 border border-[#f0ebe3] hover:border-[#4a7c59]/30 hover:shadow-[0_20px_50px_rgba(74,124,89,0.08)] transition-all duration-500"
+      className={`group bg-white rounded-[2.5rem] p-8 flex flex-col gap-5 border border-[#f0ebe3] hover:border-[#4a7c59]/30 hover:shadow-[0_20px_50px_rgba(74,124,89,0.08)] transition-shadow duration-500`}
     >
       {/* Icon */}
       <div className="w-12 h-12 rounded-2xl bg-[#e8f4ec] flex items-center justify-center shrink-0">

@@ -122,12 +122,12 @@ export default function Testimonials() {
               className="break-inside-avoid"
             >
               <div 
-                className="p-8 rounded-[2.5rem] relative overflow-hidden transition-all duration-500 border border-[#f0ebe3] group hover:shadow-[0_40px_80px_rgba(0,0,0,0.04)]"
+                className="p-8 rounded-[2.5rem] relative overflow-hidden transition-shadow duration-500 border border-[#f0ebe3] group hover:shadow-[0_40px_80px_rgba(0,0,0,0.04)]"
                 style={{ backgroundColor: t.color }}
               >
                 {/* Icons & Header */}
                 <div className="flex justify-between items-start mb-8">
-                  <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+                  <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
                     <MessageSquareQuote size={20} className="text-[#4a7c59]" />
                   </div>
                   <div className="flex gap-0.5">

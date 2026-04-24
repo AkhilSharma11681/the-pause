@@ -47,7 +47,7 @@ export default function TrustBadges() {
               >
                 {/* Icon Container */}
                 <div 
-                  className="w-16 h-16 rounded-[1.25rem] flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm"
+                  className="w-16 h-16 rounded-[1.25rem] flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm"
                   style={{ backgroundColor: b.color }}
                 >
                   <Icon size={28} strokeWidth={1.5} className="text-[#4a7c59]" />

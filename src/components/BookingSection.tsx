@@ -156,11 +156,11 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
             <p className="text-[#9ca3af] text-sm">A confirmation will be sent to <strong>{email}</strong>. Check WhatsApp too.</p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
               <a href="/auth"
-                className="inline-flex items-center justify-center gap-2 bg-[#4a7c59] text-white px-8 py-4 rounded-full text-sm font-medium hover:bg-[#3d6649] transition-all hover:-translate-y-0.5 hover:shadow-lg">
+                className="inline-flex items-center justify-center gap-2 bg-[#4a7c59] text-white px-8 py-4 rounded-full text-sm font-medium hover:bg-[#3d6649] transition-colors hover:-translate-y-0.5 hover:shadow-lg">
                 Access My Portal
               </a>
               <a href="/"
-                className="inline-flex items-center justify-center gap-2 bg-white border border-[#f0ebe3] text-[#6b7280] px-8 py-4 rounded-full text-sm font-medium hover:border-[#4a7c59] transition-all">
+                className="inline-flex items-center justify-center gap-2 bg-white border border-[#f0ebe3] text-[#6b7280] px-8 py-4 rounded-full text-sm font-medium hover:border-[#4a7c59] transition-colors">
                 Back to Home
               </a>
             </div>
@@ -194,7 +194,7 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
             {/* Progress */}
             <div className="flex justify-center gap-2 mb-12">
               {[1, 2, 3, 4, 5].map((s) => (
-                <div key={s} className={`h-1.5 rounded-full transition-all duration-700 ${s <= step ? 'w-12 bg-[#4a7c59]' : 'w-4 bg-[#e5e0d5]'}`} />
+                <div key={s} className={`h-1.5 rounded-full transition-[width,background-color] duration-700 ${s <= step ? 'w-12 bg-[#4a7c59]' : 'w-4 bg-[#e5e0d5]'}`} />
               ))}
             </div>
 
@@ -210,8 +210,8 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {(['online', 'offline'] as const).map((type) => (
                       <button key={type} onClick={() => setSessionType(type)}
-                        className={`p-8 rounded-[2rem] border-2 transition-all duration-500 text-left ${sessionType === type ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
-                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-all ${sessionType === type ? 'bg-[#4a7c59] text-white' : 'bg-[#faf7f2] text-[#4a7c59]'}`}>
+                        className={`p-8 rounded-[2rem] border-2 transition-colors duration-300 text-left ${sessionType === type ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
+                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-colors ${sessionType === type ? 'bg-[#4a7c59] text-white' : 'bg-[#faf7f2] text-[#4a7c59]'}`}>
                           {type === 'online' ? <Laptop size={24} /> : <Hospital size={24} />}
                         </div>
                         <h4 className="font-display text-xl mb-1 text-[#1a1a1a]">{type === 'online' ? 'Online Session' : 'In-Person'}</h4>
@@ -227,7 +227,7 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
                     </motion.div>
                   )}
                   <button disabled={!sessionType} onClick={() => setStep(2)}
-                    className="w-full py-5 rounded-full bg-[#4a7c59] text-white font-medium disabled:opacity-30 transition-all hover:bg-[#3d6649] flex items-center justify-center gap-2 group">
+                    className="w-full py-5 rounded-full bg-[#4a7c59] text-white font-medium disabled:opacity-30 transition-colors hover:bg-[#3d6649] flex items-center justify-center gap-2 group">
                     Continue <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                   </button>
                 </motion.div>
@@ -248,13 +248,13 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <button onClick={() => setTherapistId('auto')}
-                        className={`p-5 rounded-2xl border-2 text-left transition-all ${therapistId === 'auto' ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
+                        className={`p-5 rounded-2xl border-2 text-left transition-colors ${therapistId === 'auto' ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
                         <p className="font-medium text-[#1a1a1a] text-sm">✨ Best match for me</p>
                         <p className="text-xs text-[#6b7280] font-light mt-1">We&apos;ll pair you based on your concern</p>
                       </button>
                       {therapists.map((t) => (
                         <button key={t.id} onClick={() => setTherapistId(t.id)}
-                          className={`p-5 rounded-2xl border-2 text-left transition-all flex items-center gap-4 ${therapistId === t.id ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
+                          className={`p-5 rounded-2xl border-2 text-left transition-colors flex items-center gap-4 ${therapistId === t.id ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
                           <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0" style={{ backgroundColor: t.color }}>
                             {t.initial}
                           </div>
@@ -294,7 +294,7 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
                       return (
                         <button key={i} disabled={isSunOffline} onClick={() => { setSelectedDate(d); setSelectedTime('') }}
                           title={isSunOffline ? 'Clinic closed Sundays' : ''}
-                          className={`p-2 rounded-xl text-center transition-all text-xs ${isSelected ? 'bg-[#4a7c59] text-white' : isSunOffline ? 'opacity-30 cursor-not-allowed bg-white' : 'bg-white hover:border-[#4a7c59] border border-[#f0ebe3]'}`}>
+                          className={`p-2 rounded-xl text-center transition-colors text-xs ${isSelected ? 'bg-[#4a7c59] text-white' : isSunOffline ? 'opacity-30 cursor-not-allowed bg-white' : 'bg-white hover:border-[#4a7c59] border border-[#f0ebe3]'}`}>
                           <div className="font-medium">{d.toLocaleDateString('en-IN', { weekday: 'short' })}</div>
                           <div className={`text-lg font-bold ${isSelected ? 'text-white' : 'text-[#1a1a1a]'}`}>{d.getDate()}</div>
                           <div className={isSelected ? 'text-white/70' : 'text-[#9ca3af]'}>{d.toLocaleDateString('en-IN', { month: 'short' })}</div>
@@ -312,7 +312,7 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
                         <div className="grid grid-cols-4 md:grid-cols-6 gap-2">
                           {slots.map((slot) => (
                             <button key={slot.time} disabled={!slot.available} onClick={() => setSelectedTime(slot.time)}
-                              className={`py-2.5 rounded-xl text-xs font-medium transition-all ${selectedTime === slot.time ? 'bg-[#4a7c59] text-white' : slot.available ? 'bg-white border border-[#f0ebe3] hover:border-[#4a7c59] text-[#1a1a1a]' : 'bg-[#f0ebe3] text-[#9ca3af] cursor-not-allowed'}`}>
+                              className={`py-2.5 rounded-xl text-xs font-medium transition-colors ${selectedTime === slot.time ? 'bg-[#4a7c59] text-white' : slot.available ? 'bg-white border border-[#f0ebe3] hover:border-[#4a7c59] text-[#1a1a1a]' : 'bg-[#f0ebe3] text-[#9ca3af] cursor-not-allowed'}`}>
                               {slot.time}
                             </button>
                           ))}
@@ -426,8 +426,8 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Pay Online */}
                     <button onClick={() => setPaymentMethod('online')}
-                      className={`p-8 rounded-[2rem] border-2 transition-all duration-500 text-left ${paymentMethod === 'online' ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
-                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-all ${paymentMethod === 'online' ? 'bg-[#4a7c59] text-white' : 'bg-[#faf7f2] text-[#4a7c59]'}`}>
+                      className={`p-8 rounded-[2rem] border-2 transition-colors duration-300 text-left ${paymentMethod === 'online' ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-colors ${paymentMethod === 'online' ? 'bg-[#4a7c59] text-white' : 'bg-[#faf7f2] text-[#4a7c59]'}`}>
                         💳
                       </div>
                       <h4 className="font-display text-xl mb-1 text-[#1a1a1a]">Pay Online Now</h4>
@@ -439,8 +439,8 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
 
                     {/* Pay at Clinic */}
                     <button onClick={() => setPaymentMethod('cash')}
-                      className={`p-8 rounded-[2rem] border-2 transition-all duration-500 text-left ${paymentMethod === 'cash' ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
-                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-all ${paymentMethod === 'cash' ? 'bg-[#4a7c59] text-white' : 'bg-[#faf7f2] text-[#4a7c59]'}`}>
+                      className={`p-8 rounded-[2rem] border-2 transition-colors duration-300 text-left ${paymentMethod === 'cash' ? 'border-[#4a7c59] bg-[#e8f4ec]' : 'border-white bg-white hover:border-[#f0ebe3]'}`}>
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-colors ${paymentMethod === 'cash' ? 'bg-[#4a7c59] text-white' : 'bg-[#faf7f2] text-[#4a7c59]'}`}>
                         💵
                       </div>
                       <h4 className="font-display text-xl mb-1 text-[#1a1a1a]">Pay at Clinic (Cash)</h4>
@@ -462,7 +462,7 @@ export default function BookingSection({ preSelectedTherapist }: Props) {
                   <div className="flex gap-4 pt-2">
                     <button onClick={() => setStep(4)} className="px-8 py-5 rounded-full border border-[#f0ebe3] text-[#6b7280] hover:bg-white transition-colors">Back</button>
                     <button onClick={handleSubmit} disabled={!paymentMethod || submitting}
-                      className="flex-1 py-5 rounded-full bg-[#4a7c59] text-white shadow-[0_15px_40px_rgba(74,124,89,0.3)] hover:scale-[1.02] active:scale-95 disabled:opacity-60 transition-all flex items-center justify-center gap-2">
+                      className="flex-1 py-5 rounded-full bg-[#4a7c59] text-white shadow-[0_15px_40px_rgba(74,124,89,0.3)] hover:scale-[1.02] active:scale-95 disabled:opacity-60 transition-transform flex items-center justify-center gap-2">
                       {submitting ? <><Loader2 size={18} className="animate-spin" /> Booking...</> : 'Complete Booking'}
                     </button>
                   </div>

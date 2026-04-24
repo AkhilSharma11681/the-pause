@@ -177,7 +177,7 @@ function PlanCard({ plan, index }: { plan: typeof PLANS[0]; index: number }) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.07 }}
-      className={`group relative bg-white rounded-[2.5rem] p-8 flex flex-col gap-5 border transition-all duration-500 hover:shadow-[0_20px_50px_rgba(74,124,89,0.08)] h-full ${
+      className={`group relative bg-white rounded-[2.5rem] p-8 flex flex-col gap-5 border transition-shadow duration-500 hover:shadow-[0_20px_50px_rgba(74,124,89,0.08)] h-full ${
         plan.popular
           ? 'border-[#4a7c59]/40 shadow-[0_8px_30px_rgba(74,124,89,0.1)]'
           : 'border-[#f0ebe3] hover:border-[#4a7c59]/30'

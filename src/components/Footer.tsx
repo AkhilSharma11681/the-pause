@@ -53,7 +53,7 @@ export default function Footer() {
             </div>
             <div className="flex gap-4 mt-12">
               {socialIcons.map((Icon, i) => (
-                <a key={i} href="#" className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#1a1a1a] transition-all duration-500">
+                <a key={i} href="#" className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#1a1a1a] transition-colors duration-500">
                   <Icon />
                 </a>
               ))}
@@ -89,7 +89,7 @@ export default function Footer() {
               href="https://wa.me/919152987821?text=Hi%2C%20I%20want%20to%20book%20a%20session%20at%20The%20Pause"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between bg-white text-black px-6 py-4 rounded-2xl hover:bg-[#4a7c59] hover:text-white transition-all duration-500 group"
+              className="flex items-center justify-between bg-white text-black px-6 py-4 rounded-2xl hover:bg-[#4a7c59] hover:text-white transition-colors duration-500 group"
             >
               <span className="font-medium text-sm">WhatsApp Chat</span>
               <MessageCircle size={18} className="group-hover:translate-x-1 transition-transform" />

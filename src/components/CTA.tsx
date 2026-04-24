@@ -53,7 +53,7 @@ export default function CTA() {
         >
           <a 
             href="#book" 
-            className="group relative inline-flex items-center gap-3 bg-white text-[#2d5a3d] px-12 py-5 rounded-full text-base font-medium transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] hover:-translate-y-1 overflow-hidden"
+            className="group relative inline-flex items-center gap-3 bg-white text-[#2d5a3d] px-12 py-5 rounded-full text-base font-medium transition-transform duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] hover:-translate-y-1 overflow-hidden"
           >
             <span className="relative z-10">Book a Session Today</span>
             <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />

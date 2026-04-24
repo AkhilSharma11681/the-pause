@@ -97,8 +97,16 @@ export default function AboutHero() {
       </div>
 
       {/* Floating particles */}
-      <div className="absolute top-[30%] right-[10%] w-2 h-2 rounded-full bg-[#4a7c59]/20 animate-pulse" />
-      <div className="absolute bottom-[20%] left-[6%] w-3 h-3 rounded-full bg-[#d4843a]/15 animate-bounce" style={{ animationDuration: '4s' }} />
+      <motion.div
+        animate={{ opacity: [0.2, 0.5, 0.2] }}
+        transition={{ duration: 4, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
+        className="absolute top-[30%] right-[10%] w-2 h-2 rounded-full bg-[#4a7c59]/20"
+      />
+      <motion.div
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 4, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
+        className="absolute bottom-[20%] left-[6%] w-3 h-3 rounded-full bg-[#d4843a]/15"
+      />
     </section>
   )
 }

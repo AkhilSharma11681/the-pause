@@ -60,7 +60,7 @@ export default function TrustBar() {
               className="relative group"
             >
               {/* Card */}
-              <div className="relative bg-white/[0.07] backdrop-blur-sm rounded-2xl border border-white/10 p-8 text-center overflow-hidden transition-all duration-300 hover:bg-white/[0.1] hover:border-white/20">
+              <div className="relative bg-white/[0.07] backdrop-blur-sm rounded-2xl border border-white/10 p-8 text-center overflow-hidden transition-colors duration-300 hover:bg-white/[0.1] hover:border-white/20">
                 {/* Subtle glow behind number */}
                 <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
                 

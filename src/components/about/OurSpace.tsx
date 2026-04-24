@@ -126,7 +126,7 @@ export default function OurSpace() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="flex items-start gap-5 p-6 rounded-2xl bg-[#faf7f2] border border-[#f0ebe3] hover:border-[#4a7c59]/20 hover:shadow-[0_8px_24px_rgba(74,124,89,0.06)] transition-all duration-300"
+                className="flex items-start gap-5 p-6 rounded-2xl bg-[#faf7f2] border border-[#f0ebe3] hover:border-[#4a7c59]/20 hover:shadow-[0_8px_24px_rgba(74,124,89,0.06)] transition-shadow duration-300"
               >
                 <div className="w-12 h-12 rounded-2xl bg-[#4a7c59]/10 flex items-center justify-center shrink-0">
                   <f.icon size={20} className="text-[#4a7c59]" />

@@ -58,7 +58,7 @@ export default function AuthPage() {
               </div>
               {error && <p className="text-red-500 text-xs">{error}</p>}
               <button onClick={sendMagicLink} disabled={loading || !email.trim()}
-                className="w-full py-4 rounded-full bg-[#4a7c59] text-white font-medium flex items-center justify-center gap-2 hover:bg-[#3d6649] disabled:opacity-50 transition-all">
+                className="w-full py-4 rounded-full bg-[#4a7c59] text-white font-medium flex items-center justify-center gap-2 hover:bg-[#3d6649] disabled:opacity-50 transition-colors">
                 {loading ? <Loader2 size={18} className="animate-spin" /> : <>Send login link <ArrowRight size={18} /></>}
               </button>
             </div>

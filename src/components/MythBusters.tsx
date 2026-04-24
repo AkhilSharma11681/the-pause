@@ -42,7 +42,7 @@ export default function MythBusters() {
           opacity: [0.3, 0.5, 0.3],
           rotate: [0, 45, 0]
         }}
-        transition={{ duration: 15, repeat: Infinity }}
+        transition={{ duration: 15, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#4a7c59]/5 blur-[120px] rounded-full pointer-events-none"
       />
 
@@ -86,7 +86,7 @@ export default function MythBusters() {
               <motion.button
                 key={i}
                 onClick={() => setActive(i)}
-                className={`w-full p-8 rounded-[2rem] text-left transition-all duration-500 relative overflow-hidden group border ${
+                className={`w-full p-8 rounded-[2rem] text-left transition-colors duration-300 relative overflow-hidden group border ${
                   active === i ? 'bg-[#4a7c59] border-[#4a7c59] shadow-2xl' : 'bg-white border-[#f0ebe3] hover:border-[#4a7c59]/30'
                 }`}
               >
@@ -110,7 +110,7 @@ export default function MythBusters() {
                   {active !== i && (
                     <ArrowRight 
                       size={20} 
-                      className="text-[#4a7c59] opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all" 
+                      className="text-[#4a7c59] opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-transform duration-200" 
                     />
                   )}
                 </div>

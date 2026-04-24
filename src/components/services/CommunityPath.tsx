@@ -164,7 +164,7 @@ export default function CommunityPath() {
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.08 }}
-                  className="group bg-white rounded-[2.5rem] p-8 border border-[#f0ebe3] hover:border-[#d4843a]/30 hover:shadow-[0_20px_50px_rgba(212,132,58,0.08)] transition-all duration-500 flex flex-col gap-5"
+                  className="group bg-white rounded-[2.5rem] p-8 border border-[#f0ebe3] hover:border-[#d4843a]/30 hover:shadow-[0_20px_50px_rgba(212,132,58,0.08)] transition-shadow duration-500 flex flex-col gap-5"
                 >
                   {/* Date + mode */}
                   <div className="flex items-start justify-between">
@@ -281,7 +281,7 @@ export default function CommunityPath() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="group bg-white rounded-[2.5rem] p-8 border border-[#f0ebe3] hover:border-[#4a7c59]/30 hover:shadow-[0_20px_50px_rgba(74,124,89,0.08)] transition-all duration-500 flex flex-col gap-5"
+                className="group bg-white rounded-[2.5rem] p-8 border border-[#f0ebe3] hover:border-[#4a7c59]/30 hover:shadow-[0_20px_50px_rgba(74,124,89,0.08)] transition-shadow duration-500 flex flex-col gap-5"
               >
                 <div className="w-12 h-12 rounded-2xl bg-[#e8f4ec] flex items-center justify-center">
                   <g.icon size={22} className="text-[#4a7c59]" />
@@ -352,7 +352,7 @@ export default function CommunityPath() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className={`group bg-white rounded-[2.5rem] p-8 border transition-all duration-500 flex flex-col gap-5 ${
+                className={`group bg-white rounded-[2.5rem] p-8 border transition-shadow duration-500 flex flex-col gap-5 ${
                   intern.open
                     ? 'border-[#f0ebe3] hover:border-[#d4843a]/30 hover:shadow-[0_20px_50px_rgba(212,132,58,0.08)]'
                     : 'border-[#f0ebe3] opacity-70'

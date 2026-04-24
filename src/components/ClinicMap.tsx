@@ -35,7 +35,7 @@ export default function ClinicMap() {
               <motion.div 
                 whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(34, 85, 50, 0.12)' }}
                 transition={{ duration: 0.2 }}
-                className="flex items-start gap-4 p-6 rounded-2xl bg-[rgba(34,85,50,0.06)] border border-[rgba(34,85,50,0.1)] transition-all"
+                className="flex items-start gap-4 p-6 rounded-2xl bg-[rgba(34,85,50,0.06)] border border-[rgba(34,85,50,0.1)] transition-transform"
               >
                 <div className="w-12 h-12 rounded-full bg-[#4a7c59] flex items-center justify-center shrink-0">
                   <MapPin size={20} className="text-white" />
@@ -52,7 +52,7 @@ export default function ClinicMap() {
               <motion.div 
                 whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(34, 85, 50, 0.12)' }}
                 transition={{ duration: 0.2 }}
-                className="flex items-start gap-4 p-6 rounded-2xl bg-[rgba(34,85,50,0.06)] border border-[rgba(34,85,50,0.1)] transition-all"
+                className="flex items-start gap-4 p-6 rounded-2xl bg-[rgba(34,85,50,0.06)] border border-[rgba(34,85,50,0.1)] transition-transform"
               >
                 <div className="w-12 h-12 rounded-full bg-[#4a7c59] flex items-center justify-center shrink-0">
                   <Clock size={20} className="text-white" />
@@ -68,7 +68,7 @@ export default function ClinicMap() {
               <motion.div 
                 whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(34, 85, 50, 0.12)' }}
                 transition={{ duration: 0.2 }}
-                className="flex items-start gap-4 p-6 rounded-2xl bg-[rgba(34,85,50,0.06)] border border-[rgba(34,85,50,0.1)] transition-all"
+                className="flex items-start gap-4 p-6 rounded-2xl bg-[rgba(34,85,50,0.06)] border border-[rgba(34,85,50,0.1)] transition-transform"
               >
                 <div className="w-12 h-12 rounded-full bg-[#4a7c59] flex items-center justify-center shrink-0">
                   <Phone size={20} className="text-white" />
@@ -86,7 +86,7 @@ export default function ClinicMap() {
               href="#book" 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center justify-center gap-2 mt-8 w-full bg-[#4a7c59] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-[#3d6649] transition-all shadow-lg shadow-[#4a7c59]/25"
+              className="flex items-center justify-center gap-2 mt-8 w-full bg-[#4a7c59] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-[#3d6649] transition-colors shadow-lg shadow-[#4a7c59]/25"
             >
               Book In-Person Session
             </motion.a>
@@ -112,7 +112,7 @@ export default function ClinicMap() {
                   href="https://www.google.com/maps/place/Rehayashi+Apartment+Sector+12+Dwarka+New+Delhi" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white border border-[rgba(34,85,50,0.15)] text-xs font-medium text-[#4a7c59] hover:bg-[#4a7c59] hover:text-white transition-all"
+                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white border border-[rgba(34,85,50,0.15)] text-xs font-medium text-[#4a7c59] hover:bg-[#4a7c59] hover:text-white transition-colors"
                 >
                   Open in Maps
                   <ExternalLink size={12} />

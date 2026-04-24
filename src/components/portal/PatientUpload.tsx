@@ -51,7 +51,7 @@ export default function PatientUpload({ patientId }: { patientId: string }) {
         onDrop={handleDrop}
         onDragOver={e => e.preventDefault()}
         onClick={() => inputRef.current?.click()}
-        className="border-2 border-dashed border-[#4a7c59]/30 rounded-[2rem] p-12 text-center cursor-pointer hover:border-[#4a7c59] hover:bg-[#e8f4ec]/30 transition-all"
+        className="border-2 border-dashed border-[#4a7c59]/30 rounded-[2rem] p-12 text-center cursor-pointer hover:border-[#4a7c59] hover:bg-[#e8f4ec]/30 transition-colors"
       >
         <Upload size={32} className="text-[#4a7c59]/50 mx-auto mb-4" />
         <p className="text-[#1a1a1a] font-medium mb-1">Drop images here or click to browse</p>
@@ -80,7 +80,7 @@ export default function PatientUpload({ patientId }: { patientId: string }) {
             className="w-full bg-white border border-[#f0ebe3] rounded-2xl py-3 px-5 text-sm outline-none focus:border-[#4a7c59] resize-none transition-colors" />
 
           <button onClick={uploadFiles} disabled={uploading}
-            className="w-full py-4 rounded-full bg-[#4a7c59] text-white font-medium flex items-center justify-center gap-2 hover:bg-[#3d6649] disabled:opacity-50 transition-all">
+            className="w-full py-4 rounded-full bg-[#4a7c59] text-white font-medium flex items-center justify-center gap-2 hover:bg-[#3d6649] disabled:opacity-50 transition-colors">
             {uploading ? <><Loader2 size={18} className="animate-spin" /> Uploading...</> : `Upload ${files.length} file${files.length > 1 ? 's' : ''}`}
           </button>
         </div>

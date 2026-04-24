@@ -199,7 +199,7 @@ export default function Navbar() {
   return (
     <>
       {/* ── Desktop Navbar ── */}
-      <div className={`fixed left-0 right-0 z-50 flex justify-center transition-all duration-[400ms] ease-in-out ${
+      <div className={`fixed left-0 right-0 z-50 flex justify-center transition-[top] duration-[400ms] ease-in-out ${
         scrolled ? 'top-3' : 'top-0'
       }`}>
         <motion.nav
@@ -207,7 +207,7 @@ export default function Navbar() {
           initial={{ y: -100 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className={`navbar w-full transition-all duration-[400ms] ease-in-out ${
+          className={`navbar w-full transition-[max-width,border-radius,background-color,box-shadow,backdrop-filter] duration-[400ms] ease-in-out ${
             scrolled
               ? 'max-w-[85%] rounded-[50px] bg-[rgba(200,230,210,0.2)] backdrop-blur-[14px] border border-[rgba(255,255,255,0.25)] shadow-[0_8px_32px_rgba(0,0,0,0.08)]'
               : 'max-w-full rounded-none bg-transparent border-transparent shadow-none'
@@ -227,8 +227,8 @@ export default function Navbar() {
                   whileTap={{ scale: 0.98 }}
                 >
                   <div className="flex gap-[3px]">
-                    <div className="w-[5px] h-[24px] bg-[#4a7c59] rounded-full transition-all duration-300 group-hover:h-[28px]" />
-                    <div className="w-[5px] h-[24px] bg-[#4a7c59] rounded-full transition-all duration-300 group-hover:h-[28px] delay-75" />
+                    <div className="w-[5px] h-[24px] bg-[#4a7c59] rounded-full transition-[height] duration-300 group-hover:h-[28px]" />
+                    <div className="w-[5px] h-[24px] bg-[#4a7c59] rounded-full transition-[height] duration-300 group-hover:h-[28px] delay-75" />
                   </div>
                   <span className="font-display text-[18px] text-[#1a1a1a] font-semibold tracking-tight">
                     The Pause
@@ -290,7 +290,7 @@ export default function Navbar() {
                   onClick={() => handleNav('/#book')}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-[#4a7c59] text-white px-5 py-2.5 rounded-full text-[13px] font-semibold shadow-lg shadow-[#4a7c59]/25 hover:shadow-xl hover:shadow-[#4a7c59]/35 transition-all duration-200"
+            className="bg-[#4a7c59] text-white px-5 py-2.5 rounded-full text-[13px] font-semibold shadow-lg shadow-[#4a7c59]/25 hover:shadow-xl hover:shadow-[#4a7c59]/35 transition-transform duration-200"
                 >
                   Book Now
                 </motion.button>

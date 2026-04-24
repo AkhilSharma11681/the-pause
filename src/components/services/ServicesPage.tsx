@@ -126,13 +126,13 @@ export default function ServicesPage() {
             <motion.button
               onClick={() => setActive('therapy')}
               whileTap={{ scale: 0.98 }}
-              className={`group relative rounded-[2.5rem] p-8 text-left transition-all duration-500 border-2 overflow-hidden ${
+              className={`group relative rounded-[2.5rem] p-8 text-left transition-colors duration-500 border-2 overflow-hidden ${
                 active === 'therapy'
                   ? 'border-[#4a7c59] bg-[#4a7c59] text-white shadow-[0_20px_60px_rgba(74,124,89,0.3)]'
                   : 'border-[#f0ebe3] bg-white hover:border-[#4a7c59]/40 hover:shadow-[0_12px_40px_rgba(74,124,89,0.08)]'
               }`}
             >
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-all duration-500 ${active === 'therapy' ? 'bg-white/20' : 'bg-[#e8f4ec]'}`}>
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-colors duration-500 ${active === 'therapy' ? 'bg-white/20' : 'bg-[#e8f4ec]'}`}>
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
                   stroke={active === 'therapy' ? 'white' : '#4a7c59'}
                   strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -151,13 +151,13 @@ export default function ServicesPage() {
             <motion.button
               onClick={() => setActive('community')}
               whileTap={{ scale: 0.98 }}
-              className={`group relative rounded-[2.5rem] p-8 text-left transition-all duration-500 border-2 overflow-hidden ${
+              className={`group relative rounded-[2.5rem] p-8 text-left transition-colors duration-500 border-2 overflow-hidden ${
                 active === 'community'
                   ? 'border-[#d4843a] bg-[#d4843a] text-white shadow-[0_20px_60px_rgba(212,132,58,0.3)]'
                   : 'border-[#f0ebe3] bg-white hover:border-[#d4843a]/40 hover:shadow-[0_12px_40px_rgba(212,132,58,0.08)]'
               }`}
             >
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-all duration-500 ${active === 'community' ? 'bg-white/20' : 'bg-[#fdf0e4]'}`}>
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-colors duration-500 ${active === 'community' ? 'bg-white/20' : 'bg-[#fdf0e4]'}`}>
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
                   stroke={active === 'community' ? 'white' : '#d4843a'}
                   strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -179,8 +179,8 @@ export default function ServicesPage() {
 
         {/* Tab indicator */}
         <div className="max-w-3xl mx-auto mt-6 flex gap-4 px-1">
-          <div className={`h-1 flex-1 rounded-full transition-all duration-500 ${active === 'therapy' ? 'bg-[#4a7c59]' : 'bg-[#f0ebe3]'}`} />
-          <div className={`h-1 flex-1 rounded-full transition-all duration-500 ${active === 'community' ? 'bg-[#d4843a]' : 'bg-[#f0ebe3]'}`} />
+          <div className={`h-1 flex-1 rounded-full transition-colors duration-500 ${active === 'therapy' ? 'bg-[#4a7c59]' : 'bg-[#f0ebe3]'}`} />
+          <div className={`h-1 flex-1 rounded-full transition-colors duration-500 ${active === 'community' ? 'bg-[#d4843a]' : 'bg-[#f0ebe3]'}`} />
         </div>
       </section>
 

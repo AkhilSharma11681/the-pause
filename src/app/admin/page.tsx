@@ -174,7 +174,7 @@ export default function AdminDashboard() {
         <div className="flex gap-2 mb-6">
           {(['today', 'patients', 'ai'] as const).map((t) => (
             <button key={t} onClick={() => setTab(t)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all ${tab === t ? 'bg-[#4a7c59] text-white' : 'bg-[#242424] border border-white/10 text-white/50 hover:text-white'}`}>
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-colors ${tab === t ? 'bg-[#4a7c59] text-white' : 'bg-[#242424] border border-white/10 text-white/50 hover:text-white'}`}>
               {t === 'ai' && <Sparkles size={14} />}
               {t === 'today' ? "Today's Appointments" : t === 'patients' ? 'All Patients' : 'AI Assistant'}
             </button>
@@ -252,7 +252,7 @@ export default function AdminDashboard() {
             </div>
             {filtered.map((p) => (
               <button key={p.id} onClick={() => setSelected(p.id)}
-                className="w-full bg-[#242424] rounded-[1.5rem] p-5 border border-white/5 flex items-center justify-between hover:border-[#4a7c59]/50 transition-all group">
+                className="w-full bg-[#242424] rounded-[1.5rem] p-5 border border-white/5 flex items-center justify-between hover:border-[#4a7c59]/50 transition-colors group">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-full bg-[#4a7c59]/20 flex items-center justify-center font-display text-[#4a7c59]">
                     {p.name?.[0] || '?'}

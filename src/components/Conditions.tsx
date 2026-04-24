@@ -20,7 +20,7 @@ const BentoCard = ({ name, icon: Icon, color, iconColor, desc, span }: CardProps
       layout
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative overflow-hidden rounded-[3rem] p-8 flex flex-col justify-between transition-all duration-500 border border-white/40 shadow-sm ${span}`}
+      className={`group relative overflow-hidden rounded-[3rem] p-8 flex flex-col justify-between transition-shadow duration-500 border border-white/40 shadow-sm ${span}`}
       style={{
         backgroundColor: color
       }}
@@ -69,7 +69,7 @@ const BentoCard = ({ name, icon: Icon, color, iconColor, desc, span }: CardProps
         <h3 className="font-display text-2xl text-[#1a1a1a] mb-2 leading-none transition-colors duration-300 group-hover:text-[#4a7c59]">
           {name}
         </h3>
-        <p className="text-[#6b7280] text-sm font-light leading-relaxed max-w-[200px] transition-all duration-300 group-hover:text-[#1a1a1a]">
+        <p className="text-[#6b7280] text-sm font-light leading-relaxed max-w-[200px] transition-colors duration-300 group-hover:text-[#1a1a1a]">
           {desc}
         </p>
       </div>

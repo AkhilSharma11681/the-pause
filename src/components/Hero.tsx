@@ -56,16 +56,24 @@ export default function Hero() {
           className="flex justify-center gap-3 mb-10"
         >
           <motion.div
-            animate={{ height: [48, 60, 48] }}
+            animate={{ scaleY: [0.8, 1, 0.8] }}
             transition={{ duration: 6, repeat: Infinity, repeatType: "mirror", ease: 'easeInOut' }}
             className="w-3.5 rounded-full shadow-[0_4px_20px_rgba(74,124,89,0.3)]"
-            style={{ background: 'linear-gradient(180deg, #4a7c59 0%, #2d5a3d 100%)' }}
+            style={{
+              background: 'linear-gradient(180deg, #4a7c59 0%, #2d5a3d 100%)',
+              height: 60,
+              transformOrigin: 'center',
+            }}
           />
           <motion.div
-            animate={{ height: [60, 48, 60] }}
-            transition={{ duration: 6, repeat: Infinity, repeatType: "mirror", ease: 'easeInOut'}}
+            animate={{ scaleY: [1, 0.8, 1] }}
+            transition={{ duration: 6, repeat: Infinity, repeatType: "mirror", ease: 'easeInOut' }}
             className="w-3.5 rounded-full shadow-[0_4px_20px_rgba(74,124,89,0.3)]"
-            style={{ background: 'linear-gradient(180deg, #4a7c59 0%, #2d5a3d 100%)' }}
+            style={{
+              background: 'linear-gradient(180deg, #4a7c59 0%, #2d5a3d 100%)',
+              height: 60,
+              transformOrigin: 'center',
+            }}
           />
         </motion.div>
 
@@ -158,7 +166,7 @@ export default function Hero() {
             href="https://maps.google.com/?q=Flat+26+REHAYASHI+APARTMENT+Pocket+7+Sector+12+Dwarka+New+Delhi+110078"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 px-5 py-4 rounded-2xl border border-white/60 bg-white/50 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-white/70 transition-transform group"
+            className="inline-flex items-center gap-2.5 px-5 py-4 rounded-2xl border border-white/60 bg-white/50 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-white/70 hover:-translate-y-1 transition-transform duration-300 group"
           >
             <div className="w-8 h-8 rounded-xl bg-[#e8f4ec] flex items-center justify-center shrink-0 group-hover:bg-[#4a7c59] transition-colors">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a7c59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:stroke-white transition-colors">
@@ -175,9 +183,21 @@ export default function Hero() {
       </div>
 
       {/* Floating particles */}
-      <div className="absolute top-[25%] right-[12%] w-2 h-2 rounded-full bg-[#4a7c59]/20 animate-pulse" />
-      <div className="absolute bottom-[25%] left-[8%] w-3 h-3 rounded-full bg-[#d4843a]/15 animate-bounce" style={{ animationDuration: '4s' }} />
-      <div className="absolute top-[60%] right-[8%] w-1.5 h-1.5 rounded-full bg-[#4a7c59]/15 animate-pulse" style={{ animationDelay: '1s' }} />
+      <motion.div
+        animate={{ opacity: [0.2, 0.5, 0.2] }}
+        transition={{ duration: 4, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
+        className="absolute top-[25%] right-[12%] w-2 h-2 rounded-full bg-[#4a7c59]/20"
+      />
+      <motion.div
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 4, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
+        className="absolute bottom-[25%] left-[8%] w-3 h-3 rounded-full bg-[#d4843a]/15"
+      />
+      <motion.div
+        animate={{ opacity: [0.15, 0.4, 0.15] }}
+        transition={{ duration: 5, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
+        className="absolute top-[60%] right-[8%] w-1.5 h-1.5 rounded-full bg-[#4a7c59]/15"
+      />
     </section>
   )
 }

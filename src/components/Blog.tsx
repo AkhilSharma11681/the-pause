@@ -42,7 +42,7 @@ export default function Blog() {
           </div>
           <a href="#" className="group inline-flex items-center gap-2 text-[#4a7c59] text-sm font-medium shrink-0">
             Read all articles
-            <span className="block w-6 h-px bg-[#4a7c59] group-hover:w-10 transition-all" />
+            <span className="block w-6 h-px bg-[#4a7c59] group-hover:w-10 transition-[width] duration-300" />
           </a>
         </div>
 
@@ -54,7 +54,7 @@ export default function Blog() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group rounded-[2.5rem] overflow-hidden border border-[#f0ebe3] hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] transition-all duration-500 cursor-pointer"
+              className="group rounded-[2.5rem] overflow-hidden border border-[#f0ebe3] hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] transition-shadow duration-500 cursor-pointer"
               style={{ backgroundColor: post.color }}
             >
               <div className="p-8">
@@ -62,7 +62,7 @@ export default function Blog() {
                   <span className="text-[10px] uppercase tracking-widest text-[#4a7c59] font-bold px-3 py-1 bg-white/60 rounded-full">
                     {post.tag}
                   </span>
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center group-hover:bg-[#4a7c59] group-hover:text-white transition-all duration-300">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center group-hover:bg-[#4a7c59] group-hover:text-white transition-colors duration-300">
                     <ArrowUpRight size={14} />
                   </div>
                 </div>

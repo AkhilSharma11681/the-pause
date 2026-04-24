@@ -203,7 +203,7 @@ export default function AdminPatientDetail({ patientId, onBack }: { patientId: s
         <div className="flex gap-2 mb-6">
           {(['bookings', 'notes', 'reports', 'ai'] as const).map((t) => (
             <button key={t} onClick={() => setTab(t)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium capitalize transition-all ${tab === t ? 'bg-[#4a7c59] text-white' : 'bg-[#242424] border border-white/10 text-white/50 hover:text-white'}`}>
+              className={`px-5 py-2.5 rounded-full text-sm font-medium capitalize transition-colors ${tab === t ? 'bg-[#4a7c59] text-white' : 'bg-[#242424] border border-white/10 text-white/50 hover:text-white'}`}>
               {t === 'ai' ? '✨ AI Assistant' : t}
             </button>
           ))}

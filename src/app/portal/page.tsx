@@ -92,7 +92,7 @@ export default function PortalPage() {
             const Icon = t.icon
             return (
               <button key={t.id} onClick={() => setTab(t.id)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
                   tab === t.id ? 'bg-[#4a7c59] text-white' : 'bg-white border border-[#f0ebe3] text-[#6b7280] hover:border-[#4a7c59]'
                 }`}>
                 <Icon size={15} />
@@ -117,7 +117,7 @@ export default function PortalPage() {
                   Choose your therapist, pick a date and time, and we&apos;ll confirm within 2 hours.
                 </p>
                 <a href="/#book"
-                  className="inline-flex items-center gap-2 bg-[#4a7c59] text-white px-8 py-4 rounded-full text-sm font-medium hover:bg-[#3d6649] transition-all hover:-translate-y-0.5 hover:shadow-lg">
+                  className="inline-flex items-center gap-2 bg-[#4a7c59] text-white px-8 py-4 rounded-full text-sm font-medium hover:bg-[#3d6649] transition-transform hover:-translate-y-0.5 hover:shadow-lg">
                   <PlusCircle size={16} />
                   Book Now
                 </a>

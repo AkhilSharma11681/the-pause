@@ -99,7 +99,7 @@ export default function Therapists() {
               onMouseLeave={() => setHovered(null)}
               className="bg-white rounded-[2.5rem] p-1 shadow-[0_10px_40px_rgba(0,0,0,0.03)] group"
             >
-              <div className="bg-[#faf7f2] rounded-[2.3rem] p-8 h-full flex flex-col relative overflow-hidden transition-all duration-500 group-hover:bg-white">
+              <div className="bg-[#faf7f2] rounded-[2.3rem] p-8 h-full flex flex-col relative overflow-hidden transition-colors duration-500 group-hover:bg-white">
                 
                 {/* Top Badge Overlay */}
                 <div className="flex justify-between items-start mb-8 relative z-10">
@@ -161,7 +161,7 @@ export default function Therapists() {
                     const el = document.getElementById('book')
                     if (el) el.scrollIntoView({ behavior: 'smooth' })
                   }}
-                  className="w-full py-4 rounded-full text-center text-sm font-semibold transition-all duration-300 bg-white border border-[#4a7c59]/30 text-[#4a7c59] group-hover:bg-[#4a7c59] group-hover:text-white group-hover:border-[#4a7c59]"
+                  className="w-full py-4 rounded-full text-center text-sm font-semibold transition-colors duration-300 bg-white border border-[#4a7c59]/30 text-[#4a7c59] group-hover:bg-[#4a7c59] group-hover:text-white group-hover:border-[#4a7c59]"
                 >
                   Schedule Session
                 </a>
@@ -184,7 +184,7 @@ export default function Therapists() {
         >
           <a href="#therapists" className="group inline-flex items-center gap-3 text-[#4a7c59] font-medium text-sm">
             Discover the full specialist directory
-            <span className="block w-6 h-px bg-[#4a7c59] group-hover:w-10 transition-all" />
+            <span className="block w-6 h-px bg-[#4a7c59] group-hover:w-10 transition-[width] duration-300" />
           </a>
         </motion.div>
       </div>

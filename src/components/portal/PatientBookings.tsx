@@ -85,7 +85,7 @@ export default function PatientBookings({ patientId }: { patientId: string }) {
                 href={b.meet_link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-[#4a7c59] text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-[#3d6649] transition-all hover:-translate-y-0.5 hover:shadow-lg"
+                className="inline-flex items-center gap-2 bg-[#4a7c59] text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-[#3d6649] transition-transform hover:-translate-y-0.5 hover:shadow-lg"
               >
                 <Video size={16} />
                 Join Video Session

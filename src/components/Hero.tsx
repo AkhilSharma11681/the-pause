@@ -24,7 +24,7 @@ export default function Hero() {
         {/* Center soft glow */}
         <motion.div
           animate={{ opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: $1, repeat: Infinity, repeatType: "mirror", ease: "linear" }}
+          transition={{ duration: 6, repeat: Infinity, repeatType: "mirror", ease: "linear" }}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full"
           style={{ background: 'radial-gradient(ellipse, rgba(74,124,89,0.07) 0%, transparent 70%)' }}
         />

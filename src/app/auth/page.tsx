@@ -1,10 +1,12 @@
 'use client'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { motion } from 'framer-motion'
-import { Mail, ArrowRight, Loader2, CheckCircle2 } from 'lucide-react'
+import { Mail, ArrowRight, ArrowLeft, Loader2, CheckCircle2 } from 'lucide-react'
 
 export default function AuthPage() {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -30,6 +32,15 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen bg-[#faf7f2] flex items-center justify-center px-6">
+      {/* Back button — top left */}
+      <button
+        onClick={() => router.back()}
+        className="fixed top-6 left-6 flex items-center gap-1.5 text-sm text-[#6b7280] hover:text-[#4a7c59] transition-colors z-10"
+      >
+        <ArrowLeft size={16} />
+        Back
+      </button>
+
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md bg-white rounded-[2.5rem] p-10 shadow-[0_20px_60px_rgba(0,0,0,0.06)]">
 

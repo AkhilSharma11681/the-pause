@@ -44,7 +44,13 @@ export default function ServicesPage() {
         setPendingHash(hash)
       } else {
         // Not a tab-specific hash — just scroll directly
-        setTimeout(() => document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
+        setTimeout(() => {
+          const el = document.getElementById(hash)
+          if (el) {
+            const top = el.getBoundingClientRect().top + window.scrollY - 96
+            window.scrollTo({ top, behavior: 'smooth' })
+          }
+        }, 50)
       }
     }
     window.addEventListener('nav:scrollto', onNavScrollTo)
@@ -57,12 +63,17 @@ export default function ServicesPage() {
     if (!pendingHash) return
     const timer = setTimeout(() => {
       const el = document.getElementById(pendingHash)
+      const scrollTo = (element: HTMLElement) => {
+        const top = element.getBoundingClientRect().top + window.scrollY - 96
+        window.scrollTo({ top, behavior: 'smooth' })
+      }
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        scrollTo(el)
       } else {
         // Retry for late-rendered elements
         setTimeout(() => {
-          document.getElementById(pendingHash)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          const retryEl = document.getElementById(pendingHash)
+          if (retryEl) scrollTo(retryEl)
         }, 300)
       }
       setPendingHash('')

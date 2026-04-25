@@ -71,7 +71,7 @@ export default function PortalPage() {
             className="flex items-center gap-1.5 text-sm text-[#6b7280] hover:text-[#4a7c59] transition-colors mr-2"
           >
             <ArrowLeft size={16} />
-            <span className="hidden sm:inline">Back</span>
+            <span>Back to Home</span>
           </button>
           <div className="flex items-center gap-3">
             <div className="flex gap-1">

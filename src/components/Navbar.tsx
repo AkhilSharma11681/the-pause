@@ -17,9 +17,9 @@ const NAV_ITEMS: NavItem[] = [
     label: 'About Us',
     children: [
       { label: 'Idea Behind The Pause', href: '/about' },
-      { label: 'Our Space',             href: '/about' },
-      { label: 'Meet the Team',         href: '/about' },
-      { label: 'How It Works',          href: '/about' },
+      { label: 'Our Space',             href: '/about#our-space' },
+      { label: 'Meet the Team',         href: '/about#team' },
+      { label: 'How It Works',          href: '/about#how-it-works' },
     ],
   },
   {
@@ -27,10 +27,10 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Services',
     children: [
       { label: 'Individual Therapy', href: '/services' },
-      { label: 'Couples & Family',   href: '/services' },
-      { label: 'Teen & Child Care',  href: '/services' },
-      { label: 'Workshops',          href: '/services' },
-      { label: 'Communities',        href: '/services' },
+      { label: 'Couples & Family',   href: '/services#couples' },
+      { label: 'Teen & Child Care',  href: '/services#teen' },
+      { label: 'Workshops',          href: '/services#workshops' },
+      { label: 'Communities',        href: '/services#communities' },
     ],
   },
   { kind: 'link', label: 'Pricing',         href: '/#pricing' },

@@ -74,11 +74,9 @@ function Chevron({ open }: { open: boolean }) {
 function DropdownPanel({
   items,
   onNavigate,
-  currentPath,
 }: {
   items: NavChild[]
   onNavigate: (href: string) => void
-  currentPath: string
 }) {
   return (
     <motion.div
@@ -88,24 +86,17 @@ function DropdownPanel({
       transition={{ duration: 0.18, ease: 'easeOut' }}
       className="absolute top-full left-1/2 -translate-x-1/2 mt-2 min-w-[220px] bg-white rounded-2xl shadow-xl border border-[#e8e3da] py-2 z-50"
     >
-      {items.map((child) => {
-        const isActive = currentPath === getPathPart(child.href)
-        return (
-          <motion.button
-            key={child.href}
-            onClick={() => onNavigate(child.href)}
-            whileTap={{ scale: 0.97, backgroundColor: '#4a7c59', color: '#ffffff' }}
-            transition={{ duration: 0.15 }}
-            className={`w-full text-left px-5 py-2.5 text-[13px] transition-colors duration-150 font-medium rounded-lg ${
-              isActive
-                ? 'text-[#4a7c59] bg-[#f5f2ed] border-l-[3px] border-[#4a7c59] pl-[17px]'
-                : 'text-[#1a1a1a]/80 hover:text-[#4a7c59] hover:bg-[#f5f2ed]'
-            }`}
-          >
-            {child.label}
-          </motion.button>
-        )
-      })}
+      {items.map((child) => (
+        <motion.button
+          key={child.label}
+          onClick={() => onNavigate(child.href)}
+          whileTap={{ scale: 0.97 }}
+          transition={{ duration: 0.15 }}
+          className="w-full text-left px-5 py-2.5 text-[13px] font-medium rounded-lg text-[#1a1a1a]/80 hover:text-[#4a7c59] hover:bg-[#f5f2ed] transition-colors duration-150"
+        >
+          {child.label}
+        </motion.button>
+      ))}
     </motion.div>
   )
 }
@@ -261,7 +252,6 @@ export default function Navbar() {
                           <DropdownPanel
                             items={item.children}
                             onNavigate={handleNav}
-                            currentPath={pathname}
                           />
                         )}
                       </AnimatePresence>
@@ -358,15 +348,11 @@ export default function Navbar() {
                           >
                             {item.children.map((child) => (
                               <motion.button
-                                key={child.href}
+                                key={child.label}
                                 onClick={() => handleNav(child.href)}
                                 whileTap={{ scale: 0.97, backgroundColor: 'rgba(74,124,89,0.08)' }}
                                 transition={{ duration: 0.15 }}
-                                className={`w-full text-left pl-4 py-3 text-lg transition-colors border-b border-[#e8e3da]/50 ${
-                                  pathname === getPathPart(child.href)
-                                    ? 'text-[#4a7c59] font-medium border-l-[3px] border-l-[#4a7c59] pl-[13px]'
-                                    : 'text-[#1a1a1a]/70 hover:text-[#4a7c59]'
-                                }`}
+                                className="w-full text-left pl-4 py-3 text-lg transition-colors border-b border-[#e8e3da]/50 text-[#1a1a1a]/70 hover:text-[#4a7c59]"
                               >
                                 {child.label}
                               </motion.button>
